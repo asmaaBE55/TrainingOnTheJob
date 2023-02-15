@@ -22,12 +22,13 @@
 DROP TABLE IF EXISTS `product_tbl`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `product_tbl` (
-  `id` int NOT NULL,
-  `name` varchar(255) DEFAULT NULL,
-  `price` double NOT NULL,
-  `quantity` int NOT NULL,
-  PRIMARY KEY (`id`)
+CREATE TABLE `product_tbl`
+(
+    `id`       int    NOT NULL,
+    `name`     varchar(255) DEFAULT NULL,
+    `price`    double NOT NULL,
+    `quantity` int    NOT NULL,
+    PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -35,11 +36,19 @@ CREATE TABLE `product_tbl` (
 -- Dumping data for table `product_tbl`
 --
 
-LOCK TABLES `product_tbl` WRITE;
+LOCK
+TABLES `product_tbl` WRITE;
 /*!40000 ALTER TABLE `product_tbl` DISABLE KEYS */;
-INSERT INTO `product_tbl` VALUES (1,'prodotto 1',14.6,7),(3,'prodotto 3',12.99,3),(4,'prodotto 4',11.99,15),(5,'prodotto 5 added',18.6,9),(6,'prodotto 6 modified',10.99,9),(7,'prodotto 7 modified',1.99,125);
+INSERT INTO `product_tbl`
+VALUES (1, 'prodotto 1', 14.6, 7),
+       (3, 'prodotto 3', 12.99, 3),
+       (4, 'prodotto 4', 11.99, 15),
+       (5, 'prodotto 5 added', 18.6, 9),
+       (6, 'prodotto 6 modified', 10.99, 9),
+       (7, 'prodotto 7 modified', 1.99, 125);
 /*!40000 ALTER TABLE `product_tbl` ENABLE KEYS */;
-UNLOCK TABLES;
+UNLOCK
+TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
