@@ -1,0 +1,8 @@
+spring:
+  data:
+    mongodb:
+      host:
+      port:
+      username:
+      password:
+      database:
