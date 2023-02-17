@@ -2,35 +2,39 @@ package com.tacos.tacocloud_nosql.controller;
 
 
 import com.tacos.tacocloud_nosql.model.TacoOrder;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Controller;
-import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.bind.support.SessionStatus;
+import com.tacos.tacocloud_nosql.service.OrderService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import java.util.List;
 
-@Slf4j
-@Controller
-@RequestMapping("/orders")
-@SessionAttributes("tacoOrder")
+@RestController
+@RequestMapping(path = "/orders", produces = "application/json")
+@CrossOrigin(origins = "*")
 public class OrderController {
-    @GetMapping("/current")
-    public String orderForm() {
-        return "orderForm";
+
+    private OrderService orderService;
+
+    @Autowired
+    public OrderController(OrderService orderService) {
+        this.orderService = orderService;
     }
 
-    @PostMapping
-    public String processOrder(@Valid TacoOrder order, Errors errors,
-                               SessionStatus sessionStatus) {
-        if (errors.hasErrors()) {
-            return "orderForm";
-        }
-        log.info("Order submitted: {}", order);
-        sessionStatus.setComplete();
-        return "redirect:/";
+    @GetMapping(produces = "application/json")
+    public List<TacoOrder> getAllOrders() {
+        return orderService.getAllOrders();
     }
+
+    @GetMapping(path = "/{orderId}", produces = "application/json")
+    public TacoOrder getOrderById(@PathVariable String orderId) {
+        return orderService.getOrderById(orderId);
+    }
+
+    @PostMapping(consumes = "application/json")
+    @ResponseStatus(HttpStatus.CREATED)
+    public TacoOrder createOrder(@RequestBody TacoOrder tacoOrder) {
+        return orderService.createOrder(tacoOrder);
+    }
+
 }

@@ -1,8 +1,19 @@
 spring:
   data:
     mongodb:
-      host:
-      port:
-      username:
-      password:
-      database:
+      host: localhost
+      port: 27017
+      database: taco_cloud
+  jpa:
+    hibernate:
+      ddl-auto: none
+  thymeleaf:
+    cache: false
+
+logging:
+  level:
+    root: info
+    org:
+      springframework:
+        web: debug
+        data: debug
