@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 public class UserDetailsService {
     @Bean
-    public com.tacos.tacocloud_nosql.service.repo.UserDetailsService userDetailsService(UserRepository userRepo) {
+    public com.tacos.tacocloud_nosql.reposecurity.UserDetailsService userDetailsService(UserRepository userRepo) {
         return username -> {
             User user = userRepo.findByUsername(username);
             if (user != null) return user;
