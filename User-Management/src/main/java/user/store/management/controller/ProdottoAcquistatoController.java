@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import user.store.management.entity.Prodotto;
 import user.store.management.entity.User;
 import user.store.management.exception.InsufficientFundsException;
+import user.store.management.exception.ProductNotFoundException;
 import user.store.management.service.ProdottoAcquistatoService;
 import user.store.management.service.ProdottoService;
 import user.store.management.service.UserService;
@@ -38,6 +39,8 @@ public class ProdottoAcquistatoController {
             return ResponseEntity.notFound().build();
         } catch (InsufficientFundsException e) {
             return ResponseEntity.status(HttpStatus.PAYMENT_REQUIRED).body(e.getMessage());
+        } catch (ProductNotFoundException e) {
+            throw new RuntimeException(e);
         }
     }
 

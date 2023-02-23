@@ -6,6 +6,7 @@ import user.store.management.entity.Prodotto;
 import user.store.management.entity.ProdottoAcquistato;
 import user.store.management.entity.User;
 import user.store.management.exception.InsufficientFundsException;
+import user.store.management.exception.ProductNotFoundException;
 import user.store.management.repository.ProdottoAcquistatoRepository;
 
 import java.math.BigDecimal;
@@ -22,7 +23,7 @@ public class ProdottoAcquistatoService {
     @Autowired
     private ProdottoService prodottoService;
 
-    public void compraProdotto(User user, Prodotto prodotto) throws InsufficientFundsException {
+    public void compraProdotto(User user, Prodotto prodotto) throws InsufficientFundsException, ProductNotFoundException {
         BigDecimal prezzo = prodotto.getPrezzo();
         BigDecimal budget = user.getBudget();
         if (budget.compareTo(prezzo) < 0) {
