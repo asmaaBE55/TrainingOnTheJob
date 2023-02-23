@@ -33,7 +33,7 @@ public class ProdottoService {
     }
 
     public void updateProdottoQuantita(Prodotto prodotto) throws ProductNotFoundException {
-        if (prodotto.getQuantity() < 0) {
+        if (prodotto.getQuantity() == 0) {
             throw new ProductNotFoundException("Questo prodotto è esaurito dallo stock.");
         }
         // Aggiorno la quantità del prodotto
