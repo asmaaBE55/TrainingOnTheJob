@@ -17,4 +17,4 @@ spring:
 server:
   port: 9500
   servlet:
-    context-path: /store
+    context-path: /api

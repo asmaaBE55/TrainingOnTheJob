@@ -1,4 +1,4 @@
-package com.user.usermanagement.entity;
+package user.store.management.entity;
 
 import lombok.Data;
 
@@ -8,6 +8,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -33,6 +35,9 @@ public class User {
     private int numeroAcquisti;
     private BigDecimal importoTotaleSpeso;
     private String luogoDiNascita;
+    private BigDecimal budget; // aggiunto campo budget
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ProdottoAcquistato> prodottiAcquistati = new HashSet<>();
 
     public enum TipoCliente {
         NUOVO_CLIENTE,

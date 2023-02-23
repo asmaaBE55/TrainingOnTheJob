@@ -97,7 +97,7 @@
             <plugin>
                 <groupId>io.springfox</groupId>
                 <artifactId>springfox-swagger2</artifactId>
-                <version>2.9.2</version>
+                <version>3.0.0</version>
                 <configuration>
                     <apiInfo>
                         <title>User Management System API</title>
@@ -112,7 +112,7 @@
             <plugin>
                 <groupId>io.springfox</groupId>
                 <artifactId>springfox-swagger-ui</artifactId>
-                <version>2.9.2</version>
+                <version>3.0.0</version>
             </plugin>
         </plugins>
     </build>

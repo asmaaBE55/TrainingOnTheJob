@@ -1,7 +1,7 @@
-package com.user.usermanagement.dto;
+package user.store.management.dto;
 
-import com.user.usermanagement.entity.User;
 import lombok.Data;
+import user.store.management.entity.User;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -16,6 +16,7 @@ public class UserDTO {
     private Integer numeroAcquisti;
     private BigDecimal importoTotaleSpeso;
     private User.TipoCliente tipoCliente;
+    private BigDecimal budget; // aggiunto campo budget
 
 }
 /**

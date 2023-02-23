@@ -1,18 +1,21 @@
-package com.user.usermanagement.controller;
+package user.store.management.controller;
 
-import com.user.usermanagement.dto.UserDTO;
-import com.user.usermanagement.entity.User;
-import com.user.usermanagement.exception.UserNotFoundException;
-import com.user.usermanagement.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import user.store.management.dto.UserDTO;
+import user.store.management.entity.ProdottoAcquistato;
+import user.store.management.entity.User;
+import user.store.management.exception.UserNotFoundException;
+import user.store.management.service.ProdottoService;
+import user.store.management.service.UserService;
 
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api")
@@ -21,6 +24,7 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final ProdottoService prodottoService;
 
     @ApiOperation(value = "Aggiungi cliente")
     @PostMapping("/users")
@@ -47,6 +51,7 @@ public class UserController {
     public ResponseEntity<User> updateClientStatus(@PathVariable Long id, @RequestBody UserDTO userDTO) throws UserNotFoundException {
         User user = userService.getUser(id);
         userService.updateClientStatus(user, userDTO.getImportoTotaleSpeso());
+        userService.aggiornaBudget(user, userDTO.getImportoTotaleSpeso()); // aggiunto il metodo aggiornaBudget
         return ResponseEntity.ok(user);
     }
 
@@ -56,4 +61,11 @@ public class UserController {
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/users/{userId}/prodotti-acquistati")
+    @ApiOperation(value = "Get the products purchased by the user")
+    public Set<ProdottoAcquistato> getProdottiAcquistati(@PathVariable Long userId) {
+        return userService.getProdottiAcquistati(userId);
+    }
+
 }
