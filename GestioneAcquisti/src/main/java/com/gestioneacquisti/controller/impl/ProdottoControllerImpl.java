@@ -30,7 +30,7 @@ public class ProdottoControllerImpl implements ProdottoController {
     @Override
     @GetMapping("/{id}")
     public ProdottoDto findById(@PathVariable Long id) throws ProductNotFoundException {
-        Prodotto prodotto = prodottoService.findById(id).orElse(null);
+        Prodotto prodotto = prodottoService.findById(id);
         return prodottoMapper.asDTO(prodotto);
     }
 

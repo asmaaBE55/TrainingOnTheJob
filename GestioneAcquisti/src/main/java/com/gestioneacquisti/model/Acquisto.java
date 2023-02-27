@@ -23,6 +23,8 @@ public class Acquisto {
     private Long idProdotto;
 
     private Double prezzo;
+    private int quantita;
+
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "ordine_id")

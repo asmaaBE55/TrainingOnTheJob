@@ -2,7 +2,7 @@ package com.gestioneacquisti.model;
 /**
  * L'entità Scontrino rappresenta uno scontrino generato per un ordine effettuato da un cliente.
  * Ogni scontrino ha un ID univoco, una data di generazione,
- * un cliente associato un totale e una lista di prodotti acquistati.
+ * un cliente associato un totale e una lista di ordini.
  */
 
 import com.fasterxml.jackson.annotation.JsonIgnore;

@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * L'implementazione ClienteServiceImpl utilizza il ClienteDao e il ClienteMapper
@@ -38,9 +37,9 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public Optional<Cliente> findById(Long id) {
-        return Optional.ofNullable(clienteDao.findById(id)
-                .orElseThrow(() -> new UserNotFoundException(id)));
+    public Cliente getCliente(Long id) {
+        return clienteDao.findById(id)
+                .orElseThrow(() -> new UserNotFoundException(id));
 
     }
 

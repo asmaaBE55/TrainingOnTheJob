@@ -28,13 +28,19 @@ public class Ordine {
     private LocalDate data;
 
     private Double totale;
+    @Enumerated(EnumType.STRING)
+    private StatoOrdine stato;
+    public enum StatoOrdine {
+        IN_CORSO,
+        CONSEGNATO,
+        ANNULLATO
+    }
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ordine_id")
+    @OneToMany(mappedBy = "ordine")
     @JsonIgnore
     private Set<Acquisto> acquisti = new HashSet<>();
 

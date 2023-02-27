@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Transactional
@@ -29,8 +28,8 @@ public class ProdottoServiceImpl implements ProdottoService {
     }
 
     @Override
-    public Optional<Prodotto> findById(Long id)  {
-        return Optional.of(prodottoDao.getReferenceById(id));
+    public Prodotto findById(Long id) {
+        return prodottoDao.getReferenceById(id);
     }
 
     @Override

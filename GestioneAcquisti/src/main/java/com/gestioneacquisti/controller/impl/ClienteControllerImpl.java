@@ -28,8 +28,8 @@ public class ClienteControllerImpl implements ClienteController {
 
     @Override
     @GetMapping("/{id}")
-    public ClienteDto findById(@PathVariable Long id) {
-        Cliente cliente = clienteService.findById(id).orElse(null);
+    public ClienteDto getCliente(@PathVariable Long id) {
+        Cliente cliente = clienteService.getCliente(id);
         return clienteMapper.asDTO(cliente);
     }
 

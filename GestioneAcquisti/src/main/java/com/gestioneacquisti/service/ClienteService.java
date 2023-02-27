@@ -4,7 +4,6 @@ import com.gestioneacquisti.model.Cliente;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * L'interfaccia ClienteService definisce i metodi per accedere ai dati dell'entità Cliente.
@@ -16,8 +15,7 @@ public interface ClienteService {
 
     List<Cliente> findAll();
 
-    Optional<Cliente> findById(Long id);
-
+    Cliente getCliente(Long id);
 
     Cliente save(Cliente cliente);
 

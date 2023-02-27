@@ -1,5 +1,6 @@
 package com.gestioneacquisti.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -20,5 +21,6 @@ public class ClienteDto {
     private BigDecimal budget;
     private BigDecimal importoTotaleSpeso;
     private int numeroAcquisti;
+    @JsonIgnore
     private Set<OrdineDto> ordini = new HashSet<>();
 }
