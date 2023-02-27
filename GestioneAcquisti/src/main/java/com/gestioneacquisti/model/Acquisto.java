@@ -24,7 +24,6 @@ public class Acquisto {
     private BigDecimal prezzoDiAcquisto;
     private int quantita;
 
-
     @ManyToOne
     @JoinColumn(name = "prodotto_id")
     private Prodotto prodotto;

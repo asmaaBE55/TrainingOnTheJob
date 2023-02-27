@@ -1,8 +1,10 @@
 spring:
+  main:
+    allow-circular-references: true
   datasource:
-    url: jdbc:mysql://localhost:3306/GestioneAcquistiVendite?useSSL=false
-    username: asmaa
-    password: 123456
+     url: jdbc:mysql://localhost:3306/GestioneAcquistiVendite?useSSL=false
+     username: asmaa
+     password: 123456
   jpa:
     hibernate:
       ddl-auto: update
@@ -14,8 +16,10 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
 
+
 server:
   port: 9500
   servlet:
     context-path: /api
+
 

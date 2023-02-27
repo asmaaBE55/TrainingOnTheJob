@@ -26,15 +26,9 @@ import java.util.List;
 @Transactional
 @Service
 public class AcquistoServiceImpl implements AcquistoService {
-    @Autowired
     private final OrdineDao ordineDao;
-    @Autowired
-    private final AcquistoDao acquistoDao;
-    @Autowired
     private final ClienteService clienteService;
-    @Autowired
     private final ProdottoService prodottoService;
-    @Autowired
     private final OrdineService ordineService;
 
 @Override
@@ -63,10 +57,7 @@ public void compraProdotto(Cliente cliente, Prodotto prodotto, int quantitaDesid
 
     ordineDao.save(ordine);
     ordineService.aggiornaOrdine(ordine, Ordine.StatoOrdine.IN_CORSO);
-
     prodotto.setQuantita(quantitaDesiderata);
     prodottoService.createProduct(prodotto);
 }
-
-
 }

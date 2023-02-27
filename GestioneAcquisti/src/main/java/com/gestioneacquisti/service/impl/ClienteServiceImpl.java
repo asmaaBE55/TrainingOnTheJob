@@ -27,8 +27,6 @@ import java.util.List;
 @Transactional
 @Service
 public class ClienteServiceImpl implements ClienteService {
-
-    @Autowired
     private final ClienteDao clienteDao;
 
     @Override

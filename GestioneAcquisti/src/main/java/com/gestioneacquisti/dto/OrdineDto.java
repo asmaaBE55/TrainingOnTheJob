@@ -17,6 +17,5 @@ import java.util.Set;
 public class OrdineDto {
     private Long id;
     private LocalDateTime data;
-
     private List<AcquistoDto> acquisti = new ArrayList<>();
 }

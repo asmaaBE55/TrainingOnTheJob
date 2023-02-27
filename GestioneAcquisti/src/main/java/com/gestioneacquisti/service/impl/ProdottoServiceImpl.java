@@ -1,5 +1,6 @@
 package com.gestioneacquisti.service.impl;
 
+import com.gestioneacquisti.dao.AcquistoDao;
 import com.gestioneacquisti.dao.ProdottoDao;
 import com.gestioneacquisti.exception.ProductNotFoundException;
 import com.gestioneacquisti.model.Prodotto;
@@ -15,9 +16,7 @@ import java.util.List;
 @Transactional
 @Service
 public class ProdottoServiceImpl implements ProdottoService {
-    @Autowired
     private final ProdottoDao prodottoDao;
-
     @Override
     public Prodotto createProduct(Prodotto prodotto) {
         prodotto.setId(prodotto.getId());

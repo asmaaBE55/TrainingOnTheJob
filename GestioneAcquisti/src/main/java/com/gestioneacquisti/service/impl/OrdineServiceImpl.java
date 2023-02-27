@@ -18,7 +18,6 @@ import java.util.Set;
 @Transactional
 @Service
 public class OrdineServiceImpl implements OrdineService {
-    @Autowired
     private final OrdineDao ordineDao;
     @Override
     public Ordine creaOrdine(Cliente cliente, List<Acquisto> acquisti) {

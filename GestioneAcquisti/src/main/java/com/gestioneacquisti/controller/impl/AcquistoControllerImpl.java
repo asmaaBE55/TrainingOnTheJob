@@ -24,11 +24,9 @@ import java.util.NoSuchElementException;
 @RequestMapping("/acquisti")
 @RequiredArgsConstructor
 public class AcquistoControllerImpl implements AcquistoController {
-    @Autowired
+
     private final AcquistoService acquistoService;
-    @Autowired
     private final ClienteService clienteService;
-    @Autowired
     private final ProdottoService prodottoService;
 
     @Override
@@ -48,6 +46,7 @@ public class AcquistoControllerImpl implements AcquistoController {
             clienteService.updateClientStatus(cliente,cliente.getImportoTotaleSpeso());
             prodottoService.updateProdottoQuantita(prodotto);
             clienteService.updateNumeroAcquisti(cliente);
+
             return ResponseEntity.ok("Prodotto acquistato con successo.");
         } catch (NoSuchElementException e) {
             return ResponseEntity.notFound().build();
