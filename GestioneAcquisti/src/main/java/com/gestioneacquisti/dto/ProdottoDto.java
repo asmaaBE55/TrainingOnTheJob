@@ -1,9 +1,12 @@
 package com.gestioneacquisti.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -16,5 +19,6 @@ public class ProdottoDto {
     private String nome;
     private int quantita;
     private BigDecimal prezzo;
-    private Set<AcquistoDto> acquisti = new HashSet<>();
+
+    private List<AcquistoDto> acquisti = new ArrayList<>();
 }

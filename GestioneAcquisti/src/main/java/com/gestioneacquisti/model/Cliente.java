@@ -11,7 +11,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -26,8 +28,7 @@ public class Cliente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotNull
-    @NotBlank(message = "Il campo nome è obbligatorio")
+    @Column(name = "nome", nullable = false)
     private String nome;
     @NotNull
     @NotBlank(message = "Il campo cognome è obbligatorio")
@@ -38,13 +39,12 @@ public class Cliente {
     @Enumerated(EnumType.STRING)
 //Ci permette di specificare che il campo tipoCliente deve essere mappato come un'enumerazione.
     private TipoCliente tipoCliente;
+    @Column(name = "budget", nullable = false)
     private BigDecimal budget;
     private BigDecimal importoTotaleSpeso;
     private int numeroAcquisti;
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "cliente_id")
-    @JsonIgnore
-    private Set<Ordine> ordini = new HashSet<>();
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Ordine> ordini = new ArrayList<>();
 
     public enum TipoCliente {
         NUOVO_CLIENTE,

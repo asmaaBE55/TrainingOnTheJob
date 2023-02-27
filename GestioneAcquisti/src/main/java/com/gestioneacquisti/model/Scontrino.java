@@ -29,11 +29,7 @@ public class Scontrino {
     private LocalDate data;
 
     private Double totale;
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "cliente_id")
-    private Cliente cliente;
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "scontrino_id")
-    @JsonIgnore
-    private Set<Acquisto> acquisti = new HashSet<>();
+    @ManyToOne
+    @JoinColumn(name = "ordine_id")
+    private Ordine ordine;
 }

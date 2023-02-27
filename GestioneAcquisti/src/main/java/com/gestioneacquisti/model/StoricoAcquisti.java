@@ -25,8 +25,12 @@ public class StoricoAcquisti {
     private String nomeProdotto;
 
     private Integer numeroAcquisti;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
+
+    @ManyToOne
+    @JoinColumn(name = "prodotto_id")
+    private Prodotto prodotto;
 
 }

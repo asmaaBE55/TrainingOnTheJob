@@ -9,7 +9,9 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -36,12 +38,11 @@ public class Ordine {
         ANNULLATO
     }
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
-    @OneToMany(mappedBy = "ordine")
-    @JsonIgnore
-    private Set<Acquisto> acquisti = new HashSet<>();
+    @OneToMany(mappedBy = "ordine", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Acquisto> acquisti = new ArrayList<>();
 
 }

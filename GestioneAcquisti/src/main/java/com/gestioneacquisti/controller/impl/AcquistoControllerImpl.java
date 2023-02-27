@@ -42,9 +42,12 @@ public class AcquistoControllerImpl implements AcquistoController {
             Ordine ordine = new Ordine();
             ordine.setCliente(cliente);
             ordine.setData(LocalDate.now());
-            ordine.setTotale(prodotto.getPrezzo());
-            // Aggiunge il prodotto acquistato alla lista di prodotti dell'ordine
+            ordine.setTotale(prodotto.getPrezzo().doubleValue());
             ordine.getAcquisti().add(new Acquisto());
+            clienteService.updateImportoTotaleSpeso(cliente,cliente.getImportoTotaleSpeso());
+            clienteService.updateClientStatus(cliente,cliente.getImportoTotaleSpeso());
+            prodottoService.updateProdottoQuantita(prodotto);
+            clienteService.updateNumeroAcquisti(cliente);
             return ResponseEntity.ok("Prodotto acquistato con successo.");
         } catch (NoSuchElementException e) {
             return ResponseEntity.notFound().build();

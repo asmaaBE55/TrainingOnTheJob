@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -38,11 +39,12 @@ public class AcquistoServiceImpl implements AcquistoService {
 
 @Override
 public void compraProdotto(Cliente cliente, Prodotto prodotto, int quantitaDesiderata) throws InsufficientFundsException, ProductNotFoundException {
+    List<Acquisto>acquistiCorrenti=new ArrayList<>();
     if (prodotto.getQuantita() < quantitaDesiderata) {
         throw new ProductNotFoundException("Quantità di prodotto non disponibile.");
     }
 
-    BigDecimal prezzoTotale = BigDecimal.valueOf(prodotto.getPrezzo()).multiply(new BigDecimal(quantitaDesiderata));
+    BigDecimal prezzoTotale = prodotto.getPrezzo().multiply(new BigDecimal(quantitaDesiderata));
 
     if (cliente.getBudget().compareTo(prezzoTotale) < 0) {
         throw new InsufficientFundsException("Saldo insufficiente per effettuare l'acquisto.");
@@ -50,15 +52,16 @@ public void compraProdotto(Cliente cliente, Prodotto prodotto, int quantitaDesid
 
     clienteService.aggiornaBudget(cliente,cliente.getImportoTotaleSpeso());
 
-    Ordine ordine = ordineService.creaOrdine(cliente, (List<Acquisto>) prodotto.getAcquisti());
+    Ordine ordine = ordineService.creaOrdine(cliente, acquistiCorrenti);
     Acquisto acquisto = Acquisto.builder()
             .prodotto(prodotto)
-            .prezzo(prodotto.getPrezzo())
+            .prezzoDiAcquisto(prodotto.getPrezzo())
             .quantita(quantitaDesiderata)
             .ordine(ordine)
             .build();
+    acquistiCorrenti.add(acquisto);
 
-    acquistoDao.save(acquisto);
+    ordineDao.save(ordine);
     ordineService.aggiornaOrdine(ordine, Ordine.StatoOrdine.IN_CORSO);
 
     prodotto.setQuantita(quantitaDesiderata);

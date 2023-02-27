@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 
@@ -23,11 +24,12 @@ public class OrdineServiceImpl implements OrdineService {
     public Ordine creaOrdine(Cliente cliente, List<Acquisto> acquisti) {
         Ordine ordine = new Ordine();
         ordine.setCliente(cliente);
-        ordine.setAcquisti((Set<Acquisto>) acquisti);
+        ordine.setAcquisti(acquisti);
         ordine.setStato(Ordine.StatoOrdine.IN_CORSO);
         ordine.setTotale(acquisti.stream()
-                .map(Acquisto::getPrezzo)
-                .reduce(0.0, (a, b) -> a + b.doubleValue()));
+                .map(prodotto -> prodotto.getPrezzoDiAcquisto()
+                        .multiply(BigDecimal.valueOf(prodotto.getQuantita())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add).doubleValue());
         return ordineDao.save(ordine);
     }
     @Override

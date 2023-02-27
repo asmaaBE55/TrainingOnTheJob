@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -21,6 +23,6 @@ public class ClienteDto {
     private BigDecimal budget;
     private BigDecimal importoTotaleSpeso;
     private int numeroAcquisti;
-    @JsonIgnore
-    private Set<OrdineDto> ordini = new HashSet<>();
+
+    private List<OrdineDto> ordini = new ArrayList<>();
 }

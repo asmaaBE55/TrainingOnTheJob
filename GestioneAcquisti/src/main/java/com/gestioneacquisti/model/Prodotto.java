@@ -8,7 +8,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -26,10 +29,8 @@ public class Prodotto {
 
     private String nome;
 
-    private Double prezzo;
+    private BigDecimal prezzo;
     private int quantita;
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "prodotto_id")
-    @JsonIgnore
-    private Set<Acquisto> acquisti = new HashSet<>();
+    @OneToMany(mappedBy = "prodotto", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Acquisto> acquisti = new ArrayList<>();
 }

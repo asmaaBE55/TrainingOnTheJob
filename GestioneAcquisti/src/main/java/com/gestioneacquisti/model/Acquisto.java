@@ -7,6 +7,7 @@ package com.gestioneacquisti.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Getter
 @Setter
@@ -20,17 +21,15 @@ public class Acquisto {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private Long idProdotto;
-
-    private Double prezzo;
+    private BigDecimal prezzoDiAcquisto;
     private int quantita;
 
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ordine_id")
-    private Ordine ordine;
-
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "prodotto_id")
     private Prodotto prodotto;
+
+    @ManyToOne
+    @JoinColumn(name = "ordine_id")
+    private Ordine ordine;
 }
