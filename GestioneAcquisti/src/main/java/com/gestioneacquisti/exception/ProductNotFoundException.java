@@ -1,8 +1,8 @@
 package com.gestioneacquisti.exception;
 
 public class ProductNotFoundException extends Exception {
-    public ProductNotFoundException(String errorMessage) {
-        super(errorMessage);
+    public ProductNotFoundException(Long id) {
+        super("Product with ID " + id + " not found.");
     }
 
 }
