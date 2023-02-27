@@ -1,6 +1,5 @@
 package com.gestioneacquisti.dto;
 
-import com.gestioneacquisti.model.Acquisto;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -17,5 +16,5 @@ public class ProdottoDto {
     private String nome;
     private int quantita;
     private BigDecimal prezzo;
-    private Set<AcquistoDto> acquisti=new HashSet<>();
+    private Set<AcquistoDto> acquisti = new HashSet<>();
 }

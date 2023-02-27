@@ -1,7 +1,5 @@
 package com.gestioneacquisti.mapper;
 
-import com.gestioneacquisti.dto.ClienteDto;
-
 import java.util.List;
 
 public interface GenericMapper<E, D> {
@@ -13,6 +11,6 @@ public interface GenericMapper<E, D> {
 
     List<D> asDTOlist(List<E> entityList);
 
-    }
+}
 
 

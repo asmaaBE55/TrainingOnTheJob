@@ -14,5 +14,5 @@ import java.util.Set;
 public class OrdineDto {
     private Long id;
     private LocalDateTime data;
-    private Set<AcquistoDto> acquisti=new HashSet<>();
+    private Set<AcquistoDto> acquisti = new HashSet<>();
 }

@@ -16,6 +16,6 @@ public class ScontrinoDto {
     private Long id;
     private LocalDateTime data;
     private ClienteDto cliente;
-    private Set<AcquistoDto> acquisti=new HashSet<>();
+    private Set<AcquistoDto> acquisti = new HashSet<>();
     private BigDecimal totale;
 }

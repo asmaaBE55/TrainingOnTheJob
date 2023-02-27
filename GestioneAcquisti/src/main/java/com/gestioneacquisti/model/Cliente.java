@@ -41,6 +41,10 @@ public class Cliente {
     private BigDecimal budget;
     private BigDecimal importoTotaleSpeso;
     private int numeroAcquisti;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "cliente_id")
+    @JsonIgnore
+    private Set<Ordine> ordini = new HashSet<>();
 
     public enum TipoCliente {
         NUOVO_CLIENTE,
@@ -48,8 +52,4 @@ public class Cliente {
         GOLD,
         PLATINUM
     }
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "cliente_id")
-    @JsonIgnore
-    private Set<Ordine> ordini= new HashSet<>();
 }

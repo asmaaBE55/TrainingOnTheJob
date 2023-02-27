@@ -1,6 +1,5 @@
 package com.gestioneacquisti.dto;
 
-import com.gestioneacquisti.model.Ordine;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -21,5 +20,5 @@ public class ClienteDto {
     private BigDecimal budget;
     private BigDecimal importoTotaleSpeso;
     private int numeroAcquisti;
-    private Set<OrdineDto> ordini= new HashSet<>();
+    private Set<OrdineDto> ordini = new HashSet<>();
 }

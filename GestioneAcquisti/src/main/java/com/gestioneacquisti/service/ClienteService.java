@@ -18,7 +18,8 @@ public interface ClienteService {
 
     Optional<Cliente> findById(Long id);
 
-    List<Cliente> save(List<Cliente> entities);
+
+    Cliente save(Cliente cliente);
 
     void deleteById(Long id);
 

@@ -35,5 +35,5 @@ public class Scontrino {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "scontrino_id")
     @JsonIgnore
-    private Set<Acquisto> acquisti=new HashSet<>();
+    private Set<Acquisto> acquisti = new HashSet<>();
 }

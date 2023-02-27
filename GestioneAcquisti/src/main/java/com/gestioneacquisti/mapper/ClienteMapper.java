@@ -5,5 +5,5 @@ import com.gestioneacquisti.model.Cliente;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
-public interface ClienteMapper extends GenericMapper<Cliente, ClienteDto>{
+public interface ClienteMapper extends GenericMapper<Cliente, ClienteDto> {
 }

@@ -45,8 +45,11 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public List<Cliente> save(List<Cliente> entities) {
-        return clienteDao.saveAll(entities);
+    public Cliente save(Cliente cliente) {
+        cliente.setTipoCliente(Cliente.TipoCliente.NUOVO_CLIENTE);
+        cliente.setNumeroAcquisti(0);
+        cliente.setImportoTotaleSpeso(BigDecimal.ZERO);
+        return clienteDao.save(cliente);
     }
 
     @Override
@@ -76,11 +79,13 @@ public class ClienteServiceImpl implements ClienteService {
         cliente.setBudget(nuovoBudget); // aggiorna il campo bilancio
         clienteDao.save(cliente);
     }
+
     @Override
     public void updateNumeroAcquisti(Cliente cliente) {
         cliente.setNumeroAcquisti(cliente.getNumeroAcquisti() + 1);
         clienteDao.save(cliente);
     }
+
     @Override
     public void updateImportoTotaleSpeso(Cliente cliente, BigDecimal prezzo) {
         BigDecimal importoTotaleSpeso = cliente.getImportoTotaleSpeso();

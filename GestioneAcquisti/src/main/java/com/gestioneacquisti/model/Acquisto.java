@@ -7,6 +7,7 @@ package com.gestioneacquisti.model;
 import lombok.*;
 
 import javax.persistence.*;
+
 @Getter
 @Setter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
