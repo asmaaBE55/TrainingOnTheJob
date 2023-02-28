@@ -28,10 +28,12 @@ public class StoricoAcquisti {
     @ManyToOne
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
+    @Column(name = "nome_prodotto")
+    private String nome_prodotto;
 
-    @OneToMany
-    @JoinColumn(name = "id_storico_acquisti")
-    private List<Acquisto> acquisti=new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "id_acquisto")
+    private Acquisto acquisto;
 
 }
 

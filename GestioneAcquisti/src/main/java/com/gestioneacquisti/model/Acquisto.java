@@ -25,14 +25,10 @@ public class Acquisto {
     private BigDecimal prezzoDiAcquisto;
     @Column(name = "quantita_acquistata")
     private int quantitaAcquistata;
-
+    @Column(name = "nome_prodotto_acquistato")
+    private String nome_prodotto_acquistato;
     @ManyToOne
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
-    @ManyToMany
-    @JoinTable(name = "acquisto_prodotto",
-            joinColumns = @JoinColumn(name = "acquisto_id"),
-            inverseJoinColumns = @JoinColumn(name = "prodotto_id"))
-    private List<Prodotto> prodotti=new ArrayList<>();
 }

@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class Scontrino {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "scontrino_id")
     private Long id;
-    private LocalDate data_scontrino;
+    private LocalDateTime data_scontrino;
     private BigDecimal totale;
     @OneToOne
     @JoinColumn(name = "acquisto_id")

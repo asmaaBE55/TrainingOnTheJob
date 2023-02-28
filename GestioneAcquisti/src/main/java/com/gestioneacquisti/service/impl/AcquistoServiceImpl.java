@@ -7,6 +7,7 @@ import com.gestioneacquisti.exception.ProductNotFoundException;
 import com.gestioneacquisti.model.Acquisto;
 import com.gestioneacquisti.model.Cliente;
 import com.gestioneacquisti.model.Prodotto;
+import com.gestioneacquisti.model.StoricoAcquisti;
 import com.gestioneacquisti.service.AcquistoService;
 import com.gestioneacquisti.service.ClienteService;
 import com.gestioneacquisti.service.ProdottoService;
@@ -36,8 +37,10 @@ public class AcquistoServiceImpl implements AcquistoService {
         prodottoService.updateProdottoQuantita(prodotto);
         Acquisto acquisto = new Acquisto();
         acquisto.setCliente(cliente);
-        storicoAcquistiService.salvaAcquisto(acquisto);
-        storicoAcquistiService.salvaStoricoAcquisti(acquisto);
+        acquisto.setPrezzoDiAcquisto(prodotto.getPrezzo());
+        acquisto.setNome_prodotto_acquistato(prodotto.getNome());
+        storicoAcquistiService.salvaAcquisto(acquisto,prodotto);
+        storicoAcquistiService.salvaStoricoAcquisti(cliente,new StoricoAcquisti(),prodotto);
     }
     @Override
     public Acquisto findById(Long id) {
