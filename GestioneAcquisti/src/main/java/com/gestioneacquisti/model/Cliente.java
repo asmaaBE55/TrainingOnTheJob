@@ -24,6 +24,7 @@ public class Cliente {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "cliente_id")
     private Long id;
     @Column(name = "nome", nullable = false)
     private String nome;
@@ -40,9 +41,10 @@ public class Cliente {
     private BigDecimal budget;
     private BigDecimal importoTotaleSpeso;
     private int numeroAcquisti;
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "cliente_id")
-    private List<Acquisto> acquisti = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cliente")
+    private List<Acquisto> acquisti;
+
+
 
     public enum TipoCliente {
         NUOVO_CLIENTE,

@@ -8,6 +8,7 @@ package com.gestioneacquisti.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -21,16 +22,16 @@ public class StoricoAcquisti {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_storico_acquisti")
     private Long id;
-
+    private Integer numeroAcquisti;
     @ManyToOne
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
     @OneToMany
     @JoinColumn(name = "id_storico_acquisti")
-    private List<Acquisto> acquisti;
-    private Integer numeroAcquisti;
+    private List<Acquisto> acquisti=new ArrayList<>();
 
 }
 

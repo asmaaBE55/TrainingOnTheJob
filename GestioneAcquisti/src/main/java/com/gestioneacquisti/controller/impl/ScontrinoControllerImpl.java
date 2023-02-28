@@ -4,8 +4,10 @@ import com.gestioneacquisti.controller.ScontrinoController;
 import com.gestioneacquisti.dto.AcquistoDto;
 import com.gestioneacquisti.exception.ProductNotFoundException;
 import com.gestioneacquisti.model.Scontrino;
+import com.gestioneacquisti.service.AcquistoService;
 import com.gestioneacquisti.service.ScontrinoService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,16 +18,17 @@ import java.util.NoSuchElementException;
 @RequiredArgsConstructor
 public class ScontrinoControllerImpl implements ScontrinoController {
     private final ScontrinoService scontrinoService;
-
-    @PostMapping("/{clienteId}")
-    public ResponseEntity<String> creaScontrino(@PathVariable Long clienteId, @RequestBody AcquistoDto acquistoDto) {
+    private final AcquistoService acquistoService;
+    @PostMapping("/acquisti/{acquistoId}")
+    public ResponseEntity<String> creaScontrinoDaAcquisto(@PathVariable Long acquistoId) {
         try {
-            scontrinoService.creaScontrino(clienteId,acquistoDto);
-            return ResponseEntity.ok("Scontrino creato con successo.");
+            Scontrino scontrino = scontrinoService.creaScontrinoDaAcquisto(acquistoId);
+            return ResponseEntity.ok("Scontrino creato con successo. Numero scontrino: " + scontrino.getId());
         } catch (NoSuchElementException e) {
             return ResponseEntity.notFound().build();
-        } catch (ProductNotFoundException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Si è verificato un errore durante la creazione dello scontrino.");
         }
     }
+
 }

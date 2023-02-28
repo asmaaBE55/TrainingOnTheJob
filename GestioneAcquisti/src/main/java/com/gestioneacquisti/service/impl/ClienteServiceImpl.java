@@ -91,5 +91,6 @@ public class ClienteServiceImpl implements ClienteService {
         cliente.setImportoTotaleSpeso(importoTotaleSpeso.add(prezzo));
         clienteDao.save(cliente);
     }
+
 }
 

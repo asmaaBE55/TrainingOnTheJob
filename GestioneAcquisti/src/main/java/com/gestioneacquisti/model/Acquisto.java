@@ -1,10 +1,13 @@
 package com.gestioneacquisti.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -16,24 +19,20 @@ import java.math.BigDecimal;
 public class Acquisto {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "acquisto_id")
     private Long id;
-
+    @Column(name = "prezzo_di_acquisto")
     private BigDecimal prezzoDiAcquisto;
+    @Column(name = "quantita_acquistata")
     private int quantitaAcquistata;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "prodotto_id")
-    private Prodotto prodotto;
     @ManyToOne
-    @JoinColumn(name = "id_storico_acquisti")
-    private StoricoAcquisti storicoAcquisti;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "scontrino_id")
-    private Scontrino scontrino;
+    @JoinColumn(name = "cliente_id")
+    private Cliente cliente;
 
-
-    public Acquisto(Prodotto prodotto, int quantitaDesiderata) {
-        this.prodotto = prodotto;
-        this.quantitaAcquistata = quantitaDesiderata;
-    }
+    @ManyToMany
+    @JoinTable(name = "acquisto_prodotto",
+            joinColumns = @JoinColumn(name = "acquisto_id"),
+            inverseJoinColumns = @JoinColumn(name = "prodotto_id"))
+    private List<Prodotto> prodotti=new ArrayList<>();
 }

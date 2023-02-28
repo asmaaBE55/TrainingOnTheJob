@@ -19,20 +19,18 @@ public class Scontrino {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "scontrino_id")
     private Long id;
     private LocalDate data_scontrino;
-
     private BigDecimal totale;
-
-    @ManyToMany
-    @JoinTable(name = "scontrino_acquisti",
-            joinColumns = @JoinColumn(name = "scontrino_id"),
-            inverseJoinColumns = @JoinColumn(name = "acquisti_id"))
-    private List<Acquisto> acquisti = new ArrayList<>();
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cliente_id")
-    private Cliente cliente;
+    @OneToOne
+    @JoinColumn(name = "acquisto_id")
+    private Acquisto acquisto;
     public void addAcquisto(Acquisto acquisto) {
-        this.acquisti.add(acquisto);
+        if (this.acquisto == null) {
+            this.acquisto = acquisto;
+        } else {
+            throw new IllegalStateException("Il scontrino può contenere un solo acquisto.");
+        }
     }
 }

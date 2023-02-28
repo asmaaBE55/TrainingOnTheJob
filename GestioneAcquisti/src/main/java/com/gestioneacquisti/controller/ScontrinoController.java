@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @Api(tags = "Scontrino API")
 public interface ScontrinoController {
-    @ApiOperation("Crea scontrino")
-    ResponseEntity<String> creaScontrino(@PathVariable Long clienteId, @RequestBody AcquistoDto acquistoDto) ;
-}
+    @ApiOperation("Crea scontrino di un acquisto")
+    public ResponseEntity<String> creaScontrinoDaAcquisto(@PathVariable Long acquistoId) ;
+
+    }
