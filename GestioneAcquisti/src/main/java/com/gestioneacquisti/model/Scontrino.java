@@ -1,21 +1,16 @@
 package com.gestioneacquisti.model;
-/**
- * L'entità Scontrino rappresenta uno scontrino generato per un ordine effettuato da un cliente.
- * Ogni scontrino ha un ID univoco, una data di generazione,
- * un cliente associato un totale e una lista di ordini.
- */
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Entity
@@ -23,13 +18,21 @@ import java.util.Set;
 public class Scontrino {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private LocalDate data_scontrino;
 
-    private LocalDate data;
+    private BigDecimal totale;
 
-    private Double totale;
-    @ManyToOne
-    @JoinColumn(name = "ordine_id")
-    private Ordine ordine;
+    @ManyToMany
+    @JoinTable(name = "scontrino_acquisti",
+            joinColumns = @JoinColumn(name = "scontrino_id"),
+            inverseJoinColumns = @JoinColumn(name = "acquisti_id"))
+    private List<Acquisto> acquisti = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cliente_id")
+    private Cliente cliente;
+    public void addAcquisto(Acquisto acquisto) {
+        this.acquisti.add(acquisto);
+    }
 }

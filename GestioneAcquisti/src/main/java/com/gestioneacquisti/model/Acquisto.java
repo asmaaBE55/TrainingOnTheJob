@@ -1,8 +1,5 @@
 package com.gestioneacquisti.model;
-/**
- * L'entità Acquisto rappresenta l'acquisto di un prodotto in una determinata quantità.
- * Ogni acquisto ha un ID univoco, un prodotto associato e una quantità.
- */
+
 
 import lombok.*;
 
@@ -11,7 +8,7 @@ import java.math.BigDecimal;
 
 @Getter
 @Setter
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Entity
@@ -22,13 +19,21 @@ public class Acquisto {
     private Long id;
 
     private BigDecimal prezzoDiAcquisto;
-    private int quantita;
+    private int quantitaAcquistata;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "prodotto_id")
     private Prodotto prodotto;
-
     @ManyToOne
-    @JoinColumn(name = "ordine_id")
-    private Ordine ordine;
+    @JoinColumn(name = "id_storico_acquisti")
+    private StoricoAcquisti storicoAcquisti;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "scontrino_id")
+    private Scontrino scontrino;
+
+
+    public Acquisto(Prodotto prodotto, int quantitaDesiderata) {
+        this.prodotto = prodotto;
+        this.quantitaAcquistata = quantitaDesiderata;
+    }
 }

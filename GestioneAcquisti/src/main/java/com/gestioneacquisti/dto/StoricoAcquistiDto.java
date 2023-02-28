@@ -1,17 +1,17 @@
 package com.gestioneacquisti.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.gestioneacquisti.model.Prodotto;
 import lombok.*;
-
-import java.util.Map;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor
 @Builder
 public class StoricoAcquistiDto {
     private Long id;
     private ClienteDto cliente;
-    private Map<ProdottoDto, Integer> acquisti;
+    private Prodotto prodotto;
+    private Integer numeroAcquisti;
+
 }

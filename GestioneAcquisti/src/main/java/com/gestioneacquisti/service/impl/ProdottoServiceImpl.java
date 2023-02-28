@@ -1,12 +1,10 @@
 package com.gestioneacquisti.service.impl;
 
-import com.gestioneacquisti.dao.AcquistoDao;
 import com.gestioneacquisti.dao.ProdottoDao;
 import com.gestioneacquisti.exception.ProductNotFoundException;
 import com.gestioneacquisti.model.Prodotto;
 import com.gestioneacquisti.service.ProdottoService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +15,7 @@ import java.util.List;
 @Service
 public class ProdottoServiceImpl implements ProdottoService {
     private final ProdottoDao prodottoDao;
+
     @Override
     public Prodotto createProduct(Prodotto prodotto) {
         prodotto.setId(prodotto.getId());

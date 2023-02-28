@@ -5,7 +5,6 @@ import com.gestioneacquisti.exception.UserNotFoundException;
 import com.gestioneacquisti.model.Cliente;
 import com.gestioneacquisti.service.ClienteService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -71,8 +70,8 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public void aggiornaBudget(Cliente cliente, BigDecimal importoTotaleSpeso) {
-        BigDecimal nuovoBudget = cliente.getBudget().subtract(importoTotaleSpeso); // sottrai l'importo totale speso dal bilancio
+    public void aggiornaBudget(Cliente cliente, BigDecimal totale) {
+        BigDecimal nuovoBudget = cliente.getBudget().subtract(totale); // sottrai l'importo totale speso dal bilancio
         cliente.setBudget(nuovoBudget); // aggiorna il campo bilancio
         clienteDao.save(cliente);
     }

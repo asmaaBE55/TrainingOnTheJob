@@ -1,18 +1,18 @@
 package com.gestioneacquisti.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import com.gestioneacquisti.model.Acquisto;
 import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+
 
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor
 @Builder
 public class ClienteDto {
     private Long id;
@@ -23,6 +23,6 @@ public class ClienteDto {
     private BigDecimal budget;
     private BigDecimal importoTotaleSpeso;
     private int numeroAcquisti;
+    private List<Acquisto> acquisti = new ArrayList<>();
 
-    private List<OrdineDto> ordini = new ArrayList<>();
 }

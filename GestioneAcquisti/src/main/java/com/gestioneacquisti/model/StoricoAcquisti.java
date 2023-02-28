@@ -8,10 +8,11 @@ package com.gestioneacquisti.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Entity
@@ -19,18 +20,17 @@ import javax.persistence.*;
 public class StoricoAcquisti {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nomeProdotto;
-
-    private Integer numeroAcquisti;
     @ManyToOne
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
-    @ManyToOne
-    @JoinColumn(name = "prodotto_id")
-    private Prodotto prodotto;
+    @OneToMany
+    @JoinColumn(name = "id_storico_acquisti")
+    private List<Acquisto> acquisti;
+    private Integer numeroAcquisti;
 
 }
+

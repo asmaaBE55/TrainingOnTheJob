@@ -1,25 +1,27 @@
 package com.gestioneacquisti.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.gestioneacquisti.model.Acquisto;
+import com.gestioneacquisti.model.Prodotto;
 import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor
 @Builder
 public class ScontrinoDto {
     private Long id;
-    private LocalDateTime data;
+    private LocalDateTime data_scontrino;
     private ClienteDto cliente;
-
-    private List<AcquistoDto> acquisti = new ArrayList<>();
     private BigDecimal totale;
+    private Acquisto acquisto;
+
+    private List<Prodotto> prodotti = new ArrayList<>();
+
+
 }
