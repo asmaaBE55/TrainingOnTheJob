@@ -20,6 +20,7 @@ import java.util.NoSuchElementException;
 public class ScontrinoControllerImpl implements ScontrinoController {
     private final ScontrinoService scontrinoService;
     private final ScontrinoMapper scontrinoMapper;
+
     @PostMapping("/acquisti/{acquistoId}")
     public ResponseEntity<String> creaScontrinoDaAcquisto(@PathVariable Long acquistoId) {
         try {
@@ -31,6 +32,7 @@ public class ScontrinoControllerImpl implements ScontrinoController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Si è verificato un errore durante la creazione dello scontrino.");
         }
     }
+
     @Override
     @GetMapping("/scontrini/raggruppati-per-acquisto")
     public Map<Long, List<Scontrino>> raggruppaScontriniPerAcquistoId() {
@@ -40,10 +42,8 @@ public class ScontrinoControllerImpl implements ScontrinoController {
 
     @Override
     @GetMapping("/{id}")
-    public ScontrinoDto getScontrinoById(@PathVariable Long id){
-        Scontrino scontrino=scontrinoService.getScontrinoById(id);
+    public ScontrinoDto getScontrinoById(@PathVariable Long id) {
+        Scontrino scontrino = scontrinoService.getScontrinoById(id);
         return scontrinoMapper.asDTO(scontrino);
     }
-
-
 }

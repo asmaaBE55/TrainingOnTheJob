@@ -23,9 +23,10 @@ import java.util.stream.Collectors;
 public class ScontrinoServiceImpl implements ScontrinoService {
     private final ScontrinoDao scontrinoDao;
     private final AcquistoService acquistoService;
+
     @Override
     public Scontrino creaScontrinoDaAcquisto(Long acquistoId) {
-        Scontrino scontrino=new Scontrino();
+        Scontrino scontrino = new Scontrino();
         Acquisto acquisto = acquistoService.findById(acquistoId);
         scontrino.setData_scontrino(LocalDateTime.now());
         BigDecimal totale = new BigDecimal(acquisto.getQuantitaAcquistata()).multiply(new BigDecimal(String.valueOf(acquisto.getPrezzoDiAcquisto())));
@@ -35,6 +36,7 @@ public class ScontrinoServiceImpl implements ScontrinoService {
         scontrinoDao.save(scontrino);
         return scontrino;
     }
+
     @Override
     public Map<Long, List<Scontrino>> raggruppaScontriniPerAcquistoId(List<Scontrino> scontrini) {
         return scontrini.stream()

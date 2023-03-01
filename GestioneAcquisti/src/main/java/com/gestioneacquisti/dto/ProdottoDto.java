@@ -1,11 +1,8 @@
 package com.gestioneacquisti.dto;
 
-import com.gestioneacquisti.model.Acquisto;
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Setter

@@ -2,7 +2,6 @@ package com.gestioneacquisti.dto;
 
 import com.gestioneacquisti.model.Acquisto;
 import com.gestioneacquisti.model.Cliente;
-import com.gestioneacquisti.model.Prodotto;
 import lombok.*;
 
 @Getter

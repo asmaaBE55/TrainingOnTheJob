@@ -11,7 +11,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -44,7 +43,6 @@ public class Cliente implements Serializable {
     private int numeroAcquisti;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cliente")
     private List<Acquisto> acquisti;
-
 
 
     public enum TipoCliente {

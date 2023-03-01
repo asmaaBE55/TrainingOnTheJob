@@ -27,6 +27,7 @@ public class AcquistoServiceImpl implements AcquistoService {
     private final ProdottoService prodottoService;
     private final AcquistoDao acquistoDao;
     private final StoricoAcquistiService storicoAcquistiService;
+
     @Override
     public void compraProdotto(Cliente cliente, Prodotto prodotto, int quantitaDesiderata) throws InsufficientFundsException, ProductNotFoundException {
         BigDecimal prezzoTotale = prodotto.getPrezzo().multiply(new BigDecimal(quantitaDesiderata));
@@ -40,8 +41,9 @@ public class AcquistoServiceImpl implements AcquistoService {
         acquisto.setPrezzoDiAcquisto(prodotto.getPrezzo());
         acquisto.setNome_prodotto_acquistato(prodotto.getNome());
         storicoAcquistiService.salvaAcquisto(acquisto);
-        storicoAcquistiService.salvaStoricoAcquisti(cliente,new StoricoAcquisti(),prodotto);
+        storicoAcquistiService.salvaStoricoAcquisti(cliente, new StoricoAcquisti(), prodotto);
     }
+
     @Override
     public Acquisto findById(Long id) {
         return acquistoDao.findById(id)

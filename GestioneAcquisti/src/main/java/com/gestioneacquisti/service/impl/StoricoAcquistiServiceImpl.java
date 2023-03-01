@@ -22,12 +22,13 @@ public class StoricoAcquistiServiceImpl implements StoricoAcquistiService {
 
     @Override
     public void salvaAcquisto(Acquisto acquisto) {
-        BigDecimal prezzo_di_acquisto=acquisto.getPrezzoDiAcquisto();
-        int quantita_acquistata=acquisto.getQuantitaAcquistata();
+        BigDecimal prezzo_di_acquisto = acquisto.getPrezzoDiAcquisto();
+        int quantita_acquistata = acquisto.getQuantitaAcquistata();
         acquisto.setPrezzoDiAcquisto(prezzo_di_acquisto);
         acquisto.setQuantitaAcquistata(quantita_acquistata);
         acquistoDao.save(acquisto);
     }
+
     @Override
     public void salvaStoricoAcquisti(Cliente cliente, StoricoAcquisti storicoAcquisti, Prodotto prodotto) {
         storicoAcquisti.setAcquisto(storicoAcquisti.getAcquisto());

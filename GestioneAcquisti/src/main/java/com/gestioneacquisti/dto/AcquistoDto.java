@@ -1,11 +1,13 @@
 package com.gestioneacquisti.dto;
 
-import com.gestioneacquisti.model.*;
+import com.gestioneacquisti.model.Cliente;
+import com.gestioneacquisti.model.Prodotto;
+import com.gestioneacquisti.model.Scontrino;
+import com.gestioneacquisti.model.StoricoAcquisti;
 import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Getter
