@@ -1,5 +1,7 @@
 package com.gestioneacquisti.dto;
 
+import com.gestioneacquisti.model.Acquisto;
+import com.gestioneacquisti.model.Cliente;
 import com.gestioneacquisti.model.Prodotto;
 import lombok.*;
 
@@ -10,8 +12,9 @@ import lombok.*;
 @Builder
 public class StoricoAcquistiDto {
     private Long id;
-    private ClienteDto cliente;
-    private Prodotto prodotto;
+    private String nome_prodotto;
+    private Cliente cliente;
+    private Acquisto acquisto;
     private Integer numeroAcquisti;
 
 }

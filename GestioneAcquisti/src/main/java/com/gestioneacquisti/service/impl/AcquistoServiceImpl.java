@@ -39,7 +39,7 @@ public class AcquistoServiceImpl implements AcquistoService {
         acquisto.setCliente(cliente);
         acquisto.setPrezzoDiAcquisto(prodotto.getPrezzo());
         acquisto.setNome_prodotto_acquistato(prodotto.getNome());
-        storicoAcquistiService.salvaAcquisto(acquisto,prodotto);
+        storicoAcquistiService.salvaAcquisto(acquisto);
         storicoAcquistiService.salvaStoricoAcquisti(cliente,new StoricoAcquisti(),prodotto);
     }
     @Override

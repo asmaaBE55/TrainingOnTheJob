@@ -17,6 +17,4 @@ public class ProdottoDto {
     private String nome;
     private int quantita;
     private BigDecimal prezzo;
-
-    private List<Acquisto> acquisti = new ArrayList<>();
 }

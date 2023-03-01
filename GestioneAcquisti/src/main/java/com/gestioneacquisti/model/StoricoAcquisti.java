@@ -8,6 +8,7 @@ package com.gestioneacquisti.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +19,7 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "storico_acquisti")
-public class StoricoAcquisti {
+public class StoricoAcquisti implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

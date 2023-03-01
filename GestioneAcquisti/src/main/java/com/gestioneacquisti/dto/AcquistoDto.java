@@ -16,13 +16,14 @@ import java.util.List;
 public class AcquistoDto {
     private Long id;
     private ProdottoDto prodotto;
-    private int quantita;
-    private BigDecimal prezzo;
+    private int quantitaAcquistata;
+    private BigDecimal prezzoDiAcquisto;
+    private String nome_prodotto_acquistato;
+    private Cliente cliente;
+
     private List<Prodotto> prodotti = new ArrayList<>();
     private List<Scontrino> scontrini = new ArrayList<>();
     private StoricoAcquisti storicoAcquisti;
-    private Cliente cliente;
-    public List<AcquistoDto> getItems() {
-        return Collections.singletonList(this);
-    }
+    private List<Prodotto> prodottiAcquistati = new ArrayList<>();
+
 }

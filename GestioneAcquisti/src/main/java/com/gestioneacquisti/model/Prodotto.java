@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,15 +20,13 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "prodotti")
-public class Prodotto {
+public class Prodotto implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "prodotto_id")
     private Long id;
-
     private String nome;
-
     private BigDecimal prezzo;
     private int quantita;
 

@@ -1,17 +1,17 @@
 package com.gestioneacquisti.controller.impl;
 
 import com.gestioneacquisti.controller.ScontrinoController;
-import com.gestioneacquisti.dto.AcquistoDto;
-import com.gestioneacquisti.exception.ProductNotFoundException;
-import com.gestioneacquisti.model.Cliente;
+import com.gestioneacquisti.dto.ScontrinoDto;
+import com.gestioneacquisti.mapper.ScontrinoMapper;
 import com.gestioneacquisti.model.Scontrino;
-import com.gestioneacquisti.service.AcquistoService;
 import com.gestioneacquisti.service.ScontrinoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 @RestController
@@ -19,11 +19,11 @@ import java.util.NoSuchElementException;
 @RequiredArgsConstructor
 public class ScontrinoControllerImpl implements ScontrinoController {
     private final ScontrinoService scontrinoService;
-    private final AcquistoService acquistoService;
+    private final ScontrinoMapper scontrinoMapper;
     @PostMapping("/acquisti/{acquistoId}")
     public ResponseEntity<String> creaScontrinoDaAcquisto(@PathVariable Long acquistoId) {
         try {
-            Scontrino scontrino = scontrinoService.creaScontrinoDaAcquisto(acquistoId, Cliente.builder().build(),new Scontrino());
+            Scontrino scontrino = scontrinoService.creaScontrinoDaAcquisto(acquistoId);
             return ResponseEntity.ok("Scontrino creato con successo. Numero scontrino: " + scontrino.getId());
         } catch (NoSuchElementException e) {
             return ResponseEntity.notFound().build();
@@ -31,5 +31,19 @@ public class ScontrinoControllerImpl implements ScontrinoController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Si è verificato un errore durante la creazione dello scontrino.");
         }
     }
+    @Override
+    @GetMapping("/scontrini/raggruppati-per-acquisto")
+    public Map<Long, List<Scontrino>> raggruppaScontriniPerAcquistoId() {
+        List<Scontrino> scontrini = scontrinoService.findAll();
+        return scontrinoService.raggruppaScontriniPerAcquistoId(scontrini);
+    }
+
+    @Override
+    @GetMapping("/{id}")
+    public ScontrinoDto getScontrinoById(@PathVariable Long id){
+        Scontrino scontrino=scontrinoService.getScontrinoById(id);
+        return scontrinoMapper.asDTO(scontrino);
+    }
+
 
 }

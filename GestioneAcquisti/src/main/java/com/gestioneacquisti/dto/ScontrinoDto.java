@@ -17,11 +17,8 @@ import java.util.List;
 public class ScontrinoDto {
     private Long id;
     private LocalDateTime data_scontrino;
-    private ClienteDto cliente;
+    private BigDecimal prezzo_acquisto;
+    private String nome_prodotto_acquistato;
     private BigDecimal totale;
     private Acquisto acquisto;
-
-    private List<Prodotto> prodotti = new ArrayList<>();
-
-
 }
