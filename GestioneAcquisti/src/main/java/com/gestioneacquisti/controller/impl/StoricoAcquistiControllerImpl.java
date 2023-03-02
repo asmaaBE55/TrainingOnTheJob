@@ -27,6 +27,7 @@ public class StoricoAcquistiControllerImpl implements StoricoAcquistiController 
         StoricoAcquisti storicoAcquisti = storicoAcquistiMapper.asEntity(storicoAcquistiDto);
         return storicoAcquistiMapper.asDTO(storicoAcquistiService.save(storicoAcquisti));
     }
+
     @Override
     @GetMapping
     public List<StoricoAcquistiDto> list() {

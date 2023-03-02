@@ -1,5 +1,6 @@
 package com.gestioneacquisti.dto;
 
+import com.gestioneacquisti.model.Prodotto;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -14,4 +15,6 @@ public class ProdottoDto {
     private String nome;
     private int quantita;
     private BigDecimal prezzo;
+
+
 }

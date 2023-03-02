@@ -2,7 +2,6 @@ package com.gestioneacquisti.service.impl;
 
 import com.gestioneacquisti.dao.ClienteDao;
 import com.gestioneacquisti.exception.UserNotFoundException;
-import com.gestioneacquisti.model.Acquisto;
 import com.gestioneacquisti.model.Cliente;
 import com.gestioneacquisti.service.ClienteService;
 import lombok.RequiredArgsConstructor;
@@ -79,7 +78,7 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public void updateNumeroAcquisti(Cliente cliente) {
-        cliente.setNumeroAcquisti(cliente.getNumeroAcquisti() );
+        cliente.setNumeroAcquisti(cliente.getNumeroAcquisti());
         clienteDao.save(cliente);
     }
 

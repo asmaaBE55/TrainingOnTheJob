@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Transactional
 @Service
@@ -18,6 +20,11 @@ public class StoricoAcquistiServiceImpl implements StoricoAcquistiService {
         return storicoAcquistiDao.save(storicoAcquisti);
     }
 
+    @Override
+    public StoricoAcquisti saveAll(List<StoricoAcquisti> storicoAcquistiList) {
+        return (StoricoAcquisti) storicoAcquistiDao.saveAll(storicoAcquistiList);
+
+    }
 }
 
 

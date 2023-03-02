@@ -1,9 +1,6 @@
 package com.gestioneacquisti.dto;
 
-import com.gestioneacquisti.model.Cliente;
-import com.gestioneacquisti.model.Prodotto;
-import com.gestioneacquisti.model.Scontrino;
-import com.gestioneacquisti.model.StoricoAcquisti;
+import com.gestioneacquisti.model.*;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -27,5 +24,15 @@ public class AcquistoDto {
     private List<Scontrino> scontrini = new ArrayList<>();
     private StoricoAcquisti storicoAcquisti;
     private List<Prodotto> prodottiAcquistati = new ArrayList<>();
+    public static AcquistoDto fromEntity(Acquisto acquisto) {
+        AcquistoDto acquistoDto = new AcquistoDto();
+        acquistoDto.setId(acquisto.getId());
+        acquistoDto.setQuantitaAcquistata(acquisto.getQuantitaAcquistata());
+        acquistoDto.setNome_prodotto_acquistato(acquisto.getNome_prodotto_acquistato());
+        acquistoDto.setPrezzoDiAcquisto(acquisto.getPrezzo());
+
+        return acquistoDto;
+    }
+
 
 }

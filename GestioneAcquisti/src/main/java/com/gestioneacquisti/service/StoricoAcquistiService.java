@@ -1,10 +1,12 @@
 package com.gestioneacquisti.service;
 
-import com.gestioneacquisti.model.Acquisto;
-import com.gestioneacquisti.model.Cliente;
-import com.gestioneacquisti.model.Prodotto;
 import com.gestioneacquisti.model.StoricoAcquisti;
+
+import java.util.List;
 
 public interface StoricoAcquistiService {
     StoricoAcquisti save(StoricoAcquisti storicoAcquisti);
+
+
+    StoricoAcquisti saveAll(List<StoricoAcquisti> storicoAcquistiList);
 }

@@ -2,6 +2,7 @@ package com.gestioneacquisti.controller.impl;
 
 import com.gestioneacquisti.controller.AcquistoController;
 import com.gestioneacquisti.dto.AcquistoDto;
+import com.gestioneacquisti.dto.ProdottoDto;
 import com.gestioneacquisti.exception.InsufficientFundsException;
 import com.gestioneacquisti.exception.ProductNotFoundException;
 import com.gestioneacquisti.mapper.AcquistoMapper;
@@ -17,8 +18,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/acquisti")
@@ -28,6 +30,7 @@ public class AcquistoControllerImpl implements AcquistoController {
     private final AcquistoService acquistoService;
     private final ClienteService clienteService;
     private final ProdottoService prodottoService;
+    private final AcquistoMapper acquistoMapper;
 
     @Override
     @PostMapping("/users/{clienteId}/prodotti/{prodottoId}")
@@ -36,7 +39,7 @@ public class AcquistoControllerImpl implements AcquistoController {
         try {
             Cliente cliente = clienteService.getCliente(clienteId);
             Prodotto prodotto = prodottoService.findProductById(prodottoId);
-            acquistoService.compraProdotto(cliente, prodotto,quantitaDesiderata);
+            acquistoService.compraProdotto(cliente, prodotto, quantitaDesiderata);
             clienteService.updateImportoTotaleSpeso(cliente, prodotto.getPrezzo().multiply(BigDecimal.valueOf(quantitaDesiderata)));
             clienteService.updateClientStatus(cliente, cliente.getImportoTotaleSpeso());
             prodottoService.updateProdottoQuantita(prodotto);
@@ -49,5 +52,28 @@ public class AcquistoControllerImpl implements AcquistoController {
         } catch (ProductNotFoundException e) {
             throw new RuntimeException(e);
         }
+    }
+
+//    @Override
+//    @PostMapping("/cliente/{clienteId}")
+//    @ResponseStatus(HttpStatus.CREATED)
+//    public ResponseEntity<List<AcquistoDto>> compraProdotti(@PathVariable Long clienteId, @RequestBody List<ProdottoDto> prodotti) {
+//        try {
+//            Cliente cliente = clienteService.getCliente(clienteId);
+//            List<ProdottoDto> prodottiEntity = prodotti.stream().map(ProdottoDto::toEntity).collect(Collectors.toList());
+//            List<AcquistoDto> acquistiEntity = acquistoService.compraProdotti(cliente, prodottiEntity);
+//            List<AcquistoDto> acquistiDTO = acquistiEntity.stream().map(AcquistoDto::fromEntity).collect(Collectors.toList());
+//            return ResponseEntity.ok(acquistiDTO);
+//        } catch (InsufficientFundsException e) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+//        } catch (ProductNotFoundException e) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+//        }
+//    }
+
+    @Override
+    @GetMapping
+    public List<AcquistoDto> getAcquisti() {
+        return acquistoMapper.asDTOlist(acquistoService.findAll());
     }
 }
