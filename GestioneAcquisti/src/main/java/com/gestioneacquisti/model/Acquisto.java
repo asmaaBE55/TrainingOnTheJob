@@ -21,8 +21,8 @@ public class Acquisto implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "acquisto_id")
     private Long id;
-    @Column(name = "prezzo_di_acquisto")
-    private BigDecimal prezzoDiAcquisto;
+    @Column(name = "prezzo_totale")
+    private BigDecimal prezzo;
     @Column(name = "quantita_acquistata")
     private int quantitaAcquistata;
     @Column(name = "nome_prodotto_acquistato")

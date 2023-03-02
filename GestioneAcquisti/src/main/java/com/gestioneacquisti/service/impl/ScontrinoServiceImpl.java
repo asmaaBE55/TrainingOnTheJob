@@ -32,7 +32,7 @@ public class ScontrinoServiceImpl implements ScontrinoService {
 
         int quantita_acquistata = acquisto.getQuantitaAcquistata();//serve a prendere la quantita acquistata
 
-        BigDecimal prezzoAcquisto = acquisto.getPrezzoDiAcquisto();//serve a prendere il prezzo di acquisto
+        BigDecimal prezzoAcquisto = acquisto.getPrezzo().divide(BigDecimal.valueOf(acquisto.getQuantitaAcquistata()));//serve a prendere il prezzo di acquisto
         scontrino.setPrezzo_acquisto(prezzoAcquisto);
         totale = (prezzoAcquisto.multiply(BigDecimal.valueOf(quantita_acquistata)));//calcola il totale
 

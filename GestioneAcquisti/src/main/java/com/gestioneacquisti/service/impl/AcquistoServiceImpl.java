@@ -43,7 +43,7 @@ public class AcquistoServiceImpl implements AcquistoService {
         acquisto.setCliente(cliente);
         acquisto.setQuantitaAcquistata(quantitaDesiderata);
         acquisto.setNome_prodotto_acquistato(prodotto.getNome());
-        acquisto.setPrezzoDiAcquisto(prezzoTotale);
+        acquisto.setPrezzo(prezzoTotale);
 
         StoricoAcquisti storicoAcquisti = new StoricoAcquisti();
         storicoAcquisti.setAcquisto(acquisto);
