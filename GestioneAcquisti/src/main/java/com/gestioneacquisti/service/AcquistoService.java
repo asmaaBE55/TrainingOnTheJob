@@ -8,6 +8,6 @@ import com.gestioneacquisti.model.Prodotto;
 
 public interface AcquistoService {
     void compraProdotto(Cliente cliente, Prodotto prodotto, int quantitaDesiderata) throws InsufficientFundsException, ProductNotFoundException;
-
     Acquisto findById(Long id);
+    Acquisto save(Acquisto acquisto);
 }

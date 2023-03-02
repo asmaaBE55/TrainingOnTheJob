@@ -26,8 +26,10 @@ public class ProdottoServiceImpl implements ProdottoService {
     }
 
     @Override
-    public Prodotto findById(Long id) {
-        return prodottoDao.getReferenceById(id);
+    public Prodotto findProductById(Long id) throws ProductNotFoundException {
+        return prodottoDao.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException(id));
+
     }
 
     @Override
@@ -36,7 +38,7 @@ public class ProdottoServiceImpl implements ProdottoService {
     }
 
     @Override
-    public void updateProdottoQuantita(Prodotto prodotto) throws ProductNotFoundException {
+    public Prodotto updateProdottoQuantita(Prodotto prodotto) throws ProductNotFoundException {
         if (prodotto.getQuantita() == 0) {
             throw new ProductNotFoundException(prodotto.getId());
         }
@@ -44,7 +46,7 @@ public class ProdottoServiceImpl implements ProdottoService {
         prodotto.setQuantita(prodotto.getQuantita() - 1);
 
         // Salvo il prodotto aggiornato nel database
-        prodottoDao.save(prodotto);
+        return prodottoDao.save(prodotto);
     }
 
 }

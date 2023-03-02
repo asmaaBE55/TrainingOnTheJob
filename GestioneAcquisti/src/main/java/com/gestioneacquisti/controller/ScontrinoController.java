@@ -15,9 +15,6 @@ public interface ScontrinoController {
     @ApiOperation("Crea scontrino di un acquisto")
     public ResponseEntity<String> creaScontrinoDaAcquisto(@PathVariable Long acquistoId);
 
-    @ApiOperation("/scontrini/raggruppati-per-acquisto")
-    Map<Long, List<Scontrino>> raggruppaScontriniPerAcquistoId();
-
     @ApiOperation("Get scontrino by id")
     ScontrinoDto getScontrinoById(@PathVariable Long id);
 }

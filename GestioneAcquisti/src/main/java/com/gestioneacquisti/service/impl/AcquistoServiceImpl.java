@@ -30,19 +30,32 @@ public class AcquistoServiceImpl implements AcquistoService {
 
     @Override
     public void compraProdotto(Cliente cliente, Prodotto prodotto, int quantitaDesiderata) throws InsufficientFundsException, ProductNotFoundException {
-        BigDecimal prezzoTotale = prodotto.getPrezzo().multiply(new BigDecimal(quantitaDesiderata));
+        BigDecimal prezzoTotale = prodotto.getPrezzo().multiply(BigDecimal.valueOf(quantitaDesiderata));
+
         if (cliente.getBudget().compareTo(prezzoTotale) < 0) {
             throw new InsufficientFundsException("Saldo insufficiente per effettuare l'acquisto.");
         }
+
         clienteService.aggiornaBudget(cliente, prezzoTotale);
         prodottoService.updateProdottoQuantita(prodotto);
-        Acquisto acquisto = new Acquisto();
+
+        Acquisto acquisto=new Acquisto();
         acquisto.setCliente(cliente);
-        acquisto.setPrezzoDiAcquisto(prodotto.getPrezzo());
+        acquisto.setQuantitaAcquistata(quantitaDesiderata);
         acquisto.setNome_prodotto_acquistato(prodotto.getNome());
-        storicoAcquistiService.salvaAcquisto(acquisto);
-        storicoAcquistiService.salvaStoricoAcquisti(cliente, new StoricoAcquisti(), prodotto);
+        acquisto.setPrezzoDiAcquisto(prezzoTotale);
+
+        StoricoAcquisti storicoAcquisti = new StoricoAcquisti();
+        storicoAcquisti.setAcquisto(acquisto);
+        storicoAcquisti.setNumeroAcquisti(acquisto.getQuantitaAcquistata());
+        storicoAcquisti.setNome_prodotto(acquisto.getNome_prodotto_acquistato());
+        storicoAcquisti.setCliente(cliente);
+
+
+        acquistoDao.save(acquisto);
+        storicoAcquistiService.save(storicoAcquisti);
     }
+
 
     @Override
     public Acquisto findById(Long id) {
@@ -51,4 +64,8 @@ public class AcquistoServiceImpl implements AcquistoService {
 
     }
 
+    @Override
+    public Acquisto save(Acquisto acquisto) {
+        return acquistoDao.save(acquisto);
+    }
 }

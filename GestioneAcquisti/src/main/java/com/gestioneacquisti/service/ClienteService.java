@@ -1,5 +1,6 @@
 package com.gestioneacquisti.service;
 
+import com.gestioneacquisti.model.Acquisto;
 import com.gestioneacquisti.model.Cliente;
 
 import java.math.BigDecimal;

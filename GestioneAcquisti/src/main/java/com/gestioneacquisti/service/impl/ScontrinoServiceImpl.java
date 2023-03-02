@@ -13,9 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Transactional
@@ -26,26 +23,25 @@ public class ScontrinoServiceImpl implements ScontrinoService {
 
     @Override
     public Scontrino creaScontrinoDaAcquisto(Long acquistoId) {
-        Scontrino scontrino = new Scontrino();
-        Acquisto acquisto = acquistoService.findById(acquistoId);
-        scontrino.setData_scontrino(LocalDateTime.now());
-        BigDecimal totale = new BigDecimal(acquisto.getQuantitaAcquistata()).multiply(new BigDecimal(String.valueOf(acquisto.getPrezzoDiAcquisto())));
-        scontrino.setNome_prodotto_acquistato(acquisto.getNome_prodotto_acquistato());
-        scontrino.setTotale(totale);
+
+        BigDecimal totale = BigDecimal.ZERO;//inizializza il totale a zero
+
+        Scontrino scontrino = new Scontrino();//creazione nuovo scontrino
+        Acquisto acquisto = acquistoService.findById(acquistoId);//prendere id acquisto che va messo dentro lo scontrino
+        scontrino.setData_scontrino(LocalDateTime.now());//mette la data e il tempo corrente
+
+        int quantita_acquistata = acquisto.getQuantitaAcquistata();//serve a prendere la quantita acquistata
+
+        BigDecimal prezzoAcquisto = acquisto.getPrezzoDiAcquisto();//serve a prendere il prezzo di acquisto
+        scontrino.setPrezzo_acquisto(prezzoAcquisto);
+        totale = (prezzoAcquisto.multiply(BigDecimal.valueOf(quantita_acquistata)));//calcola il totale
+
+        scontrino.setNome_prodotto_acquistato(acquisto.getNome_prodotto_acquistato());//prende il nome prodotto acquistato
+        scontrino.setTotale(totale);//inserisce il totale nel scontrino
+
         scontrino.addAcquisto(acquisto);
-        scontrinoDao.save(scontrino);
+        scontrinoDao.save(scontrino);//salva scontrino
         return scontrino;
-    }
-
-    @Override
-    public Map<Long, List<Scontrino>> raggruppaScontriniPerAcquistoId(List<Scontrino> scontrini) {
-        return scontrini.stream()
-                .collect(Collectors.groupingBy(scontrino -> scontrino.getAcquisto().getId()));
-    }
-
-    @Override
-    public List<Scontrino> findAll() {
-        return scontrinoDao.findAll();
     }
 
     @Override

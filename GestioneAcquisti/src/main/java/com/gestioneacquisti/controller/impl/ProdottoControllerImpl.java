@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/prodotti")
@@ -30,7 +31,7 @@ public class ProdottoControllerImpl implements ProdottoController {
     @Override
     @GetMapping("/{id}")
     public ProdottoDto findById(@PathVariable Long id) throws ProductNotFoundException {
-        Prodotto prodotto = prodottoService.findById(id);
+        Prodotto prodotto = prodottoService.findProductById(id);
         return prodottoMapper.asDTO(prodotto);
     }
 

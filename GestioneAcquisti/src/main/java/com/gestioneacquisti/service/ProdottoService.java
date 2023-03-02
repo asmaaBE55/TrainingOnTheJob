@@ -4,13 +4,11 @@ import com.gestioneacquisti.exception.ProductNotFoundException;
 import com.gestioneacquisti.model.Prodotto;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ProdottoService {
     Prodotto createProduct(Prodotto prodotto);
-
-    Prodotto findById(Long id) throws ProductNotFoundException;
-
+    Prodotto findProductById(Long id) throws ProductNotFoundException;
     List<Prodotto> getAllProducts();
-
-    void updateProdottoQuantita(Prodotto prodotto) throws ProductNotFoundException;
+    Prodotto updateProdottoQuantita(Prodotto prodotto) throws ProductNotFoundException;
 }

@@ -11,9 +11,5 @@ public interface ScontrinoService {
 
     Scontrino creaScontrinoDaAcquisto(Long acquistoId) throws InsufficientFundsException, ProductNotFoundException;
 
-    Map<Long, List<Scontrino>> raggruppaScontriniPerAcquistoId(List<Scontrino> scontrini);
-
-    List<Scontrino> findAll();
-
     Scontrino getScontrinoById(Long id);
 }

@@ -6,8 +6,5 @@ import com.gestioneacquisti.model.Prodotto;
 import com.gestioneacquisti.model.StoricoAcquisti;
 
 public interface StoricoAcquistiService {
-
-    void salvaAcquisto(Acquisto acquisto);
-
-    void salvaStoricoAcquisti(Cliente cliente, StoricoAcquisti storicoAcquisti, Prodotto prodotto);
+    StoricoAcquisti save(StoricoAcquisti storicoAcquisti);
 }

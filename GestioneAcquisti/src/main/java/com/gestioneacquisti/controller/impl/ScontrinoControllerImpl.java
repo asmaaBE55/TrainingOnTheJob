@@ -33,12 +33,6 @@ public class ScontrinoControllerImpl implements ScontrinoController {
         }
     }
 
-    @Override
-    @GetMapping("/scontrini/raggruppati-per-acquisto")
-    public Map<Long, List<Scontrino>> raggruppaScontriniPerAcquistoId() {
-        List<Scontrino> scontrini = scontrinoService.findAll();
-        return scontrinoService.raggruppaScontriniPerAcquistoId(scontrini);
-    }
 
     @Override
     @GetMapping("/{id}")
