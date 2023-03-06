@@ -1,5 +1,6 @@
 package com.management.progettodigestioneacquisti.repository;
 
+import com.management.progettodigestioneacquisti.model.Cliente;
 import com.management.progettodigestioneacquisti.model.StoricoAcquisti;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -14,4 +15,7 @@ public interface StoricoAcquistiRepository extends JpaRepository<StoricoAcquisti
             "JOIN Prodotti p ON a.acquisto_id = p.prodotto_id " +
             "GROUP BY p.prodotto_id", nativeQuery = true)
     List<StoricoAcquisti> getStoricoAcquistiGroupById();
+    List<StoricoAcquisti> getStoricoAcquistiByCliente(Cliente cliente);
+
+    StoricoAcquisti findByNomeProdotto(String nomeProdotto);
 }

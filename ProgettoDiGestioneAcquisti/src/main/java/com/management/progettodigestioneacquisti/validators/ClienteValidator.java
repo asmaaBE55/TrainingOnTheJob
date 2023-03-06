@@ -1,5 +1,6 @@
 package com.management.progettodigestioneacquisti.validators;
 
+import com.management.progettodigestioneacquisti.dto.ClienteDto;
 import com.management.progettodigestioneacquisti.model.Cliente;
 import com.management.progettodigestioneacquisti.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class ClienteValidator implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
-        Cliente cliente = (Cliente) target;
+        ClienteDto cliente = (ClienteDto) target;
         // Controllo se il cliente ha un nome
         if (cliente.getNome() == null || cliente.getNome().isEmpty()) {
             errors.reject("nome", "Il nome del cliente non può essere vuoto.");

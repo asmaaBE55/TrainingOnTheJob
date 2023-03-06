@@ -37,6 +37,8 @@ public class Cliente implements Serializable {
     private int numeroAcquisti;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cliente")
     private List<Acquisto> acquisti;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cliente")
+    private List<StoricoAcquisti> storicoAcquisti;
 
     public enum TipoCliente {
         NUOVO_CLIENTE,

@@ -1,6 +1,6 @@
 package com.management.progettodigestioneacquisti.service;
 
-import com.management.progettodigestioneacquisti.dto.ProdottoDto;
+import com.management.progettodigestioneacquisti.exception.InsufficientFundsException;
 import com.management.progettodigestioneacquisti.exception.ProductNotFoundException;
 import com.management.progettodigestioneacquisti.model.Acquisto;
 import com.management.progettodigestioneacquisti.model.Cliente;
@@ -16,7 +16,6 @@ import javax.validation.ValidationException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @RequiredArgsConstructor
@@ -29,22 +28,43 @@ public class AcquistoService {
     private final ClienteService clienteService;
     private final ProdottoService prodottoService;
 
-    public void compraProdotto(Cliente cliente, Prodotto prodotto, int quantitaDesiderata, BindingResult result) {
+
+
+    public Acquisto compraProdotto(Cliente cliente, Prodotto prodotto, int quantitaDesiderata, BindingResult result) throws ProductNotFoundException, InsufficientFundsException {
         if (result.hasErrors()) {
             throw new ValidationException("Dati non validi" + result);
         }
         BigDecimal prezzoTotale = prodotto.getPrezzoUnitario().multiply(new BigDecimal(quantitaDesiderata));
+
+        if (prezzoTotale.compareTo(cliente.getBudget()) > 0) {
+            throw new InsufficientFundsException("Budget insufficiente");
+        }
+
+        if (quantitaDesiderata > prodotto.getQuantitaDisponibile()) {
+            throw new ProductNotFoundException("Quantità esaurita");
+        }
         Acquisto acquisto = new Acquisto();
         acquisto.setCliente(cliente);
         acquisto.setQuantitaAcquistata(quantitaDesiderata);
         acquisto.setNomeProdottoAcquistato(prodotto.getNome());
         acquisto.setPrezzoDiAcquisto(prezzoTotale);
 
-        StoricoAcquisti storicoAcquisti = new StoricoAcquisti();
-        storicoAcquisti.setAcquisti(storicoAcquisti.getAcquisti());
-        storicoAcquisti.setNumeroAcquisti(storicoAcquisti.getNumeroAcquisti());
-        storicoAcquisti.setNomeProdotto(storicoAcquisti.getNomeProdotto());
-        storicoAcquisti.setId(acquisto.getId());
+        // Cerca il prodotto nello storico degli acquisti del cliente
+        StoricoAcquisti storicoAcquisti = cliente.getStoricoAcquisti().stream()
+                .filter(sa -> sa.getProdotto().equals(prodotto))
+                .findFirst()
+                .orElse(null);
+
+        // Aggiorna la quantità acquistata del prodotto nello storico, o crea una nuova riga nello storico se non esiste ancora
+        if (storicoAcquisti != null) {
+            storicoAcquisti.setQuantitaAcquistata(storicoAcquisti.getQuantitaAcquistata() + quantitaDesiderata);
+        } else {
+            storicoAcquisti = new StoricoAcquisti();
+            storicoAcquisti.setProdotto(prodotto);
+            storicoAcquisti.setCliente(cliente);
+            storicoAcquisti.setNomeProdotto(prodotto.getNome());
+            storicoAcquisti.setQuantitaAcquistata(quantitaDesiderata);
+        }
 
         acquistoRepository.save(acquisto);
         prodottoService.updateQuantityDopoAcquisto(prodotto, acquisto);
@@ -52,53 +72,64 @@ public class AcquistoService {
         clienteService.updateClientStatus(cliente, cliente.getImportoTotaleSpeso());
         clienteService.updateImportoTotaleSpeso(cliente, prezzoTotale);
         clienteService.aggiornaBudget(cliente, prezzoTotale);
-        storicoAcquistiService.saveAcquisto(storicoAcquisti);
 
+        // Aggiorna l'entità StoricoAcquisti con la quantità acquistata aggiornata
+        storicoAcquistiService.saveAcquisto(storicoAcquisti);
+        return acquisto;
     }
 
     public Acquisto findById(Long id) {
         return acquistoRepository.findAcquistoById(id);
     }
-    public List<Acquisto> compraProdotti(Cliente cliente, List<ProdottoDto> prodotti) throws ProductNotFoundException {
+
+
+    public void compraProdotti(Cliente cliente, List<Prodotto> prodottiAcquistati, BindingResult result) throws ProductNotFoundException, InsufficientFundsException {
+        if (result.hasErrors()) {
+            throw new ValidationException("Dati non validi" + result);
+        }
+        BigDecimal prezzoTotale = BigDecimal.ZERO;
         List<Acquisto> acquisti = new ArrayList<>();
-        BigDecimal totale = BigDecimal.ZERO;
-        BigDecimal prezzoTotale = null;
-        for (ProdottoDto prodottoQuantita : prodotti) {
-            Prodotto prodotto = prodottoService.getProdottoById(prodottoQuantita.getId());
-            int quantitaDesiderata = prodottoQuantita.getQuantitaDisponibile();
-
-            prezzoTotale = prodotto.getPrezzoUnitario().multiply(BigDecimal.valueOf(quantitaDesiderata));
-            totale = totale.add(prezzoTotale);
-
+        for (Prodotto prodottoAcquistato : prodottiAcquistati) {
+            Prodotto prodotto = prodottoService.getProdottoById(prodottoAcquistato.getId());
+            int quantitaDesiderata = prodottoAcquistato.getQuantitaDisponibile();
+            BigDecimal prezzoProdotto = prodotto.getPrezzoUnitario().multiply(new BigDecimal(quantitaDesiderata));
+            if (prezzoProdotto.compareTo(cliente.getBudget()) > 0) {
+                throw new InsufficientFundsException("Budget insufficiente per l'acquisto del prodotto " + prodotto.getNome());
+            }
+            if (quantitaDesiderata > prodotto.getQuantitaDisponibile()) {
+                throw new ProductNotFoundException("Quantità del prodotto " + prodotto.getNome() + " esaurita");
+            }
             Acquisto acquisto = new Acquisto();
             acquisto.setCliente(cliente);
             acquisto.setQuantitaAcquistata(quantitaDesiderata);
             acquisto.setNomeProdottoAcquistato(prodotto.getNome());
-            acquisto.setPrezzoDiAcquisto(prezzoTotale);
+            acquisto.setPrezzoDiAcquisto(prezzoProdotto);
+            acquisti.add(acquisto);
+            prezzoTotale = prezzoTotale.add(prezzoProdotto);
+        }
 
+        if (prezzoTotale.compareTo(cliente.getBudget()) > 0) {
+            throw new InsufficientFundsException("Budget insufficiente per l'acquisto dei prodotti");
+        }
+
+        for (Acquisto acquisto : acquisti) {
+            acquistoRepository.save(acquisto);
+            Prodotto prodotto = prodottoService.getProdottoByNome(acquisto.getNomeProdottoAcquistato());
             prodottoService.updateQuantityDopoAcquisto(prodotto, acquisto);
             clienteService.updateNumeroAcquisti(cliente, acquisto);
             clienteService.updateClientStatus(cliente, cliente.getImportoTotaleSpeso());
-            clienteService.updateImportoTotaleSpeso(cliente, prezzoTotale);
-            clienteService.aggiornaBudget(cliente, prezzoTotale);
-
-            acquistoRepository.save(acquisto);
-            acquisti.add(acquisto);
+            clienteService.updateImportoTotaleSpeso(cliente, acquisto.getPrezzoDiAcquisto());
         }
 
-        clienteService.aggiornaBudget(cliente, totale);
-        List<StoricoAcquisti> storicoAcquistiList = acquisti.stream().map(acquistoDTO -> {
-            StoricoAcquisti storicoAcquisti = new StoricoAcquisti();
-            storicoAcquisti.setId(storicoAcquisti.getId());
-            storicoAcquisti.setAcquisti(storicoAcquisti.getAcquisti());
-            storicoAcquisti.setNumeroAcquisti(acquistoDTO.getQuantitaAcquistata());
-            storicoAcquisti.setNomeProdotto(acquistoDTO.getNomeProdottoAcquistato());
-            return storicoAcquisti;
-
-        }).collect(Collectors.toList());
-
-        storicoAcquistiService.saveAllAcquisti(storicoAcquistiList);
-        return acquisti;
+        clienteService.aggiornaBudget(cliente, prezzoTotale);
+        StoricoAcquisti storicoAcquisti = (StoricoAcquisti) cliente.getStoricoAcquisti();
+        for (Prodotto prodottoAcquistato : prodottiAcquistati) {
+            Prodotto prodotto = prodottoService.getProdottoById(prodottoAcquistato.getId());
+            String nomeProdotto = prodotto.getNome();
+            int quantitaAcquistata = prodottoAcquistato.getQuantitaDisponibile();
+            storicoAcquistiService.aggiornaQuantitaAcquistata(nomeProdotto, quantitaAcquistata);
+        }
+        storicoAcquistiService.saveAcquisto(storicoAcquisti);
     }
 
 }

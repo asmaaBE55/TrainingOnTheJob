@@ -1,5 +1,6 @@
 package com.management.progettodigestioneacquisti.service;
 
+import com.management.progettodigestioneacquisti.exception.InsufficientFundsException;
 import com.management.progettodigestioneacquisti.model.Acquisto;
 import com.management.progettodigestioneacquisti.model.Cliente;
 import com.management.progettodigestioneacquisti.repository.ClienteRepository;
@@ -50,10 +51,15 @@ public class ClienteService {
         clienteRepository.save(cliente);
     }
 
-    public void aggiornaBudget(Cliente cliente, BigDecimal totale) {
+    public void aggiornaBudget(Cliente cliente, BigDecimal totale) throws InsufficientFundsException {
+        if (cliente.getBudget().compareTo(BigDecimal.ZERO) == 0){
+            throw new InsufficientFundsException("Budget insufficiente");
+        }
         BigDecimal nuovoBudget = cliente.getBudget().subtract(totale); // sottrai l'importo totale speso dal bilancio
+        if(cliente.getBudget().compareTo(totale)>0){
         cliente.setBudget(nuovoBudget); // aggiorna il campo bilancio
         clienteRepository.save(cliente);
+    }
     }
 
     public void updateNumeroAcquisti(Cliente cliente, Acquisto acquisto) {
@@ -73,4 +79,5 @@ public class ClienteService {
     public boolean existsClienteById(Long id) {
         return clienteRepository.existsById(id);
     }
+
 }

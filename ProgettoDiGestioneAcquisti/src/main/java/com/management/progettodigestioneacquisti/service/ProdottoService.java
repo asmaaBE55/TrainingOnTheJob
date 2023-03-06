@@ -1,5 +1,6 @@
 package com.management.progettodigestioneacquisti.service;
 
+import com.management.progettodigestioneacquisti.exception.ProductNotFoundException;
 import com.management.progettodigestioneacquisti.model.Acquisto;
 import com.management.progettodigestioneacquisti.model.Prodotto;
 import com.management.progettodigestioneacquisti.repository.ProdottoRepository;
@@ -31,8 +32,12 @@ public class ProdottoService {
         return prodottoRepository.findAll();
     }
 
-    public void updateQuantityDopoAcquisto(Prodotto prodotto, Acquisto acquisto) {
-        prodotto.setQuantitaDisponibile(prodotto.getQuantitaDisponibile() - acquisto.getQuantitaAcquistata());
+    public void updateQuantityDopoAcquisto(Prodotto prodotto, Acquisto acquisto) throws ProductNotFoundException {
+        int nuovaQuantita = prodotto.getQuantitaDisponibile() - acquisto.getQuantitaAcquistata();
+        if (nuovaQuantita == 0) {
+            throw new ProductNotFoundException("Quantità esaurita");
+        }
+        prodotto.setQuantitaDisponibile(Math.max(0, nuovaQuantita));
         prodottoRepository.save(prodotto);
     }
 
@@ -46,6 +51,10 @@ public class ProdottoService {
 
     public Prodotto saveProdotto(Prodotto prodotto) {
         return prodottoRepository.save(prodotto);
+    }
+
+    public Prodotto getProdottoByNome(String nomeProdottoAcquistato) {
+        return prodottoRepository.findProductByNome(nomeProdottoAcquistato);
     }
 }
 
