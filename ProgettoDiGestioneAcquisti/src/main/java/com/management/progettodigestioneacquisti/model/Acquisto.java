@@ -29,11 +29,15 @@ public class Acquisto implements Serializable {
     @ManyToOne
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
-    @OneToOne(mappedBy = "acquisto")
-    private Scontrino scontrino;
+    //    @OneToOne(mappedBy = "acquisto")
+//    private Scontrino scontrino;
     @ManyToOne
     @JoinColumn(name = "id_storico_acquisti")
     private StoricoAcquisti storicoAcquisti;
+
+    @ManyToOne
+    @JoinColumn(name = "scontrino_id")
+    private Scontrino scontrino;
     @ManyToMany
     @JoinTable(name = "prodotti_acquistati",
             joinColumns = @JoinColumn(name = "acquisto_id"),

@@ -1,6 +1,7 @@
 package com.management.progettodigestioneacquisti.service;
 
 import com.management.progettodigestioneacquisti.model.Acquisto;
+import com.management.progettodigestioneacquisti.model.Cliente;
 import com.management.progettodigestioneacquisti.model.Scontrino;
 import com.management.progettodigestioneacquisti.repository.ScontrinoRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,14 +17,14 @@ import java.time.LocalDateTime;
 public class ScontrinoService {
 
     private final ScontrinoRepository scontrinoRepository;
-    private final AcquistoService acquistoService;
+    private final ClienteService clienteService;
 
-    public Scontrino creaScontrinoDaAcquisto(Long acquistoId) {
+    public Scontrino creaScontrinoDaAcquisto(Long clienteId, Acquisto acquisto) {
 
         BigDecimal totale = BigDecimal.ZERO;//inizializza il totale a zero
 
         Scontrino scontrino = new Scontrino();//creazione nuovo scontrino
-        Acquisto acquisto = acquistoService.findById(acquistoId);//prendere id acquisto che va messo dentro lo scontrino
+        Cliente cliente = clienteService.getClienteById(clienteId);//prendere id acquisto che va messo dentro lo scontrino
         scontrino.setDataScontrino(LocalDateTime.now());//mette la data e il tempo corrente
 
         int quantita_acquistata = acquisto.getQuantitaAcquistata();//serve a prendere la quantita acquistata
@@ -35,7 +36,6 @@ public class ScontrinoService {
         scontrino.setNomeProdottoAcquistato(acquisto.getNomeProdottoAcquistato());//prende il nome prodotto acquistato
         scontrino.setTotale(totale);//inserisce il totale nel scontrino
 
-        scontrino.addAcquisto(acquisto);
         scontrinoRepository.save(scontrino);//salva scontrino
         return scontrino;
     }

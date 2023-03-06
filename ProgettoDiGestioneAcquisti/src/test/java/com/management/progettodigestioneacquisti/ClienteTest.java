@@ -30,10 +30,23 @@ public class ClienteTest {
         Cliente cliente = new Cliente();
         cliente.setNome("Dario");
         cliente.setCognome("Verde");
-        cliente.setEmail("dario.verde@example.com");
+        cliente.setEmail("dario.verde@nttdata.com");
         cliente.setTipoCliente(Cliente.TipoCliente.NUOVO_CLIENTE);
         cliente.setImportoTotaleSpeso(new BigDecimal("0"));
         cliente.setBudget(new BigDecimal("200.00"));
+
+        Cliente clienteSalvato = clienteRepository.save(cliente);
+        assertNotNull(clienteSalvato.getId());
+    }
+    @Test
+    public void testSalvaCliente2() {
+        Cliente cliente = new Cliente();
+        cliente.setNome("Mario");
+        cliente.setCognome("Rossi");
+        cliente.setEmail("mario.rossi@nttdata.com");
+        cliente.setTipoCliente(Cliente.TipoCliente.NUOVO_CLIENTE);
+        cliente.setImportoTotaleSpeso(new BigDecimal("0"));
+        cliente.setBudget(new BigDecimal("500.00"));
 
         Cliente clienteSalvato = clienteRepository.save(cliente);
         assertNotNull(clienteSalvato.getId());

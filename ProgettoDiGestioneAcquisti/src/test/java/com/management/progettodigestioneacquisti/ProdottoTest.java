@@ -22,9 +22,9 @@ public class ProdottoTest {
     @Test
     public void testSalvaProdotto() {
         Prodotto prodotto = new Prodotto();
-        prodotto.setNome("Prodotto di test");
+        prodotto.setNome("Panettone");
         prodotto.setPrezzoUnitario(new BigDecimal("10.00"));
-        prodotto.setQuantitaDisponibile(100);
+        prodotto.setQuantitaDisponibile(30);
 
         Prodotto prodottoSalvato = prodottoRepository.save(prodotto);
         assertNotNull(prodottoSalvato.getId());
@@ -32,8 +32,28 @@ public class ProdottoTest {
     @Test
     public void testSalvaProdotto1() {
         Prodotto prodotto = new Prodotto();
-        prodotto.setNome("Prodotto di test2 creato dal JUnit");
-        prodotto.setPrezzoUnitario(new BigDecimal("2.00"));
+        prodotto.setNome("Pane");
+        prodotto.setPrezzoUnitario(new BigDecimal("5.00"));
+        prodotto.setQuantitaDisponibile(10);
+
+        Prodotto prodottoSalvato = prodottoRepository.save(prodotto);
+        assertNotNull(prodottoSalvato.getId());
+    }
+    @Test
+    public void testSalvaProdotto2() {
+        Prodotto prodotto = new Prodotto();
+        prodotto.setNome("Cioccolatini");
+        prodotto.setPrezzoUnitario(new BigDecimal("15.00"));
+        prodotto.setQuantitaDisponibile(20);
+
+        Prodotto prodottoSalvato = prodottoRepository.save(prodotto);
+        assertNotNull(prodottoSalvato.getId());
+    }
+    @Test
+    public void testSalvaProdotto3() {
+        Prodotto prodotto = new Prodotto();
+        prodotto.setNome("Cake");
+        prodotto.setPrezzoUnitario(new BigDecimal("15.00"));
         prodotto.setQuantitaDisponibile(10);
 
         Prodotto prodottoSalvato = prodottoRepository.save(prodotto);

@@ -52,14 +52,14 @@ public class ClienteService {
     }
 
     public void aggiornaBudget(Cliente cliente, BigDecimal totale) throws InsufficientFundsException {
-        if (cliente.getBudget().compareTo(BigDecimal.ZERO) == 0){
+        if (cliente.getBudget().compareTo(BigDecimal.ZERO) == 0) {
             throw new InsufficientFundsException("Budget insufficiente");
         }
         BigDecimal nuovoBudget = cliente.getBudget().subtract(totale); // sottrai l'importo totale speso dal bilancio
-        if(cliente.getBudget().compareTo(totale)>0){
-        cliente.setBudget(nuovoBudget); // aggiorna il campo bilancio
-        clienteRepository.save(cliente);
-    }
+        if (cliente.getBudget().compareTo(totale) > 0) {
+            cliente.setBudget(nuovoBudget); // aggiorna il campo bilancio
+            clienteRepository.save(cliente);
+        }
     }
 
     public void updateNumeroAcquisti(Cliente cliente, Acquisto acquisto) {

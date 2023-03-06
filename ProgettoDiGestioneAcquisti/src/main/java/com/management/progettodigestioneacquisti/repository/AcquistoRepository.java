@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface AcquistoRepository extends JpaRepository<Acquisto, Long> {
     Acquisto findAcquistoById(Long id);
+
     List<Acquisto> findByCliente(Cliente cliente);
 
 

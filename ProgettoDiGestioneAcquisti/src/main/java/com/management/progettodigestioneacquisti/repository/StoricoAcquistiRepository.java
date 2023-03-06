@@ -15,6 +15,7 @@ public interface StoricoAcquistiRepository extends JpaRepository<StoricoAcquisti
             "JOIN Prodotti p ON a.acquisto_id = p.prodotto_id " +
             "GROUP BY p.prodotto_id", nativeQuery = true)
     List<StoricoAcquisti> getStoricoAcquistiGroupById();
+
     List<StoricoAcquisti> getStoricoAcquistiByCliente(Cliente cliente);
 
     StoricoAcquisti findByNomeProdotto(String nomeProdotto);
