@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -22,8 +23,6 @@ public class Scontrino implements Serializable {
     @Column(name = "scontrino_id")
     private Long id;
     private LocalDateTime dataScontrino;
-
-    private BigDecimal prezzoDiAcquisto;
     private BigDecimal totale;
     @Column(name = "nome_prodotto_acquistato")
     private String nomeProdottoAcquistato;
@@ -33,13 +32,5 @@ public class Scontrino implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "scontrino")
     private List<Acquisto> acquisti;
 
-
-//    public void addAcquisto(Acquisto acquisto) {
-//        if (this.acquisto == null) {
-//            this.acquisto = acquisto;
-//        } else {
-//            throw new IllegalStateException("Il scontrino può contenere un solo acquisto.");
-//        }
-//    }
 
 }

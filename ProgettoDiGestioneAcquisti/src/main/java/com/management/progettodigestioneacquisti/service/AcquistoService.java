@@ -2,10 +2,7 @@ package com.management.progettodigestioneacquisti.service;
 
 import com.management.progettodigestioneacquisti.exception.InsufficientFundsException;
 import com.management.progettodigestioneacquisti.exception.ProductNotFoundException;
-import com.management.progettodigestioneacquisti.model.Acquisto;
-import com.management.progettodigestioneacquisti.model.Cliente;
-import com.management.progettodigestioneacquisti.model.Prodotto;
-import com.management.progettodigestioneacquisti.model.StoricoAcquisti;
+import com.management.progettodigestioneacquisti.model.*;
 import com.management.progettodigestioneacquisti.repository.AcquistoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -44,6 +41,7 @@ public class AcquistoService {
         acquisto.setQuantitaAcquistata(quantitaDesiderata);
         acquisto.setNomeProdottoAcquistato(prodotto.getNome());
         acquisto.setPrezzoDiAcquisto(prezzoTotale);
+        acquisto.setScontrino(acquisto.getScontrino());
 
         // Cerca il prodotto nello storico degli acquisti del cliente
         StoricoAcquisti storicoAcquisti = cliente.getStoricoAcquisti().stream()
