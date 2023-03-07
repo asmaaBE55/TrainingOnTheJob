@@ -24,7 +24,7 @@ public class Scontrino implements Serializable {
     private Long id;
     private LocalDateTime dataScontrino;
     private BigDecimal totale;
-    @Column(name = "nome_prodotto_acquistato")
+    @Column(name = "acquisti")
     private String nomeProdottoAcquistato;
     @OneToOne
     @JoinColumn(name = "cliente_id", referencedColumnName = "cliente_id")

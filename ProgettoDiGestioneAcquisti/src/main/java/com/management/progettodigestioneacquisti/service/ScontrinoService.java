@@ -85,23 +85,31 @@ public class ScontrinoService {
         List<Acquisto> acquisti = acquistoRepository.findByCliente(cliente);
 
         BigDecimal totale = BigDecimal.ZERO;
+
+       /**
+        * Si usa per manipolare in modo efficiente le stringhe, voglio che i prodotti nello scontrino siano più
+        * leggibili nome prodotto, il prezzo unitario del prodotto con il simbolo Euro e la qty acquistata di ogni prodotto.
+        **/
+
         StringBuilder nomeProdotto = new StringBuilder();
 
         for (Acquisto acquisto : acquisti) {
-            BigDecimal prezzoUnitario = acquisto.getPrezzoDiAcquisto();
+            BigDecimal prezzoUnitario = acquisto.getPrezzoDiAcquisto().divide(BigDecimal.valueOf(acquisto.getQuantitaAcquistata()));
             int numeroAcquisti=acquisto.getQuantitaAcquistata();
             nomeProdotto.append(acquisto.getNomeProdottoAcquistato())
                     .append("\t")
-                    .append("Qte: ")
+                    .append("*")
                     .append(numeroAcquisti)
                     .append("\t")
-                    .append("Prezzo: ")
-                    .append(prezzoUnitario).append("€ , ");
+                    .append("Prezzo Unit: ")
+                    .append(prezzoUnitario)
+                    .append(numeroAcquisti)
+                    .append("€ --- ");
 
             BigDecimal prezzoDiAcquisto = acquisto.getPrezzoDiAcquisto();
             totale = totale.add(prezzoDiAcquisto);
         }
-        nomeProdotto.delete(nomeProdotto.length() - 2, nomeProdotto.length()); // rimuove l'ultimo ", "
+        nomeProdotto.delete(nomeProdotto.length() - 4, nomeProdotto.length()); // rimuove l'ultimo ", "
 
         Scontrino scontrino = new Scontrino();
         scontrino.setDataScontrino(LocalDateTime.now());
@@ -112,10 +120,8 @@ public class ScontrinoService {
         return scontrinoRepository.save(scontrino);
     }
 
-
     public Scontrino getScontrinoById(Long id) {
         return scontrinoRepository.findScontrinoById(id);
     }
-
 
 }
