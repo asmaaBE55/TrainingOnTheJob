@@ -18,7 +18,7 @@ import org.easymock.Mock;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.MockitoAnnotations;
+
 
 import javax.validation.ValidationException;
 import java.math.BigDecimal;
@@ -31,16 +31,12 @@ public class AcquistoTest {
     @Mock
     private AcquistoService acquistoService;
 
-
     @Mock
     private ClienteService clienteService;
-
     @Mock
     private ProdottoService prodottoService;
-
     @Mock
     private AcquistoRepository acquistoRepository;
-
     @Mock
     private StoricoAcquistiService storicoAcquistiService;
 
@@ -50,7 +46,6 @@ public class AcquistoTest {
 
     @Before
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
         cliente = new Cliente();
         cliente.setId(1L);
         cliente.setNome("Mario");
