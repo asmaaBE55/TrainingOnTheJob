@@ -2,7 +2,10 @@ package com.management.progettodigestioneacquisti.service;
 
 import com.management.progettodigestioneacquisti.exception.InsufficientFundsException;
 import com.management.progettodigestioneacquisti.exception.ProductNotFoundException;
-import com.management.progettodigestioneacquisti.model.*;
+import com.management.progettodigestioneacquisti.model.Acquisto;
+import com.management.progettodigestioneacquisti.model.Cliente;
+import com.management.progettodigestioneacquisti.model.Prodotto;
+import com.management.progettodigestioneacquisti.model.StoricoAcquisti;
 import com.management.progettodigestioneacquisti.repository.AcquistoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

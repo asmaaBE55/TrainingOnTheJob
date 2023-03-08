@@ -3,7 +3,6 @@ package com.management.progettodigestioneacquisti.service;
 import com.management.progettodigestioneacquisti.exception.UserNotFoundException;
 import com.management.progettodigestioneacquisti.model.Acquisto;
 import com.management.progettodigestioneacquisti.model.Cliente;
-import com.management.progettodigestioneacquisti.model.Prodotto;
 import com.management.progettodigestioneacquisti.model.Scontrino;
 import com.management.progettodigestioneacquisti.repository.AcquistoRepository;
 import com.management.progettodigestioneacquisti.repository.ClienteRepository;
@@ -15,10 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RequiredArgsConstructor
 @Transactional
@@ -86,30 +82,28 @@ public class ScontrinoService {
 
         BigDecimal totale = BigDecimal.ZERO;
 
-       /**
-        * Si usa per manipolare in modo efficiente le stringhe, voglio che i prodotti nello scontrino siano più
-        * leggibili nome prodotto, il prezzo unitario del prodotto con il simbolo Euro e la qty acquistata di ogni prodotto.
-        **/
+        /**
+         * Si usa per manipolare in modo efficiente le stringhe, voglio che i prodotti nello scontrino siano più
+         * leggibili nome prodotto, il prezzo unitario del prodotto con il simbolo Euro e la qty acquistata di ogni prodotto.
+         **/
 
         StringBuilder nomeProdotto = new StringBuilder();
 
         for (Acquisto acquisto : acquisti) {
-            BigDecimal prezzoUnitario = acquisto.getPrezzoDiAcquisto().divide(BigDecimal.valueOf(acquisto.getQuantitaAcquistata()));
-            int numeroAcquisti=acquisto.getQuantitaAcquistata();
+            BigDecimal prezzoUnitario = acquisto.getPrezzoDiAcquisto().divide(BigDecimal.valueOf(acquisto.getQuantitaAcquistata()), RoundingMode.HALF_UP);
+            int numeroAcquisti = acquisto.getQuantitaAcquistata();
             nomeProdotto.append(acquisto.getNomeProdottoAcquistato())
-                    .append("\t")
-                    .append("*")
+                    .append(" x")
                     .append(numeroAcquisti)
-                    .append("\t")
-                    .append("Prezzo Unit: ")
-                    .append(prezzoUnitario)
+                    .append(" Prezzo Unit: ")
+                    .append(prezzoUnitario.doubleValue())
                     .append(numeroAcquisti)
                     .append("€ --- ");
 
             BigDecimal prezzoDiAcquisto = acquisto.getPrezzoDiAcquisto();
             totale = totale.add(prezzoDiAcquisto);
         }
-        nomeProdotto.delete(nomeProdotto.length() - 4, nomeProdotto.length()); // rimuove l'ultimo ", "
+        nomeProdotto.delete(nomeProdotto.length() - 4, nomeProdotto.length()); // rimuove l'ultimo "--- "
 
         Scontrino scontrino = new Scontrino();
         scontrino.setDataScontrino(LocalDateTime.now());

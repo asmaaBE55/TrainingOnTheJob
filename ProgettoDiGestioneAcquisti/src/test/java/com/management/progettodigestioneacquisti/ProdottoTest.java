@@ -2,7 +2,6 @@ package com.management.progettodigestioneacquisti;
 
 import com.management.progettodigestioneacquisti.model.Prodotto;
 import com.management.progettodigestioneacquisti.repository.ProdottoRepository;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.math.BigDecimal;
 
 import static org.junit.Assert.assertNotNull;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class ProdottoTest {
@@ -29,6 +29,7 @@ public class ProdottoTest {
         Prodotto prodottoSalvato = prodottoRepository.save(prodotto);
         assertNotNull(prodottoSalvato.getId());
     }
+
     @Test
     public void testSalvaProdotto1() {
         Prodotto prodotto = new Prodotto();
@@ -39,6 +40,7 @@ public class ProdottoTest {
         Prodotto prodottoSalvato = prodottoRepository.save(prodotto);
         assertNotNull(prodottoSalvato.getId());
     }
+
     @Test
     public void testSalvaProdotto2() {
         Prodotto prodotto = new Prodotto();
@@ -49,6 +51,7 @@ public class ProdottoTest {
         Prodotto prodottoSalvato = prodottoRepository.save(prodotto);
         assertNotNull(prodottoSalvato.getId());
     }
+
     @Test
     public void testSalvaProdotto3() {
         Prodotto prodotto = new Prodotto();

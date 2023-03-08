@@ -1,22 +1,17 @@
 package com.management.progettodigestioneacquisti;
 
 
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.*;
-
-import java.math.BigDecimal;
-
 import com.management.progettodigestioneacquisti.model.Cliente;
 import com.management.progettodigestioneacquisti.repository.ClienteRepository;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.math.BigDecimal;
+
+import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -38,6 +33,7 @@ public class ClienteTest {
         Cliente clienteSalvato = clienteRepository.save(cliente);
         assertNotNull(clienteSalvato.getId());
     }
+
     @Test
     public void testSalvaCliente2() {
         Cliente cliente = new Cliente();

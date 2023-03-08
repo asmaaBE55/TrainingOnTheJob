@@ -24,6 +24,7 @@ public class ScontrinoControllerImpl implements ScontrinoController {
     private final ScontrinoMapper scontrinoMapper;
     private final ClienteService clienteService;
     private final AcquistoRepository acquistoRepository;
+
     @Override
     @PostMapping("/scontrino/{idCliente}")
     public Scontrino creaScontrino(@PathVariable Long idCliente) throws UserNotFoundException {
@@ -32,7 +33,6 @@ public class ScontrinoControllerImpl implements ScontrinoController {
         Scontrino scontrino = scontrinoService.creaScontrino(idCliente);
         return scontrino;
     }
-
 
 
     @Override
