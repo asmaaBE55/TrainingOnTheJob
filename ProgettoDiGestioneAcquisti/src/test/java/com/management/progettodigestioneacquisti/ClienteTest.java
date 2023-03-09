@@ -47,6 +47,7 @@ public class ClienteTest {
         Cliente clienteSalvato = clienteRepository.save(cliente);
         assertNotNull(clienteSalvato.getId());
     }
+
     @Test
     public void testSalvaCliente3() {
         Cliente cliente = new Cliente();
@@ -60,6 +61,7 @@ public class ClienteTest {
         Cliente clienteSalvato = clienteRepository.save(cliente);
         assertNotNull(clienteSalvato.getId());
     }
+
     @Test
     public void testSalvaCliente4() {
         Cliente cliente = new Cliente();

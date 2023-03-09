@@ -1,9 +1,9 @@
 package com.management.progettodigestioneacquisti.converterimage;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import javax.imageio.ImageIO;
 
 public class Base64ImageConverter {
     public static BufferedImage convert(String base64Image) throws IOException {

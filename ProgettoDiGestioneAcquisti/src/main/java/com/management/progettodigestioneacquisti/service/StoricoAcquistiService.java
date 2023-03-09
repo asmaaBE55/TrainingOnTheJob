@@ -1,6 +1,5 @@
 package com.management.progettodigestioneacquisti.service;
 
-import com.management.progettodigestioneacquisti.mapper.StoricoAcquistiMapper;
 import com.management.progettodigestioneacquisti.model.Acquisto;
 import com.management.progettodigestioneacquisti.model.Cliente;
 import com.management.progettodigestioneacquisti.model.StoricoAcquisti;
@@ -19,9 +18,11 @@ import java.util.List;
 public class StoricoAcquistiService {
     private final StoricoAcquistiRepository storicoAcquistiRepository;
     private final AcquistoRepository acquistoRepository;
+
     public StoricoAcquisti saveAcquisto(StoricoAcquisti storicoAcquisti) {
         return storicoAcquistiRepository.save(storicoAcquisti);
     }
+
     public String getAcquistiByClienteIdAndPeriodoAsString(Long clienteId, LocalDate dataInizio, LocalDate dataFine) {
         List<Acquisto> acquisti = acquistoRepository.findByClienteIdAndDataAcquistoBetween(clienteId, dataInizio, dataFine);
         StringBuilder sb = new StringBuilder();

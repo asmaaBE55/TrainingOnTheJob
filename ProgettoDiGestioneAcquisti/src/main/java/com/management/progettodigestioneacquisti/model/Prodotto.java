@@ -27,6 +27,8 @@ public class Prodotto implements Serializable {
     private String nome;
     private BigDecimal prezzoUnitario;
     private int quantitaDisponibile;
+    @Column(name = "sconto")
+    private String scontato;
     @Lob
     @Column(name = "immagine")
     private byte[] immagine;

@@ -32,6 +32,7 @@ public class ProdottoTest {
         Path imagePath = Paths.get("src/main/resources/images/panettone.jpg");
         byte[] immagineBytes = Files.readAllBytes(imagePath);
         prodotto.setImmagine(immagineBytes);
+        prodotto.setScontato(prodotto.getScontato());
         Prodotto prodottoSalvato = prodottoRepository.save(prodotto);
         assertNotNull(prodottoSalvato.getId());
     }
@@ -45,6 +46,7 @@ public class ProdottoTest {
         Path imagePath = Paths.get("src/main/resources/images/pane.jpeg");
         byte[] immagineBytes = Files.readAllBytes(imagePath);
         prodotto.setImmagine(immagineBytes);
+        prodotto.setScontato(prodotto.getScontato());
         Prodotto prodottoSalvato = prodottoRepository.save(prodotto);
         assertNotNull(prodottoSalvato.getId());
     }
@@ -58,6 +60,7 @@ public class ProdottoTest {
         Path imagePath = Paths.get("src/main/resources/images/cioccolatini.jpg");
         byte[] immagineBytes = Files.readAllBytes(imagePath);
         prodotto.setImmagine(immagineBytes);
+        prodotto.setScontato(prodotto.getScontato());
         Prodotto prodottoSalvato = prodottoRepository.save(prodotto);
         assertNotNull(prodottoSalvato.getId());
     }
@@ -71,9 +74,11 @@ public class ProdottoTest {
         Path imagePath = Paths.get("src/main/resources/images/cake.jpeg");
         byte[] immagineBytes = Files.readAllBytes(imagePath);
         prodotto.setImmagine(immagineBytes);
+        prodotto.setScontato(prodotto.getScontato());
         Prodotto prodottoSalvato = prodottoRepository.save(prodotto);
         assertNotNull(prodottoSalvato.getId());
     }
+
     @Test
     public void testSalvaProdotto5() throws IOException {
         Prodotto prodotto = new Prodotto();
@@ -83,6 +88,7 @@ public class ProdottoTest {
         Path imagePath = Paths.get("src/main/resources/images/smart.jpeg");
         byte[] immagineBytes = Files.readAllBytes(imagePath);
         prodotto.setImmagine(immagineBytes);
+        prodotto.setScontato(prodotto.getScontato());
         Prodotto prodottoSalvato = prodottoRepository.save(prodotto);
         assertNotNull(prodottoSalvato.getId());
     }

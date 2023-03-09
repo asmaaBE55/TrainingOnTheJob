@@ -14,14 +14,17 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.Base64;
+import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Transactional
 @Service
 public class ProdottoService {
     private final ProdottoRepository prodottoRepository;
-    public Prodotto createProduct(Prodotto prodotto,MultipartFile file) throws IOException {
+
+    public Prodotto createProduct(Prodotto prodotto, MultipartFile file) throws IOException {
         byte[] immagine = file.getBytes();
         prodotto.setImmagine(immagine);
         prodotto.setId(prodotto.getId());
@@ -31,12 +34,15 @@ public class ProdottoService {
         prodotto.setImmagine(prodotto.getImmagine());
         return prodottoRepository.save(prodotto);
     }
+
     public Prodotto getProdottoById(Long id) {
         return prodottoRepository.findProdottoById(id);
     }
+
     public List<Prodotto> getAllProducts() {
         return prodottoRepository.findAll();
     }
+
     public void updateQuantityDopoAcquisto(Prodotto prodotto, Acquisto acquisto) throws ProductNotFoundException {
         int nuovaQuantita = prodotto.getQuantitaDisponibile() - acquisto.getQuantitaAcquistata();
         if (nuovaQuantita == 0) {
@@ -92,12 +98,14 @@ public class ProdottoService {
         BigDecimal prezzoUnitario = prodotto.getPrezzoUnitario();
         BigDecimal sconto = prezzoUnitario.multiply(percentualeScontoDecimal).divide(cento);
         BigDecimal prezzoScontato = prezzoUnitario.subtract(sconto);
-
+        StringBuilder sc = new StringBuilder();
         prodottoEsistente.setPrezzoUnitario(prezzoScontato);
+        if (sconto.compareTo(BigDecimal.ZERO) > 0) {
+            prodottoEsistente.setScontato(String.valueOf(sc.append("Questo prodotto è stato scontato al:").append(sconto.doubleValue() * 10).append("%")));
+        }
 
         return prodottoRepository.save(prodottoEsistente);
     }
-
 
 
 }

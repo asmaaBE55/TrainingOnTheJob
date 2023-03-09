@@ -68,6 +68,7 @@ public class ProdottoControllerImpl implements ProdottoController {
         }
         return prodottoDtoList;
     }
+
     @Override
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") Long id) {
@@ -78,6 +79,7 @@ public class ProdottoControllerImpl implements ProdottoController {
         prodottoService.deleteProdotto(id);
         return ResponseEntity.ok().build();
     }
+
     @Override
     @PutMapping("/{id}")
     public ProdottoDto updateProdotto(@PathVariable Long id, @RequestParam Double sconto) throws ChangeSetPersister.NotFoundException {
@@ -95,7 +97,7 @@ public class ProdottoControllerImpl implements ProdottoController {
         BigDecimal prezzoUnitario = prodotto.getPrezzoUnitario();
         prezzoUnitario.multiply(percentualeScontoDecimal).divide(cento);
 
-        prodottoService.updateProdotto(prodotto,sconto);
+        prodottoService.updateProdotto(prodotto, sconto);
         return prodottoMapper.asDTO(prodotto);
     }
 

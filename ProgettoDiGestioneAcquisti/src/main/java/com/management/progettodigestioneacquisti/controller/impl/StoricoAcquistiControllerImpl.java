@@ -37,6 +37,7 @@ public class StoricoAcquistiControllerImpl implements StoricoAcquistiController 
         StoricoAcquisti storicoAcquisti = storicoAcquistiMapper.asEntity(storicoAcquistiDto);
         return storicoAcquistiMapper.asDTO(storicoAcquistiService.saveAcquisto(storicoAcquisti));
     }
+
     @Override
     @GetMapping("/acquisti/excel")
     public void exportAcquistiToExcel(HttpServletResponse response) throws IOException {
@@ -77,6 +78,7 @@ public class StoricoAcquistiControllerImpl implements StoricoAcquistiController 
         workbook.close();
         outputStream.close();
     }
+
     @Override
     @GetMapping
     public List<StoricoAcquistiDto> list() {

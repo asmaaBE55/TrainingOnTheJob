@@ -43,12 +43,14 @@ public class ScontrinoControllerImpl implements ScontrinoController {
         Scontrino scontrino = scontrinoService.creaScontrino(idCliente);
         return scontrino;
     }
+
     @Override
     @GetMapping("/{id}")
     public ScontrinoDto getScontrinoById(@PathVariable Long id) {
         Scontrino scontrino = scontrinoService.getScontrinoById(id);
         return scontrinoMapper.asDTO(scontrino);
     }
+
     @Override
     @GetMapping("/scontrini/excel")
     public void exportScontriniToExcel(HttpServletResponse response) throws IOException {
