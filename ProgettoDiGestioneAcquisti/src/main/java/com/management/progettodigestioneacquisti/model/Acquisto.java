@@ -6,6 +6,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -26,11 +27,12 @@ public class Acquisto implements Serializable {
     private int quantitaAcquistata;
     @Column(name = "nome_prodotto_acquistato")
     private String nomeProdottoAcquistato;
+    @Column(name = "data_acquisto")
+    private LocalDate dataAcquisto;
     @ManyToOne
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
-    //    @OneToOne(mappedBy = "acquisto")
-//    private Scontrino scontrino;
+
     @ManyToOne
     @JoinColumn(name = "id_storico_acquisti")
     private StoricoAcquisti storicoAcquisti;

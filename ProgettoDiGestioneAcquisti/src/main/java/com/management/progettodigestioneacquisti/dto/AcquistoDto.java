@@ -1,7 +1,6 @@
 package com.management.progettodigestioneacquisti.dto;
 
 import com.management.progettodigestioneacquisti.model.Cliente;
-import com.management.progettodigestioneacquisti.model.Prodotto;
 import com.management.progettodigestioneacquisti.model.Scontrino;
 import com.management.progettodigestioneacquisti.model.StoricoAcquisti;
 import lombok.*;
@@ -23,6 +22,6 @@ public class AcquistoDto {
     private Cliente cliente;
     private Scontrino scontrino;
     private StoricoAcquisti storicoAcquisti;
-    private List<Prodotto> prodottiAcquistati;
+    private List<ProdottoDto> prodottiAcquistati;
 
 }

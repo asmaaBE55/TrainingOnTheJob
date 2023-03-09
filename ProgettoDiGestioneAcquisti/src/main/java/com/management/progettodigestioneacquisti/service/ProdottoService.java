@@ -41,14 +41,6 @@ public class ProdottoService {
         prodottoRepository.save(prodotto);
     }
 
-    public boolean existsProdottoById(Long id) {
-        return prodottoRepository.existsById(id);
-    }
-
-    public boolean existByName(String nome) {
-        return prodottoRepository.existsByNome(nome);
-    }
-
     public Prodotto saveProdotto(Prodotto prodotto) {
         return prodottoRepository.save(prodotto);
     }

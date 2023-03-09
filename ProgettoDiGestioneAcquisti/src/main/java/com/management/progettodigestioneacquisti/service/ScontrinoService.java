@@ -25,54 +25,6 @@ public class ScontrinoService {
     private final ClienteRepository clienteRepository;
     private final AcquistoRepository acquistoRepository;
 
-//    public Scontrino creaScontrino(Long idCliente,List<Acquisto> acquisti) {
-//        Cliente cliente = clienteRepository.findById(idCliente)
-//                .orElseThrow(() -> new UserNotFoundException("Cliente non trovato con id " + idCliente));
-//
-//        acquistoRepository.findByCliente(cliente);
-//        String nomeProdotto="";
-//        BigDecimal totale = BigDecimal.ZERO;
-//        BigDecimal prezzoUnitario=BigDecimal.ZERO;
-//        for (Acquisto acquisto : acquisti) {
-//            nomeProdotto=nomeProdotto.concat(acquisto.getNomeProdottoAcquistato());
-//            prezzoUnitario=prezzoUnitario.add(acquisto.getPrezzoDiAcquisto());
-//            totale = totale.add(acquisto.getPrezzoDiAcquisto());
-//        }
-//
-//        Scontrino scontrino = new Scontrino();
-//        scontrino.setDataScontrino(LocalDateTime.now());
-//        scontrino.setTotale(totale);
-//        scontrino.setAcquisti(acquisti);
-//        scontrino.setCliente(cliente);
-//
-//        return scontrinoRepository.save(scontrino);
-//    }
-//public Scontrino creaScontrino(Long idCliente) {
-//    Cliente cliente = clienteRepository.findById(idCliente)
-//            .orElseThrow(() -> new UserNotFoundException("Cliente non trovato con id " + idCliente));
-//
-//    List<Acquisto> acquisti = acquistoRepository.findByCliente(cliente);
-//
-//    BigDecimal totale = BigDecimal.ZERO;
-//    StringBuilder nomeProdotto = new StringBuilder();
-//    List<BigDecimal> prezziUnitari = new ArrayList<>();
-//
-//    for (Acquisto acquisto : acquisti) {
-//        nomeProdotto.append(acquisto.getNomeProdottoAcquistato()).append(", ");
-//        prezziUnitari.add(acquisto.getPrezzoDiAcquisto());
-//        totale = totale.add(acquisto.getPrezzoDiAcquisto());
-//    }
-//
-//    Scontrino scontrino = new Scontrino();
-//    scontrino.setDataScontrino(LocalDateTime.now());
-//    scontrino.setTotale(totale);
-//    scontrino.setAcquisti(acquisti);
-//    scontrino.setCliente(cliente);
-//    scontrino.setNomeProdottoAcquistato(nomeProdotto.toString());
-//    //scontrino.setPrezziUnitari((Map<String, BigDecimal>) prezziUnitari);
-//
-//    return scontrinoRepository.save(scontrino);
-//}
 
     public Scontrino creaScontrino(Long idCliente) {
         Cliente cliente = clienteRepository.findById(idCliente)

@@ -20,7 +20,7 @@ public class ProdottoTest {
     private ProdottoRepository prodottoRepository;
 
     @Test
-    public void testSalvaProdotto() {
+    public void testSalvaProdotto1() {
         Prodotto prodotto = new Prodotto();
         prodotto.setNome("Panettone");
         prodotto.setPrezzoUnitario(new BigDecimal("10.00"));
@@ -31,7 +31,7 @@ public class ProdottoTest {
     }
 
     @Test
-    public void testSalvaProdotto1() {
+    public void testSalvaProdotto2() {
         Prodotto prodotto = new Prodotto();
         prodotto.setNome("Pane");
         prodotto.setPrezzoUnitario(new BigDecimal("5.00"));
@@ -42,7 +42,7 @@ public class ProdottoTest {
     }
 
     @Test
-    public void testSalvaProdotto2() {
+    public void testSalvaProdotto3() {
         Prodotto prodotto = new Prodotto();
         prodotto.setNome("Cioccolatini");
         prodotto.setPrezzoUnitario(new BigDecimal("15.00"));
@@ -53,10 +53,20 @@ public class ProdottoTest {
     }
 
     @Test
-    public void testSalvaProdotto3() {
+    public void testSalvaProdotto4() {
         Prodotto prodotto = new Prodotto();
         prodotto.setNome("Cake");
-        prodotto.setPrezzoUnitario(new BigDecimal("15.00"));
+        prodotto.setPrezzoUnitario(new BigDecimal("20.00"));
+        prodotto.setQuantitaDisponibile(10);
+
+        Prodotto prodottoSalvato = prodottoRepository.save(prodotto);
+        assertNotNull(prodottoSalvato.getId());
+    }
+    @Test
+    public void testSalvaProdotto5() {
+        Prodotto prodotto = new Prodotto();
+        prodotto.setNome("Smart Tv");
+        prodotto.setPrezzoUnitario(new BigDecimal("5000.00"));
         prodotto.setQuantitaDisponibile(10);
 
         Prodotto prodottoSalvato = prodottoRepository.save(prodotto);

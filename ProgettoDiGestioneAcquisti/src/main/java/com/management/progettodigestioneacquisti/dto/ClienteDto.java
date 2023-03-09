@@ -1,11 +1,9 @@
 package com.management.progettodigestioneacquisti.dto;
 
-import com.management.progettodigestioneacquisti.model.Acquisto;
 import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.List;
-
 
 @Getter
 @Setter
@@ -21,6 +19,8 @@ public class ClienteDto {
     private BigDecimal budget;
     private BigDecimal importoTotaleSpeso;
     private int numeroAcquisti;
-    private List<Acquisto> acquisti;
+    private List<AcquistoDto> acquisti;
+    private List<StoricoAcquistiDto> storicoAcquisti;
+
 
 }

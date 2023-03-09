@@ -9,6 +9,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -18,17 +19,6 @@ import java.io.Serializable;
 @Entity
 @Table(name = "storico_acquisti")
 public class StoricoAcquisti implements Serializable {
-
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @Column(name = "id_storico_acquisti")
-//    private Long id;
-//    private Integer numeroAcquisti;
-//
-//    @Column(name = "nome_prodotto")
-//    private String nomeProdotto;
-//    @OneToMany(mappedBy = "storicoAcquisti")
-//    private List<Acquisto> acquisti;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,7 +36,8 @@ public class StoricoAcquisti implements Serializable {
     private int quantitaAcquistata;
     @Column(name = "nome_prodotto_acquistato")
     private String nomeProdotto;
-
+    @Column(name = "data_acquisto")
+    private LocalDate dataAcquisto;
 
 }
 

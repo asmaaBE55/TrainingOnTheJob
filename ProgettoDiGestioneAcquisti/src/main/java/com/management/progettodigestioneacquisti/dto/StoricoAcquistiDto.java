@@ -1,6 +1,5 @@
 package com.management.progettodigestioneacquisti.dto;
 
-import com.management.progettodigestioneacquisti.model.Acquisto;
 import lombok.*;
 
 import java.util.List;
@@ -14,5 +13,5 @@ public class StoricoAcquistiDto {
     private Long id;
     private Integer numeroAcquisti;
     private String nomeProdotto;
-    private List<Acquisto> acquisti;
+    private List<AcquistoDto> acquisti;
 }

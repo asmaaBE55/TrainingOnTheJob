@@ -8,6 +8,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
 @Api(tags = "Scontrino API")
 public interface ScontrinoController {
     @ApiOperation("Crea scontrino cliente")
@@ -15,4 +18,7 @@ public interface ScontrinoController {
 
     @ApiOperation("Get scontrino by id")
     ScontrinoDto getScontrinoById(@PathVariable Long id);
+
+    @ApiOperation("Esporta lista scontrini in un file excel")
+    void exportAcquistiToExcel(HttpServletResponse response) throws IOException;
 }

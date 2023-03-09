@@ -14,6 +14,7 @@ import org.springframework.validation.BindingResult;
 
 import javax.validation.ValidationException;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 
 @RequiredArgsConstructor
@@ -44,6 +45,7 @@ public class AcquistoService {
         acquisto.setQuantitaAcquistata(quantitaDesiderata);
         acquisto.setNomeProdottoAcquistato(prodotto.getNome());
         acquisto.setPrezzoDiAcquisto(prezzoTotale);
+        acquisto.setDataAcquisto(LocalDate.now());
         acquisto.setScontrino(acquisto.getScontrino());
 
         // Cerca il prodotto nello storico degli acquisti del cliente
@@ -60,12 +62,12 @@ public class AcquistoService {
             storicoAcquisti.setProdotto(prodotto);
             storicoAcquisti.setCliente(cliente);
             storicoAcquisti.setNomeProdotto(prodotto.getNome());
+            storicoAcquisti.setDataAcquisto(LocalDate.now());
             storicoAcquisti.setQuantitaAcquistata(quantitaDesiderata);
         }
 
         acquistoRepository.save(acquisto);
 
-        //scontrinoService.creaScontrino(cliente, Collections.singletonList(acquisto));
 
         prodottoService.updateQuantityDopoAcquisto(prodotto, acquisto);
         clienteService.updateNumeroAcquisti(cliente, acquisto);
@@ -78,10 +80,5 @@ public class AcquistoService {
         return acquisto;
 
     }
-
-    public Acquisto findById(Long id) {
-        return acquistoRepository.findAcquistoById(id);
-    }
-
 
 }
