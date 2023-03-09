@@ -3,6 +3,7 @@ package com.management.progettodigestioneacquisti.dto;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.Base64;
 import java.util.List;
 
 @Getter
@@ -16,5 +17,6 @@ public class ProdottoDto {
     private int quantitaDisponibile;
     private BigDecimal prezzoUnitario;
     private List<AcquistoDto> acquisti;
+    private byte[] immagine;
 
 }

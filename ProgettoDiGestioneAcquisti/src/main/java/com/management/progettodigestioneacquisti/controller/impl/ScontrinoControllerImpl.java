@@ -43,18 +43,15 @@ public class ScontrinoControllerImpl implements ScontrinoController {
         Scontrino scontrino = scontrinoService.creaScontrino(idCliente);
         return scontrino;
     }
-
-
     @Override
     @GetMapping("/{id}")
     public ScontrinoDto getScontrinoById(@PathVariable Long id) {
         Scontrino scontrino = scontrinoService.getScontrinoById(id);
         return scontrinoMapper.asDTO(scontrino);
     }
-
     @Override
-    @GetMapping("/acquisti/excel")
-    public void exportAcquistiToExcel(HttpServletResponse response) throws IOException {
+    @GetMapping("/scontrini/excel")
+    public void exportScontriniToExcel(HttpServletResponse response) throws IOException {
         List<Scontrino> scontrini = scontrinoRepository.findAll();
         Workbook scontrinoWorkBook = new XSSFWorkbook();
         Sheet sheet = scontrinoWorkBook.createSheet("Scontrini");

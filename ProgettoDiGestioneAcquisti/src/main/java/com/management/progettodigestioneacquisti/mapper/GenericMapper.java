@@ -11,6 +11,7 @@ public interface GenericMapper<E, D> {
 
     List<D> asDTOlist(List<E> entityList);
 
+
 }
 
 

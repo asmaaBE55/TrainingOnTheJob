@@ -20,11 +20,9 @@ import java.util.List;
 @Transactional
 @Service
 public class ScontrinoService {
-
     private final ScontrinoRepository scontrinoRepository;
     private final ClienteRepository clienteRepository;
     private final AcquistoRepository acquistoRepository;
-
 
     public Scontrino creaScontrino(Long idCliente) {
         Cliente cliente = clienteRepository.findById(idCliente)

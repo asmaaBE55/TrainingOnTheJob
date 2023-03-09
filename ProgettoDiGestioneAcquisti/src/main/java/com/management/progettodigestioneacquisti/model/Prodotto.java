@@ -27,6 +27,9 @@ public class Prodotto implements Serializable {
     private String nome;
     private BigDecimal prezzoUnitario;
     private int quantitaDisponibile;
+    @Lob
+    @Column(name = "immagine")
+    private byte[] immagine;
     @ManyToMany(mappedBy = "prodottiAcquistati", fetch = FetchType.EAGER)
     private List<Acquisto> acquisti;
 

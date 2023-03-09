@@ -19,12 +19,9 @@ import java.util.List;
 public class StoricoAcquistiService {
     private final StoricoAcquistiRepository storicoAcquistiRepository;
     private final AcquistoRepository acquistoRepository;
-    private final StoricoAcquistiMapper storicoAcquistiMapper;
-
     public StoricoAcquisti saveAcquisto(StoricoAcquisti storicoAcquisti) {
         return storicoAcquistiRepository.save(storicoAcquisti);
     }
-
     public String getAcquistiByClienteIdAndPeriodoAsString(Long clienteId, LocalDate dataInizio, LocalDate dataFine) {
         List<Acquisto> acquisti = acquistoRepository.findByClienteIdAndDataAcquistoBetween(clienteId, dataInizio, dataFine);
         StringBuilder sb = new StringBuilder();
