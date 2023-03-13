@@ -39,9 +39,6 @@ public class StoricoAcquistiService {
         return sb.toString();
     }
 
-    public List<Acquisto> getStoricoAcquistiByClienteIdAndPeriodo(Cliente clienteId) {
-        return acquistoRepository.findByCliente(clienteId);
-    }
 
 }
 

@@ -35,10 +35,14 @@ public class Cliente implements Serializable {
     private BigDecimal budget;
     private BigDecimal importoTotaleSpeso;
     private int numeroAcquisti;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cliente")
     private List<Acquisto> acquisti;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cliente")
     private List<StoricoAcquisti> storicoAcquisti;
+    @OneToOne
+    @JoinColumn(name = "scontrino_id", referencedColumnName = "scontrino_id")
+    private Scontrino scontrino;
 
     public enum TipoCliente {
         NUOVO_CLIENTE,

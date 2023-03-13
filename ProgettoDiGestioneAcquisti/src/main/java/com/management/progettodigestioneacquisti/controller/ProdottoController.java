@@ -2,14 +2,14 @@ package com.management.progettodigestioneacquisti.controller;
 
 import com.management.progettodigestioneacquisti.dto.ProdottoDto;
 import com.management.progettodigestioneacquisti.exception.ProductNotFoundException;
+import com.management.progettodigestioneacquisti.exception.ScontoProdottoNonLogico;
+import com.management.progettodigestioneacquisti.model.Prodotto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
@@ -32,5 +32,6 @@ public interface ProdottoController {
     ResponseEntity<?> delete(@PathVariable("id") Long id);
 
     @ApiOperation("Aggiungi uno sconto ad un prodotto")
-    ProdottoDto updateProdotto(@PathVariable Long id, @RequestParam Double sconto) throws ChangeSetPersister.NotFoundException;
+    ProdottoDto updateProdotto(@PathVariable Long id, @RequestParam Double sconto) throws ChangeSetPersister.NotFoundException, ScontoProdottoNonLogico;
+
 }

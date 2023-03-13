@@ -2,15 +2,15 @@ package com.management.progettodigestioneacquisti.controller.impl;
 
 import com.management.progettodigestioneacquisti.controller.AcquistoController;
 import com.management.progettodigestioneacquisti.dto.ProdottoDto;
+import com.management.progettodigestioneacquisti.exception.FidelityCardNotFoundException;
 import com.management.progettodigestioneacquisti.exception.InsufficientFundsException;
+import com.management.progettodigestioneacquisti.exception.NotEnoughPointsException;
 import com.management.progettodigestioneacquisti.exception.ProductNotFoundException;
 import com.management.progettodigestioneacquisti.model.Acquisto;
 import com.management.progettodigestioneacquisti.model.Cliente;
+import com.management.progettodigestioneacquisti.model.FidelityCard;
 import com.management.progettodigestioneacquisti.model.Prodotto;
-import com.management.progettodigestioneacquisti.service.AcquistoService;
-import com.management.progettodigestioneacquisti.service.ClienteService;
-import com.management.progettodigestioneacquisti.service.ProdottoService;
-import com.management.progettodigestioneacquisti.service.StoricoAcquistiService;
+import com.management.progettodigestioneacquisti.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -30,6 +30,7 @@ public class AcquistoControllerImpl implements AcquistoController {
     private final ClienteService clienteService;
     private final ProdottoService prodottoService;
     private final StoricoAcquistiService storicoAcquistiService;
+    private final FidelityCardService fidelityCardService;
 
     /**
      * Questo controller permette al cliente di acquistare uno o più prodotti sfruttando del metodo compraProdotto() del servizio
@@ -56,6 +57,42 @@ public class AcquistoControllerImpl implements AcquistoController {
         } catch (ProductNotFoundException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         } catch (InsufficientFundsException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    @PostMapping("/{id}/compra-prodotto-fidelitycard/{card_id}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<?> compraProdottoConFidelityCard(@PathVariable Long id, @PathVariable Long card_id, @RequestBody List<ProdottoDto> prodotti, BindingResult result) {
+        try {
+            Cliente cliente = clienteService.getClienteById(id);
+            List<Acquisto> acquisti = new ArrayList<>();
+            // Verifica se il cliente ha una fidelity card
+            FidelityCard fidelityCard = fidelityCardService.getFidelityCardByClienteId(cliente.getId());
+            if (fidelityCard == null) {
+                throw new FidelityCardNotFoundException("Devi avere la fidelity card per poter acquistare prodotti scontati");
+            }
+            for (ProdottoDto prodottoDto : prodotti) {
+                Prodotto prodotto = prodottoService.getProdottoById(prodottoDto.getId());
+                int quantitaDesiderata = prodottoDto.getQuantitaDisponibile();
+
+                if (prodotto.isStatoSconto()) {
+                    Acquisto acquisto = acquistoService.compraProdottoConFidelityCard(cliente, prodotto, quantitaDesiderata, result);
+                    acquisti.add(acquisto);
+                }else {
+                    Acquisto acquisto=acquistoService.compraProdotto(cliente,prodotto,quantitaDesiderata,result);
+                    acquisti.add(acquisto);
+                }
+                if(fidelityCard.getPuntiAccumulati()>=100){
+                    Acquisto acquisto=acquistoService.prodottoRegalo100PuntiAccumulati(cliente);
+                    acquisti.add(acquisto);
+                }
+            }
+            return ResponseEntity.ok(acquisti);
+        } catch (ProductNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (InsufficientFundsException | FidelityCardNotFoundException | NotEnoughPointsException e) {
             throw new RuntimeException(e);
         }
     }

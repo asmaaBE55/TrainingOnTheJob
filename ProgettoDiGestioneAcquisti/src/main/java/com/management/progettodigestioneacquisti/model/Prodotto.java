@@ -5,6 +5,7 @@ package com.management.progettodigestioneacquisti.model;
  */
 
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -21,14 +22,22 @@ import java.util.List;
 public class Prodotto implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "prodotto_id")
-    private Long id;
+    @Column(name = "prodotto_id", updatable = false, nullable = false)
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    private String id;
+    @Column(name = "nome")
     private String nome;
+    @Column(name = "prezzo_unitario")
     private BigDecimal prezzoUnitario;
+    @Column(name = "prezzo_scontato")
+    private BigDecimal prezzoScontato;
+    @Column(name = "quantita_disponibile")
     private int quantitaDisponibile;
     @Column(name = "sconto")
     private String scontato;
+    @Column(name = "stato_sconto")
+    private boolean statoSconto;
     @Lob
     @Column(name = "immagine")
     private byte[] immagine;

@@ -1,5 +1,6 @@
 package com.management.progettodigestioneacquisti.dto;
 
+import com.management.progettodigestioneacquisti.model.FidelityCard;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -21,6 +22,5 @@ public class ClienteDto {
     private int numeroAcquisti;
     private List<AcquistoDto> acquisti;
     private List<StoricoAcquistiDto> storicoAcquisti;
-
 
 }

@@ -5,11 +5,10 @@ import com.management.progettodigestioneacquisti.dto.ProdottoDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -19,6 +18,9 @@ public interface AcquistoController {
 
     @ApiOperation("Compra uno o più prodotti")
     ResponseEntity<?> compraProdotti(@PathVariable Long id, @RequestBody List<ProdottoDto> prodotti, BindingResult result);
+
+    @ApiOperation("Compra uno o più prodotti scontati usando la tua fidelity card")
+     ResponseEntity<?> compraProdottoConFidelityCard(@PathVariable Long id, @PathVariable Long card_id, @RequestBody List<ProdottoDto> prodotti, BindingResult result);
 
     @ApiOperation("Get acquisti fatte da un cliente in un certo periodo")
     ResponseEntity<String> getAcquistiByClienteIdAndPeriodoAsString(@PathVariable Long clienteId,

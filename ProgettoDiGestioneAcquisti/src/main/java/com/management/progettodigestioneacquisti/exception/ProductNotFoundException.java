@@ -6,7 +6,6 @@ public class ProductNotFoundException extends Exception {
     }
 
     public ProductNotFoundException(String id) {
-        super("User with ID " + id + " not found.");
+        super("");
     }
-
 }

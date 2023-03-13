@@ -2,6 +2,7 @@ package com.management.progettodigestioneacquisti.service;
 
 import com.management.progettodigestioneacquisti.dto.ProdottoDto;
 import com.management.progettodigestioneacquisti.exception.ProductNotFoundException;
+import com.management.progettodigestioneacquisti.exception.ScontoProdottoNonLogico;
 import com.management.progettodigestioneacquisti.model.Acquisto;
 import com.management.progettodigestioneacquisti.model.Prodotto;
 import com.management.progettodigestioneacquisti.repository.ProdottoRepository;
@@ -23,6 +24,7 @@ import java.util.Optional;
 @Service
 public class ProdottoService {
     private final ProdottoRepository prodottoRepository;
+    private final FidelityCardService fidelityCardService;
 
     public Prodotto createProduct(Prodotto prodotto, MultipartFile file) throws IOException {
         byte[] immagine = file.getBytes();
@@ -56,10 +58,6 @@ public class ProdottoService {
         return prodottoRepository.save(prodotto);
     }
 
-    public Prodotto getProdottoByNome(String nomeProdottoAcquistato) {
-        return prodottoRepository.findProductByNome(nomeProdottoAcquistato);
-    }
-
     public ProdottoDto asDtoConImmagine(Prodotto prodotto) throws IOException {
         String uploadDirectory = "src/main/resources/images/";
         ProdottoDto prodottoDto = new ProdottoDto();
@@ -85,9 +83,10 @@ public class ProdottoService {
         }
     }
 
-    public Prodotto updateProdotto(Prodotto prodotto, Double percentualeSconto) throws ChangeSetPersister.NotFoundException {
+    public void updateProdotto(Prodotto prodotto, Double percentualeSconto) throws ChangeSetPersister.NotFoundException, ScontoProdottoNonLogico {
         Prodotto prodottoEsistente = prodottoRepository.findById(prodotto.getId())
                 .orElseThrow(ChangeSetPersister.NotFoundException::new);
+        StringBuilder sc = new StringBuilder();
 
         prodottoEsistente.setNome(prodotto.getNome());
         prodottoEsistente.setPrezzoUnitario(prodotto.getPrezzoUnitario());
@@ -98,15 +97,15 @@ public class ProdottoService {
         BigDecimal prezzoUnitario = prodotto.getPrezzoUnitario();
         BigDecimal sconto = prezzoUnitario.multiply(percentualeScontoDecimal).divide(cento);
         BigDecimal prezzoScontato = prezzoUnitario.subtract(sconto);
-        StringBuilder sc = new StringBuilder();
-        prodottoEsistente.setPrezzoUnitario(prezzoScontato);
+        prodottoEsistente.setPrezzoScontato(prezzoScontato);
+
         if (sconto.compareTo(BigDecimal.ZERO) > 0) {
-            prodottoEsistente.setScontato(String.valueOf(sc.append("Questo prodotto è stato scontato al:").append(sconto.doubleValue() * 10).append("%")));
+            prodottoEsistente.setScontato(String.valueOf(sc.append("Questo prodotto è stato scontato al:").append(percentualeSconto).append("%")));
+            prodottoEsistente.setStatoSconto(true);
         }
 
-        return prodottoRepository.save(prodottoEsistente);
+        prodottoRepository.save(prodottoEsistente);
     }
-
 
 }
 

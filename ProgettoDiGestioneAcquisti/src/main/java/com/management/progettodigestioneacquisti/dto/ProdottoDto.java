@@ -15,7 +15,9 @@ public class ProdottoDto {
     private String nome;
     private int quantitaDisponibile;
     private BigDecimal prezzoUnitario;
+    private BigDecimal prezzoScontato;
     private List<AcquistoDto> acquisti;
+    private boolean statoSconto;
     private byte[] immagine;
     private String scontato;
 

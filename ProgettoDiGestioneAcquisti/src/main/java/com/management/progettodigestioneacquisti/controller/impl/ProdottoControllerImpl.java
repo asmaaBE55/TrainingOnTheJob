@@ -4,8 +4,10 @@ import com.management.progettodigestioneacquisti.controller.ProdottoController;
 import com.management.progettodigestioneacquisti.converterimage.Base64ImageConverter;
 import com.management.progettodigestioneacquisti.dto.ProdottoDto;
 import com.management.progettodigestioneacquisti.exception.ProductNotFoundException;
+import com.management.progettodigestioneacquisti.exception.ScontoProdottoNonLogico;
 import com.management.progettodigestioneacquisti.mapper.ProdottoMapper;
 import com.management.progettodigestioneacquisti.model.Prodotto;
+import com.management.progettodigestioneacquisti.repository.ProdottoRepository;
 import com.management.progettodigestioneacquisti.service.ProdottoService;
 import com.management.progettodigestioneacquisti.validators.ProdottoValidator;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +34,7 @@ public class ProdottoControllerImpl implements ProdottoController {
     private final ProdottoService prodottoService;
     private final ProdottoMapper prodottoMapper;
     private final ProdottoValidator prodottoValidator;
+    private final ProdottoRepository prodottoRepository;
 
 
     @Override
@@ -82,7 +85,7 @@ public class ProdottoControllerImpl implements ProdottoController {
 
     @Override
     @PutMapping("/{id}")
-    public ProdottoDto updateProdotto(@PathVariable Long id, @RequestParam Double sconto) throws ChangeSetPersister.NotFoundException {
+    public ProdottoDto updateProdotto(@PathVariable Long id, @RequestParam Double sconto) throws ChangeSetPersister.NotFoundException, ScontoProdottoNonLogico {
         Prodotto prodotto = prodottoService.getProdottoById(id);
 
         if (prodotto == null) {
@@ -100,5 +103,21 @@ public class ProdottoControllerImpl implements ProdottoController {
         prodottoService.updateProdotto(prodotto, sconto);
         return prodottoMapper.asDTO(prodotto);
     }
+
+//    @RequestMapping(value = "/prodotti/{id}", method = RequestMethod.PUT)
+//    public ResponseEntity<Prodotto> aggiornaQuantitaDisponibile(@PathVariable Long id, @RequestBody Prodotto prodottoAggiornato) throws ProductNotFoundException {
+//        Prodotto prodotto = prodottoRepository.findById(id)
+//                .orElseThrow(() -> new ProductNotFoundException("Prodotto non trovato con id " + id));
+//
+//        int quantitaAggiunta = prodottoAggiornato.getQuantitaDisponibile() - prodotto.getQuantitaDisponibile();
+//        if (quantitaAggiunta > 0) {
+//            prodotto.setQuantitaDisponibile(prodottoAggiornato.getQuantitaDisponibile());
+//        }
+//
+//        Prodotto prodottoAggiornatoDb = prodottoRepository.save(prodotto);
+//
+//        return new ResponseEntity<>(prodottoAggiornatoDb, HttpStatus.OK);
+//    }
+
 
 }
