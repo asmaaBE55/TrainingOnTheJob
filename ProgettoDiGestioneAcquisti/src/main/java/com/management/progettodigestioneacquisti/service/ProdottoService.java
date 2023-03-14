@@ -27,6 +27,7 @@ public class ProdottoService {
     private final FidelityCardService fidelityCardService;
 
     public Prodotto createProduct(Prodotto prodotto, MultipartFile file) throws IOException {
+
         byte[] immagine = file.getBytes();
         prodotto.setImmagine(immagine);
         prodotto.setId(prodotto.getId());
@@ -35,10 +36,11 @@ public class ProdottoService {
         prodotto.setQuantitaDisponibile(prodotto.getQuantitaDisponibile());
         prodotto.setImmagine(prodotto.getImmagine());
         return prodottoRepository.save(prodotto);
+
     }
 
-    public Prodotto getProdottoById(Long id) {
-        return prodottoRepository.findProdottoById(id);
+    public Prodotto getProdottoById(String ean) {
+        return prodottoRepository.findProdottoByEanProdotto(ean);
     }
 
     public List<Prodotto> getAllProducts() {
@@ -73,8 +75,8 @@ public class ProdottoService {
         return prodottoDto;
     }
 
-    public void deleteProdotto(Long id) {
-        Optional<Prodotto> prodottoOp = prodottoRepository.findById(id);
+    public void deleteProdotto(String ean) {
+        Optional<Prodotto> prodottoOp = prodottoRepository.findById(ean);
         if (prodottoOp.isPresent()) {
             Prodotto prodotto = prodottoOp.get();
             prodottoRepository.delete(prodotto);
@@ -84,8 +86,7 @@ public class ProdottoService {
     }
 
     public void updateProdotto(Prodotto prodotto, Double percentualeSconto) throws ChangeSetPersister.NotFoundException, ScontoProdottoNonLogico {
-        Prodotto prodottoEsistente = prodottoRepository.findById(prodotto.getId())
-                .orElseThrow(ChangeSetPersister.NotFoundException::new);
+        Prodotto prodottoEsistente = prodottoRepository.findProdottoByEanProdotto(prodotto.getEanProdotto());
         StringBuilder sc = new StringBuilder();
 
         prodottoEsistente.setNome(prodotto.getNome());
@@ -107,5 +108,19 @@ public class ProdottoService {
         prodottoRepository.save(prodottoEsistente);
     }
 
+    @Transactional
+    public void aggiornaQuantitaDisponibile(String eanProdotto, int quantitaDaAggiungere) {
+        Optional<Prodotto> optionalProduct = Optional.ofNullable(prodottoRepository.findProdottoByEanProdotto(eanProdotto));
+        if (optionalProduct.isPresent()) {
+            Prodotto product = optionalProduct.get();
+            int quantitaDisponibile = product.getQuantitaDisponibile();
+            int nuovaQuantita = quantitaDisponibile + quantitaDaAggiungere;
+            product.setQuantitaDisponibile(nuovaQuantita);
+            prodottoRepository.save(product);
+        } else {
+            throw new RuntimeException("Prodotto non trovato con EAN " + eanProdotto);
+        }
+    }
 }
+
 

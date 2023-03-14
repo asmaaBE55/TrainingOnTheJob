@@ -28,7 +28,7 @@ public class ClienteValidator implements Validator {
         if (cliente.getNome() == null || cliente.getNome().isEmpty()) {
             errors.reject("nome", "Il nome del cliente non può essere vuoto.");
         }
-        // Controllo se il cliente ha abbastanza budget per effettuare un acquisto
+        // Controllo se il cliente ha abbastanza bilancio per effettuare un acquisto
         if (cliente.getBudget().compareTo(BigDecimal.ZERO) < 0) {
             errors.reject("budget", "Il budget del cliente non può essere negativo.");
         }

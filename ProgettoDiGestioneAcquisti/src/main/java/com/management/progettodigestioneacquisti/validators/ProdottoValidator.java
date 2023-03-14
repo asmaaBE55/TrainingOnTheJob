@@ -29,9 +29,9 @@ public class ProdottoValidator implements Validator {
     public void validate(Object target, Errors errors) {
         ProdottoDto prodottoDto = (ProdottoDto) target;
 
-        if (prodottoDto.getId() != null) {
-            Prodotto prodotto = null;
-            prodotto = prodottoService.getProdottoById(prodottoDto.getId());
+        if (prodottoDto.getEanProdotto() != null) {
+            Prodotto prodotto;
+            prodotto = prodottoService.getProdottoById(prodottoDto.getEanProdotto());
             int quantitaDisponibile = prodotto.getQuantitaDisponibile();
 
             if (quantitaDisponibile < prodottoDto.getQuantitaDisponibile()) {
@@ -52,8 +52,8 @@ public class ProdottoValidator implements Validator {
         if (prodottoDto.getQuantitaDisponibile() == 0 || prodottoDto.getQuantitaDisponibile() < 0) {
             errors.rejectValue("quantitaDisponibile", "prodotto.quantitaDisponibile.invalid", "La quantità disponibile del prodotto deve essere maggiore o uguale a zero");
         }
-        if (prodottoDto.getId() != null && prodottoRepository.existsProdottoById(prodottoDto.getId())) {
-            Prodotto existingProdotto = prodottoRepository.findProdottoById(prodottoDto.getId());
+        if (prodottoDto.getEanProdotto() != null && prodottoRepository.existsProdottoByEanProdotto(prodottoDto.getEanProdotto())) {
+            Prodotto existingProdotto = prodottoRepository.findProdottoByEanProdotto(prodottoDto.getEanProdotto());
             if (!existingProdotto.getNome().equals(prodottoDto.getNome())) {
                 if (prodottoRepository.existsByNome(prodottoDto.getNome())) {
                     errors.rejectValue("nome", "prodotto.nome.duplicate", "Il nome del prodotto è già in uso");

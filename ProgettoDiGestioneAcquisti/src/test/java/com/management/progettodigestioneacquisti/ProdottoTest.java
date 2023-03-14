@@ -32,6 +32,7 @@ public class ProdottoTest {
         Path imagePath = Paths.get("src/main/resources/images/panettone.jpg");
         byte[] immagineBytes = Files.readAllBytes(imagePath);
         prodotto.setImmagine(immagineBytes);
+        prodotto.setEanProdotto(prodotto.getEanProdotto());
         prodotto.setScontato(prodotto.getScontato());
         Prodotto prodottoSalvato = prodottoRepository.save(prodotto);
         assertNotNull(prodottoSalvato.getId());
@@ -47,6 +48,7 @@ public class ProdottoTest {
         byte[] immagineBytes = Files.readAllBytes(imagePath);
         prodotto.setImmagine(immagineBytes);
         prodotto.setScontato(prodotto.getScontato());
+        prodotto.setEanProdotto(prodotto.getEanProdotto());
         Prodotto prodottoSalvato = prodottoRepository.save(prodotto);
         assertNotNull(prodottoSalvato.getId());
     }
@@ -61,6 +63,7 @@ public class ProdottoTest {
         byte[] immagineBytes = Files.readAllBytes(imagePath);
         prodotto.setImmagine(immagineBytes);
         prodotto.setScontato(prodotto.getScontato());
+        prodotto.setEanProdotto(prodotto.getEanProdotto());
         Prodotto prodottoSalvato = prodottoRepository.save(prodotto);
         assertNotNull(prodottoSalvato.getId());
     }
@@ -75,21 +78,9 @@ public class ProdottoTest {
         byte[] immagineBytes = Files.readAllBytes(imagePath);
         prodotto.setImmagine(immagineBytes);
         prodotto.setScontato(prodotto.getScontato());
+        prodotto.setEanProdotto(prodotto.getEanProdotto());
         Prodotto prodottoSalvato = prodottoRepository.save(prodotto);
         assertNotNull(prodottoSalvato.getId());
     }
 
-    @Test
-    public void testSalvaProdotto5() throws IOException {
-        Prodotto prodotto = new Prodotto();
-        prodotto.setNome("Smart Tv");
-        prodotto.setPrezzoUnitario(new BigDecimal("5000.00"));
-        prodotto.setQuantitaDisponibile(10);
-        Path imagePath = Paths.get("src/main/resources/images/smart.jpeg");
-        byte[] immagineBytes = Files.readAllBytes(imagePath);
-        prodotto.setImmagine(immagineBytes);
-        prodotto.setScontato(prodotto.getScontato());
-        Prodotto prodottoSalvato = prodottoRepository.save(prodotto);
-        assertNotNull(prodottoSalvato.getId());
-    }
 }

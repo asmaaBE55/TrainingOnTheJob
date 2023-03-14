@@ -1,11 +1,9 @@
 package com.management.progettodigestioneacquisti.model;
 
 import lombok.*;
-import org.apache.commons.codec.binary.Hex;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -15,17 +13,17 @@ import java.util.UUID;
 @Entity
 @Table(name = "fidelity_card")
 public class FidelityCard implements Serializable {
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        @Column(name = "id_card")
-        private Long id;
-        @Column(name = "punti_accumulati")
-        private int puntiAccumulati;
-        @OneToOne
-        @JoinColumn(name = "cliente_id", referencedColumnName = "cliente_id")
-        private Cliente cliente;
-        @Column(name = "nome_proprietario_card")
-        private String nomeProprietarioCard;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_card")
+    private Long id;
+    @Column(name = "punti_accumulati")
+    private int puntiAccumulati;
+    @OneToOne
+    @JoinColumn(name = "cliente_id", referencedColumnName = "cliente_id")
+    private Cliente cliente;
+    @Column(name = "nome_proprietario_card")
+    private String nomeProprietarioCard;
 }
 
 

@@ -19,7 +19,6 @@ public class FidelityCardService {
     private final ClienteRepository clienteRepository;
 
 
-
     public FidelityCard creaFidelityCard(Long idCliente) {
         Cliente cliente = clienteRepository.findById(idCliente)
                 .orElseThrow(() -> new IllegalArgumentException("Cliente non trovato con ID " + idCliente));
@@ -39,6 +38,7 @@ public class FidelityCardService {
         fidelityCard.setPuntiAccumulati(nuoviPunti);
         fidelityCardRepository.save(fidelityCard);
     }
+
     public FidelityCard getFidelityCardByClienteId(Long clienteId) {
         return fidelityCardRepository.findByClienteId(clienteId);
     }

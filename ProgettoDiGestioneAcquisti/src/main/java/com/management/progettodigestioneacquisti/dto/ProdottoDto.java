@@ -20,5 +20,6 @@ public class ProdottoDto {
     private boolean statoSconto;
     private byte[] immagine;
     private String scontato;
-
+    private String eanProdotto;
+    private BigDecimal prezzoFornitore;
 }

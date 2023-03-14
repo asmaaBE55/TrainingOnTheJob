@@ -3,11 +3,9 @@ package com.management.progettodigestioneacquisti.controller.impl;
 import com.management.progettodigestioneacquisti.controller.ProdottoController;
 import com.management.progettodigestioneacquisti.converterimage.Base64ImageConverter;
 import com.management.progettodigestioneacquisti.dto.ProdottoDto;
-import com.management.progettodigestioneacquisti.exception.ProductNotFoundException;
 import com.management.progettodigestioneacquisti.exception.ScontoProdottoNonLogico;
 import com.management.progettodigestioneacquisti.mapper.ProdottoMapper;
 import com.management.progettodigestioneacquisti.model.Prodotto;
-import com.management.progettodigestioneacquisti.repository.ProdottoRepository;
 import com.management.progettodigestioneacquisti.service.ProdottoService;
 import com.management.progettodigestioneacquisti.validators.ProdottoValidator;
 import lombok.RequiredArgsConstructor;
@@ -33,14 +31,13 @@ import java.util.List;
 public class ProdottoControllerImpl implements ProdottoController {
     private final ProdottoService prodottoService;
     private final ProdottoMapper prodottoMapper;
-    private final ProdottoValidator prodottoValidator;
-    private final ProdottoRepository prodottoRepository;
 
 
     @Override
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ProdottoDto createProduct(@RequestBody @Valid ProdottoDto prodottoDto, @RequestParam("file") MultipartFile file, BindingResult result) throws IOException {
+        ProdottoValidator prodottoValidator = new ProdottoValidator();
         prodottoValidator.validate(prodottoDto, result);
         if (result.hasErrors()) {
             throw new ValidationException("Dati prodotto non validi " + result);
@@ -51,9 +48,9 @@ public class ProdottoControllerImpl implements ProdottoController {
 
 
     @Override
-    @GetMapping("/{id}")
-    public ProdottoDto findById(@PathVariable Long id) throws ProductNotFoundException {
-        Prodotto prodotto = prodottoService.getProdottoById(id);
+    @GetMapping("/{ean}")
+    public ProdottoDto findById(@PathVariable String ean) {
+        Prodotto prodotto = prodottoService.getProdottoById(ean);
         return prodottoMapper.asDTO(prodotto);
     }
 
@@ -73,20 +70,20 @@ public class ProdottoControllerImpl implements ProdottoController {
     }
 
     @Override
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
-        Prodotto prodotto = prodottoService.getProdottoById(id);
+    @DeleteMapping("/{ean}")
+    public ResponseEntity<?> delete(@PathVariable("ean") String ean) {
+        Prodotto prodotto = prodottoService.getProdottoById(ean);
         if (prodotto == null) {
             return ResponseEntity.notFound().build();
         }
-        prodottoService.deleteProdotto(id);
+        prodottoService.deleteProdotto(ean);
         return ResponseEntity.ok().build();
     }
 
     @Override
-    @PutMapping("/{id}")
-    public ProdottoDto updateProdotto(@PathVariable Long id, @RequestParam Double sconto) throws ChangeSetPersister.NotFoundException, ScontoProdottoNonLogico {
-        Prodotto prodotto = prodottoService.getProdottoById(id);
+    @PutMapping("/{ean}")
+    public ProdottoDto updateProdotto(@PathVariable String ean, @RequestParam Double sconto) throws ChangeSetPersister.NotFoundException, ScontoProdottoNonLogico {
+        Prodotto prodotto = prodottoService.getProdottoById(ean);
 
         if (prodotto == null) {
             throw new ChangeSetPersister.NotFoundException();
@@ -104,20 +101,13 @@ public class ProdottoControllerImpl implements ProdottoController {
         return prodottoMapper.asDTO(prodotto);
     }
 
-//    @RequestMapping(value = "/prodotti/{id}", method = RequestMethod.PUT)
-//    public ResponseEntity<Prodotto> aggiornaQuantitaDisponibile(@PathVariable Long id, @RequestBody Prodotto prodottoAggiornato) throws ProductNotFoundException {
-//        Prodotto prodotto = prodottoRepository.findById(id)
-//                .orElseThrow(() -> new ProductNotFoundException("Prodotto non trovato con id " + id));
-//
-//        int quantitaAggiunta = prodottoAggiornato.getQuantitaDisponibile() - prodotto.getQuantitaDisponibile();
-//        if (quantitaAggiunta > 0) {
-//            prodotto.setQuantitaDisponibile(prodottoAggiornato.getQuantitaDisponibile());
-//        }
-//
-//        Prodotto prodottoAggiornatoDb = prodottoRepository.save(prodotto);
-//
-//        return new ResponseEntity<>(prodottoAggiornatoDb, HttpStatus.OK);
-//    }
-
+    @Override
+    @PostMapping("/{ean}/stock")
+    public ResponseEntity<String> aggiornaQuantitaDisponibile(@PathVariable("ean") String eanProdotto,
+                                                              @RequestParam("quantity") int quantitaDaAggiungere) {
+        prodottoService.aggiornaQuantitaDisponibile(eanProdotto, quantitaDaAggiungere);
+        return ResponseEntity.ok().body("Quantità disponibile aggiornata con successo per EAN " + eanProdotto);
+    }
 
 }
+

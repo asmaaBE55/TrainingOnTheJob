@@ -4,8 +4,8 @@ package com.management.progettodigestioneacquisti.model;
  * Ogni prodotto ha un ID univoco e può essere acquistato in una o più quantità.
  */
 
+import com.management.progettodigestioneacquisti.input.EanGenerator;
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -22,10 +22,8 @@ import java.util.List;
 public class Prodotto implements Serializable {
 
     @Id
-    @Column(name = "prodotto_id", updatable = false, nullable = false)
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     @Column(name = "nome")
     private String nome;
     @Column(name = "prezzo_unitario")
@@ -43,5 +41,14 @@ public class Prodotto implements Serializable {
     private byte[] immagine;
     @ManyToMany(mappedBy = "prodottiAcquistati", fetch = FetchType.EAGER)
     private List<Acquisto> acquisti;
+    @Column(name = "ean_prodotto")
+    private String eanProdotto;
+    @Column(name = "prezzo_fornitore")
+    private BigDecimal prezzoFornitore;
+
+    @PrePersist
+    private void generateEan() {
+        this.eanProdotto = EanGenerator.generateEan();
+    }
 
 }

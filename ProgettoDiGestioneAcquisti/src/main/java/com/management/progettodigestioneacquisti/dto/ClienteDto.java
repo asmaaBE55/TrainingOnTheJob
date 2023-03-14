@@ -1,6 +1,5 @@
 package com.management.progettodigestioneacquisti.dto;
 
-import com.management.progettodigestioneacquisti.model.FidelityCard;
 import lombok.*;
 
 import java.math.BigDecimal;

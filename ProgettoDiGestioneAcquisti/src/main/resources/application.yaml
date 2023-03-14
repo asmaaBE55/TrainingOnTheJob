@@ -1,4 +1,7 @@
 spring:
+  main:
+    allow-bean-definition-overriding: true
+
   datasource:
     url: jdbc:mysql://localhost:3306/GestioneAcquistiVendite?useSSL=false
     username: asmaa
@@ -16,10 +19,14 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+  batch:
+    jdbc:
+      initialize-schema: always
 
 server:
   port: 9500
   servlet:
     context-path: /api
-
-
+export:
+  file:
+    path: /path/to/export/file.csv

@@ -5,5 +5,5 @@ import com.management.progettodigestioneacquisti.model.FidelityCard;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
-public interface FidelityCardMapper extends GenericMapper<FidelityCard,FidelityCardDto> {
+public interface FidelityCardMapper extends GenericMapper<FidelityCard, FidelityCardDto> {
 }

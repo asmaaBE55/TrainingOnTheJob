@@ -1,7 +1,6 @@
 package com.management.progettodigestioneacquisti.service;
 
 import com.management.progettodigestioneacquisti.model.Acquisto;
-import com.management.progettodigestioneacquisti.model.Cliente;
 import com.management.progettodigestioneacquisti.model.StoricoAcquisti;
 import com.management.progettodigestioneacquisti.repository.AcquistoRepository;
 import com.management.progettodigestioneacquisti.repository.StoricoAcquistiRepository;

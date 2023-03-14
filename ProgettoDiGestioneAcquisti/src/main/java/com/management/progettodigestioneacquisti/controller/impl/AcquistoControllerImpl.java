@@ -48,7 +48,7 @@ public class AcquistoControllerImpl implements AcquistoController {
             Cliente cliente = clienteService.getClienteById(id);
             List<Acquisto> acquisti = new ArrayList<>();
             for (ProdottoDto prodottoDto : prodotti) {
-                Prodotto prodotto = prodottoService.getProdottoById(prodottoDto.getId());
+                Prodotto prodotto = prodottoService.getProdottoById(prodottoDto.getEanProdotto());
                 int quantitaDesiderata = prodottoDto.getQuantitaDisponibile();
                 Acquisto acquisto = acquistoService.compraProdotto(cliente, prodotto, quantitaDesiderata, result);
                 acquisti.add(acquisto);
@@ -74,18 +74,18 @@ public class AcquistoControllerImpl implements AcquistoController {
                 throw new FidelityCardNotFoundException("Devi avere la fidelity card per poter acquistare prodotti scontati");
             }
             for (ProdottoDto prodottoDto : prodotti) {
-                Prodotto prodotto = prodottoService.getProdottoById(prodottoDto.getId());
+                Prodotto prodotto = prodottoService.getProdottoById(prodottoDto.getEanProdotto());
                 int quantitaDesiderata = prodottoDto.getQuantitaDisponibile();
 
                 if (prodotto.isStatoSconto()) {
                     Acquisto acquisto = acquistoService.compraProdottoConFidelityCard(cliente, prodotto, quantitaDesiderata, result);
                     acquisti.add(acquisto);
-                }else {
-                    Acquisto acquisto=acquistoService.compraProdotto(cliente,prodotto,quantitaDesiderata,result);
+                } else {
+                    Acquisto acquisto = acquistoService.compraProdotto(cliente, prodotto, quantitaDesiderata, result);
                     acquisti.add(acquisto);
                 }
-                if(fidelityCard.getPuntiAccumulati()>=100){
-                    Acquisto acquisto=acquistoService.prodottoRegalo100PuntiAccumulati(cliente);
+                if (fidelityCard.getPuntiAccumulati() >= 100) {
+                    Acquisto acquisto = acquistoService.prodottoRegalo100PuntiAccumulati(cliente);
                     acquisti.add(acquisto);
                 }
             }
