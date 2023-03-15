@@ -67,7 +67,7 @@ public class BatchConfiguration {
     @Bean
     public Step prezzoCsvToDatabaseStep() {
         return stepBuilderFactory.get("prezzoCsvToDatabaseStep")
-                .<PrezzoDto, Prodotto>chunk(10)
+                .<PrezzoDto, Prodotto>chunk(10)//Il valore chunk(10) indica che il batch processor leggerà 10 righe per volta dal file input e scriverà 10 oggetti Prodotto nel database in una singola transazione.
                 .reader(prezzoCsvFileItemReader())
                 .processor(prezzoItemProcessor())
                 .writer(prezzoDatabaseItemWriter())
