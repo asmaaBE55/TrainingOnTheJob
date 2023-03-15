@@ -46,4 +46,5 @@ public class Acquisto implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "prodotto_id"))
     private List<Prodotto> prodottiAcquistati;
 
+
 }

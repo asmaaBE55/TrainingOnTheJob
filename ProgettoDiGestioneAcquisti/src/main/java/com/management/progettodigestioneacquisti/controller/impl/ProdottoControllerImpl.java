@@ -107,5 +107,16 @@ public class ProdottoControllerImpl implements ProdottoController {
         return ResponseEntity.ok().body("Quantità disponibile aggiornata con successo per EAN " + eanProdotto);
     }
 
+    @Override
+    @PostMapping("/importa-prezzi-fornitori")
+    public void importaPrezziFornitoriDalCsv() {
+        prodottoService.importaPrezziFornitoriDalCsv();
+    }
+
+    @Override
+    @PostMapping("/importa-quantita-fornita")
+    public void importaQuantitaFornita() {
+        prodottoService.importaQuantitaFornitaDalCsv();
+    }
 }
 

@@ -30,6 +30,8 @@ public class Prodotto implements Serializable {
     private BigDecimal prezzoUnitario;
     @Column(name = "prezzo_scontato")
     private BigDecimal prezzoScontato;
+    @Column(name = "quantita_fornita")
+    private int quantitaFornitaDallAzienda;
     @Column(name = "quantita_disponibile")
     private int quantitaDisponibile;
     @Column(name = "sconto")

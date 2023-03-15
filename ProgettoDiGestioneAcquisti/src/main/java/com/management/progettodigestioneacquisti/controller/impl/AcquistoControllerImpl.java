@@ -12,7 +12,10 @@ import com.management.progettodigestioneacquisti.model.FidelityCard;
 import com.management.progettodigestioneacquisti.model.Prodotto;
 import com.management.progettodigestioneacquisti.service.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -104,6 +107,31 @@ public class AcquistoControllerImpl implements AcquistoController {
                                                                            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFine) {
         String acquistiAsString = storicoAcquistiService.getAcquistiByClienteIdAndPeriodoAsString(clienteId, dataInizio, dataFine);
         return ResponseEntity.ok(acquistiAsString);
+    }
+
+    @Override
+    @GetMapping("/profitto")
+    public ResponseEntity<Resource> generaReportProfitto() {
+        try {
+            // Genera il report e ottiene il file
+            acquistoService.generaReportProfitto();
+            Resource file = new UrlResource("file:report_profitto.xlsx");
+
+            // Prepara la response con il file allegato
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=report_profitto.xlsx");
+            headers.add(HttpHeaders.CONTENT_TYPE, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            headers.add(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, HttpHeaders.CONTENT_DISPOSITION);
+
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .contentLength(file.contentLength())
+                    .body(file);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }
 

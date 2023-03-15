@@ -38,4 +38,10 @@ public interface ProdottoController {
     @ApiOperation("Aggiorna la quantità stock del prodotto")
     ResponseEntity<String> aggiornaQuantitaDisponibile(@PathVariable("ean") String eanProdotto,
                                                        @RequestParam("quantity") int quantitaDaAggiungere);
+
+    @ApiOperation("Importa prezzi fornitore")
+    void importaPrezziFornitoriDalCsv();
+
+    @ApiOperation("Importa quantita fornita")
+    void importaQuantitaFornita();
 }

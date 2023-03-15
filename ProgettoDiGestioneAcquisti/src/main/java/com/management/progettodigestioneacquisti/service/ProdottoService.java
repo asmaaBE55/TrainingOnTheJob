@@ -6,12 +6,14 @@ import com.management.progettodigestioneacquisti.model.Acquisto;
 import com.management.progettodigestioneacquisti.model.Prodotto;
 import com.management.progettodigestioneacquisti.repository.ProdottoRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.math.BigDecimal;
 import java.util.Base64;
 import java.util.List;
@@ -45,11 +47,11 @@ public class ProdottoService {
     }
 
     public void updateQuantityDopoAcquisto(Prodotto prodotto, Acquisto acquisto) throws ProductNotFoundException {
-        int nuovaQuantita = prodotto.getQuantitaDisponibile() - acquisto.getQuantitaAcquistata();
-        if (nuovaQuantita == 0) {
+        prodotto.setQuantitaDisponibile(prodotto.getQuantitaFornitaDallAzienda() - acquisto.getQuantitaAcquistata());
+        if (prodotto.getQuantitaDisponibile() == 0) {
             throw new ProductNotFoundException("Quantità esaurita");
         }
-        prodotto.setQuantitaDisponibile(Math.max(0, nuovaQuantita));
+        prodotto.setQuantitaDisponibile(Math.max(0, prodotto.getQuantitaDisponibile()));
         prodottoRepository.save(prodotto);
     }
 
@@ -110,15 +112,94 @@ public class ProdottoService {
         Optional<Prodotto> optionalProduct = Optional.ofNullable(prodottoRepository.findProdottoByEanProdotto(eanProdotto));
         if (optionalProduct.isPresent()) {
             Prodotto product = optionalProduct.get();
-            int quantitaDisponibile = product.getQuantitaDisponibile();
+            int quantitaDisponibile = product.getQuantitaFornitaDallAzienda();
             int nuovaQuantita = quantitaDisponibile + quantitaDaAggiungere;
-            product.setQuantitaDisponibile(nuovaQuantita);
+            product.setQuantitaFornitaDallAzienda(nuovaQuantita);
             prodottoRepository.save(product);
         } else {
             throw new RuntimeException("Prodotto non trovato con EAN " + eanProdotto);
         }
     }
 
+    public void importaPrezziFornitoriDalCsv() {
+        try {
+            Resource resource = new ClassPathResource("prezzi_fornitori.csv");
+            File file = resource.getFile();
+            BufferedReader br = new BufferedReader(new FileReader(file));
+
+            // Ignora la prima riga (header)
+            String line = br.readLine();
+
+            while ((line = br.readLine()) != null) {
+                String[] fields = line.split(",");
+
+                // Controlla che la riga abbia il numero corretto di campi
+                if (fields.length != 2) {
+                    System.out.println("La riga non ha il numero corretto di campi: " + line);
+                    continue;
+                }
+
+                // Esegue il parsing dei campi
+                String eanProdotto = fields[0].trim();
+                BigDecimal prezzoFornitore = new BigDecimal(fields[1].trim());
+
+                // Controlla che il prodotto esista nel database
+                Prodotto prodotto = prodottoRepository.findProdottoByEanProdotto(eanProdotto);
+                if (prodotto == null) {
+                    System.out.println("Prodotto non trovato: " + eanProdotto);
+                    continue;
+                }
+
+                // Aggiorna il prezzo fornitore del prodotto
+                prodotto.setPrezzoFornitore(prezzoFornitore);
+                prodottoRepository.save(prodotto);
+            }
+
+            br.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void importaQuantitaFornitaDalCsv() {
+        try {
+            Resource resource = new ClassPathResource("quantita_fornita.csv");
+            InputStream input = resource.getInputStream();
+            BufferedReader br = new BufferedReader(new InputStreamReader(input));
+
+            // Ignora la prima riga (header)
+            String line = br.readLine();
+
+            while ((line = br.readLine()) != null) {
+                String[] fields = line.split(",");
+
+                // Controlla che la riga abbia il numero corretto di campi
+                if (fields.length != 2) {
+                    System.out.println("La riga non ha il numero corretto di campi: " + line);
+                    continue;
+                }
+
+                // Esegue il parsing dei campi
+                String eanProdotto = fields[0].trim();
+                int quantitaFornita = Integer.parseInt(fields[1].trim());
+
+                // Controlla che il prodotto esista nel database
+                Prodotto prodotto = prodottoRepository.findProdottoByEanProdotto(eanProdotto);
+                if (prodotto == null) {
+                    System.out.println("Prodotto non trovato: " + eanProdotto);
+                    continue;
+                }
+
+                // Aggiorna il prezzo fornitore del prodotto
+                prodotto.setQuantitaFornitaDallAzienda(quantitaFornita);
+                prodottoRepository.save(prodotto);
+            }
+
+            br.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
 
 

@@ -28,7 +28,6 @@ public class ProdottoTest {
         Prodotto prodotto = new Prodotto();
         prodotto.setNome("Panettone");
         prodotto.setPrezzoUnitario(new BigDecimal("10.00"));
-        prodotto.setQuantitaDisponibile(30);
         Path imagePath = Paths.get("src/main/resources/images/panettone.jpg");
         byte[] immagineBytes = Files.readAllBytes(imagePath);
         prodotto.setImmagine(immagineBytes);
@@ -43,7 +42,6 @@ public class ProdottoTest {
         Prodotto prodotto = new Prodotto();
         prodotto.setNome("Pane");
         prodotto.setPrezzoUnitario(new BigDecimal("5.00"));
-        prodotto.setQuantitaDisponibile(10);
         Path imagePath = Paths.get("src/main/resources/images/pane.jpeg");
         byte[] immagineBytes = Files.readAllBytes(imagePath);
         prodotto.setImmagine(immagineBytes);
@@ -58,7 +56,6 @@ public class ProdottoTest {
         Prodotto prodotto = new Prodotto();
         prodotto.setNome("Cioccolatini");
         prodotto.setPrezzoUnitario(new BigDecimal("15.00"));
-        prodotto.setQuantitaDisponibile(20);
         Path imagePath = Paths.get("src/main/resources/images/cioccolatini.jpg");
         byte[] immagineBytes = Files.readAllBytes(imagePath);
         prodotto.setImmagine(immagineBytes);
@@ -73,7 +70,6 @@ public class ProdottoTest {
         Prodotto prodotto = new Prodotto();
         prodotto.setNome("Cake");
         prodotto.setPrezzoUnitario(new BigDecimal("20.00"));
-        prodotto.setQuantitaDisponibile(10);
         Path imagePath = Paths.get("src/main/resources/images/cake.jpeg");
         byte[] immagineBytes = Files.readAllBytes(imagePath);
         prodotto.setImmagine(immagineBytes);

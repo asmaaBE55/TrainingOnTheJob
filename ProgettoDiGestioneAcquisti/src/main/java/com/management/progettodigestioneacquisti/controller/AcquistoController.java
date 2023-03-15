@@ -4,6 +4,7 @@ package com.management.progettodigestioneacquisti.controller;
 import com.management.progettodigestioneacquisti.dto.ProdottoDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.core.io.Resource;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -27,4 +28,7 @@ public interface AcquistoController {
     ResponseEntity<String> getAcquistiByClienteIdAndPeriodoAsString(@PathVariable Long clienteId,
                                                                     @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInizio,
                                                                     @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFine);
+
+    @ApiOperation("Importa il file del profitto")
+    ResponseEntity<Resource> generaReportProfitto();
 }

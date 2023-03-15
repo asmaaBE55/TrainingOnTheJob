@@ -9,13 +9,20 @@ import com.management.progettodigestioneacquisti.repository.ClienteRepository;
 import com.management.progettodigestioneacquisti.repository.FidelityCardRepository;
 import com.management.progettodigestioneacquisti.repository.ProdottoRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 
 import javax.validation.ValidationException;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 
 @RequiredArgsConstructor
@@ -96,7 +103,7 @@ public class AcquistoService {
             throw new InsufficientFundsException("Budget insufficiente");
         }
 
-        if (quantitaDesiderata > prodotto.getQuantitaDisponibile()) {
+        if (quantitaDesiderata > prodotto.getQuantitaFornitaDallAzienda()) {
             throw new ProductNotFoundException("Quantità esaurita");
         }
 
@@ -178,4 +185,66 @@ public class AcquistoService {
         throw new NotEnoughPointsException("Non hai abbastanza punti accumulati per avere il prodotto gratuito");
     }
 
+    public void generaReportProfitto() {
+        try {
+            List<Prodotto> prodotti = prodottoRepository.findAll();
+            XSSFWorkbook workbook = new XSSFWorkbook();
+            XSSFSheet sheet = workbook.createSheet("Report Profitto");
+
+            // Intestazioni delle colonne
+            String[] headers = {"EAN", "Prezzo di acquisto", "Prezzo Fornitore", "Profitto"};
+            XSSFRow headerRow = sheet.createRow(0);
+            for (int i = 0; i < headers.length; i++) {
+                XSSFCell cell = headerRow.createCell(i);
+                cell.setCellValue(headers[i]);
+            }
+
+            // Aggiungi i dati delle righe al foglio excel
+            int rowNum = 1;
+            for (Prodotto prodotto : prodotti) {
+                if (prodotto.getQuantitaDisponibile() == 0) {
+                    continue;
+                }
+                if (prodotto.isStatoSconto()) {
+                    XSSFRow row = sheet.createRow(rowNum++);
+                    row.createCell(0).setCellValue(prodotto.getEanProdotto());
+                    row.createCell(1).setCellValue(prodotto.getPrezzoScontato().doubleValue());
+                    row.createCell(2).setCellValue(prodotto.getPrezzoFornitore().doubleValue());
+                    double profitto = (prodotto.getPrezzoScontato().doubleValue() - prodotto.getPrezzoFornitore().doubleValue()) * (prodotto.getQuantitaFornitaDallAzienda() - prodotto.getQuantitaDisponibile());
+                    row.createCell(3).setCellValue(profitto);
+                } else {
+                    XSSFRow row = sheet.createRow(rowNum++);
+                    row.createCell(0).setCellValue(prodotto.getEanProdotto());
+                    row.createCell(1).setCellValue(prodotto.getPrezzoUnitario().doubleValue());
+                    row.createCell(2).setCellValue(prodotto.getPrezzoFornitore().doubleValue());
+                    double profitto = (prodotto.getPrezzoUnitario().doubleValue() - prodotto.getPrezzoFornitore().doubleValue()) * (prodotto.getQuantitaFornitaDallAzienda() - prodotto.getQuantitaDisponibile());
+                    row.createCell(3).setCellValue(profitto);
+                }
+            }
+
+            // Calcola la somma dei profitti
+            double totaleProfitto = prodotti.stream()
+                    .filter(p -> p.getQuantitaDisponibile() != 0 && p.isStatoSconto())
+                    .mapToDouble(p -> (p.getPrezzoScontato().doubleValue() - p.getPrezzoFornitore().doubleValue()) * (p.getQuantitaFornitaDallAzienda() - p.getQuantitaDisponibile()))
+                    .sum();
+
+
+            // Aggiungi il totale del profitto alla fine del foglio excel
+            XSSFRow totaleRow = sheet.createRow(rowNum++);
+            totaleRow.createCell(4).setCellValue("Totale Profitto:");
+            totaleRow.createCell(5).setCellValue(totaleProfitto);
+
+            // Scrivi il file excel sul disco
+            String fileName = "report_profitto.xlsx";
+            File file = new File(fileName);
+            FileOutputStream outputStream = new FileOutputStream(file);
+            workbook.write(outputStream);
+            workbook.close();
+            System.out.println("Il report è stato generato correttamente e salvato in: " + file.getAbsolutePath());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Errore durante la generazione del report profitto.");
+        }
+    }
 }

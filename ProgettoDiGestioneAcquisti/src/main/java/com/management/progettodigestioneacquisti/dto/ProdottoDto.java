@@ -21,5 +21,6 @@ public class ProdottoDto {
     private byte[] immagine;
     private String scontato;
     private String eanProdotto;
+    private int quantitaFornitaDallAzienda;
     private BigDecimal prezzoFornitore;
 }
