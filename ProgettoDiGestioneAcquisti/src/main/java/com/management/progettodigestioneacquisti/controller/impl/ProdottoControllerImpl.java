@@ -1,7 +1,6 @@
 package com.management.progettodigestioneacquisti.controller.impl;
 
 import com.management.progettodigestioneacquisti.controller.ProdottoController;
-import com.management.progettodigestioneacquisti.converterimage.Base64ImageConverter;
 import com.management.progettodigestioneacquisti.dto.ProdottoDto;
 import com.management.progettodigestioneacquisti.exception.ScontoProdottoNonLogico;
 import com.management.progettodigestioneacquisti.mapper.ProdottoMapper;
@@ -20,9 +19,8 @@ import javax.validation.Valid;
 import javax.validation.ValidationException;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 
 @RestController
@@ -46,7 +44,6 @@ public class ProdottoControllerImpl implements ProdottoController {
         return prodottoMapper.asDTO(prodottoService.createProduct(prodotto, file));
     }
 
-
     @Override
     @GetMapping("/{ean}")
     public ProdottoDto findById(@PathVariable String ean) {
@@ -59,12 +56,13 @@ public class ProdottoControllerImpl implements ProdottoController {
     public List<ProdottoDto> list() throws IOException {
         List<Prodotto> prodotti = prodottoService.getAllProducts();
         List<ProdottoDto> prodottoDtoList = new ArrayList<>();
-        String uploadDirectory = "src/main/resources/images/";
 
         for (Prodotto prodotto : prodotti) {
-            String imageBase64 = String.valueOf(Base64ImageConverter.convert(Arrays.toString(prodotto.getImmagine())));
-            Paths.get(uploadDirectory + "/images/" + (imageBase64));
-            prodottoDtoList.add(prodottoService.asDtoConImmagine(prodotto));
+            // Crea un nuovo DTO del prodotto e imposta l'immagine
+            ProdottoDto prodottoDto = prodottoService.asDtoConImmagine(prodotto);
+            prodottoDto.setImmagine(Base64.getEncoder().encode(prodotto.getImmagine()));
+
+            prodottoDtoList.add(prodottoDto);
         }
         return prodottoDtoList;
     }

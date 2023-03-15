@@ -42,7 +42,7 @@ public class BatchConfiguration {
     @Bean
     public FlatFileItemReader<PrezzoDto> prezzoCsvFileItemReader() {
         FlatFileItemReader<PrezzoDto> itemReader = new FlatFileItemReader<>();
-        itemReader.setLinesToSkip(1);
+        itemReader.setLinesToSkip(0);
         itemReader.setResource(new ClassPathResource("prezzo.csv"));
         itemReader.setLineMapper(new DefaultLineMapper<PrezzoDto>() {{
             setLineTokenizer(new DelimitedLineTokenizer() {{
@@ -59,7 +59,7 @@ public class BatchConfiguration {
     public JdbcBatchItemWriter<Prodotto> prezzoDatabaseItemWriter() {
         JdbcBatchItemWriter<Prodotto> itemWriter = new JdbcBatchItemWriter<>();
         itemWriter.setItemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>());
-        itemWriter.setSql("UPDATE prodotto SET prezzo_fornitore = :prezzoFornitore WHERE ean_prodotto = :eanProdotto");
+        itemWriter.setSql("UPDATE prodotti SET prezzo_fornitore = :prezzoFornitore WHERE ean_prodotto = :eanProdotto");
         itemWriter.setDataSource(dataSource);
         return itemWriter;
     }

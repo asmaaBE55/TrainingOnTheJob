@@ -2,12 +2,10 @@ package com.management.progettodigestioneacquisti.service;
 
 import com.management.progettodigestioneacquisti.dto.ProdottoDto;
 import com.management.progettodigestioneacquisti.exception.ProductNotFoundException;
-import com.management.progettodigestioneacquisti.exception.ScontoProdottoNonLogico;
 import com.management.progettodigestioneacquisti.model.Acquisto;
 import com.management.progettodigestioneacquisti.model.Prodotto;
 import com.management.progettodigestioneacquisti.repository.ProdottoRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,7 +22,6 @@ import java.util.Optional;
 @Service
 public class ProdottoService {
     private final ProdottoRepository prodottoRepository;
-    private final FidelityCardService fidelityCardService;
 
     public Prodotto createProduct(Prodotto prodotto, MultipartFile file) throws IOException {
 
@@ -60,20 +57,20 @@ public class ProdottoService {
         return prodottoRepository.save(prodotto);
     }
 
-    public ProdottoDto asDtoConImmagine(Prodotto prodotto) throws IOException {
-        String uploadDirectory = "src/main/resources/images/";
+    public ProdottoDto asDtoConImmagine(Prodotto prodotto) {
         ProdottoDto prodottoDto = new ProdottoDto();
         prodottoDto.setId(prodotto.getId());
         prodottoDto.setNome(prodotto.getNome());
         prodottoDto.setPrezzoUnitario(prodotto.getPrezzoUnitario());
         prodottoDto.setQuantitaDisponibile(prodotto.getQuantitaDisponibile());
 
-        // Legge l'immagine dal file system
-        String imageName = Base64.getEncoder().encodeToString(prodotto.getImmagine());
-        prodottoDto.setImmagine(imageName.getBytes());
+        // Converti array di byte dell'immagine in una stringa Base64
+        String imageBase64 = Base64.getEncoder().encodeToString(prodotto.getImmagine());
+        prodottoDto.setImmagine(imageBase64.getBytes());
 
         return prodottoDto;
     }
+
 
     public void deleteProdotto(String ean) {
         Optional<Prodotto> prodottoOp = prodottoRepository.findById(ean);
@@ -85,7 +82,7 @@ public class ProdottoService {
         }
     }
 
-    public void updateProdotto(Prodotto prodotto, Double percentualeSconto) throws ChangeSetPersister.NotFoundException, ScontoProdottoNonLogico {
+    public void updateProdotto(Prodotto prodotto, Double percentualeSconto) {
         Prodotto prodottoEsistente = prodottoRepository.findProdottoByEanProdotto(prodotto.getEanProdotto());
         StringBuilder sc = new StringBuilder();
 
@@ -121,6 +118,7 @@ public class ProdottoService {
             throw new RuntimeException("Prodotto non trovato con EAN " + eanProdotto);
         }
     }
+
 }
 
 

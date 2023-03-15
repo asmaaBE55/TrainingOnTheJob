@@ -14,3 +14,7 @@ public class PrezzoDto {
     private BigDecimal prezzoFornitore;
 
 }
+/*
+  PrezzoDto rappresenta i dati di un singolo record del csv che verranno mappati
+  nell'entità Prodotto del database.
+ */
