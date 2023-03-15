@@ -49,7 +49,7 @@ public class AcquistoService {
             throw new InsufficientFundsException("Budget insufficiente");
         }
 
-        if (quantitaDesiderata > prodotto.getQuantitaDisponibile()) {
+        if (quantitaDesiderata > prodotto.getQuantitaFornitaDallAzienda()) {
             throw new ProductNotFoundException("Quantità esaurita");
         }
         Acquisto acquisto = new Acquisto();
@@ -222,11 +222,18 @@ public class AcquistoService {
                 }
             }
 
-            // Calcola la somma dei profitti
+            // Calcola la somma dei profitti sia per prodotti scontati sia per quelli non scontati
             double totaleProfitto = prodotti.stream()
-                    .filter(p -> p.getQuantitaDisponibile() != 0 && p.isStatoSconto())
-                    .mapToDouble(p -> (p.getPrezzoScontato().doubleValue() - p.getPrezzoFornitore().doubleValue()) * (p.getQuantitaFornitaDallAzienda() - p.getQuantitaDisponibile()))
+                    .filter(p -> p.getQuantitaDisponibile() != 0)
+                    .mapToDouble(p -> {
+                        if (p.isStatoSconto()) {
+                            return (p.getPrezzoScontato().doubleValue() - p.getPrezzoFornitore().doubleValue()) * (p.getQuantitaFornitaDallAzienda() - p.getQuantitaDisponibile());
+                        } else {
+                            return (p.getPrezzoUnitario().doubleValue() - p.getPrezzoFornitore().doubleValue()) * (p.getQuantitaFornitaDallAzienda() - p.getQuantitaDisponibile());
+                        }
+                    })
                     .sum();
+
 
 
             // Aggiungi il totale del profitto alla fine del foglio excel
