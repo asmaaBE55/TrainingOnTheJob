@@ -6,6 +6,8 @@ import com.management.progettodigestioneacquisti.model.Acquisto;
 import com.management.progettodigestioneacquisti.model.Prodotto;
 import com.management.progettodigestioneacquisti.repository.ProdottoRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Transactional
 @Service
+@CacheConfig(cacheNames = "prodotti")
+// l'utilizzo del caching dei dati può portare a un miglioramento delle prestazioni
+// dell'applicazione e a un utilizzo più efficiente delle risorse di sistema
 public class ProdottoService {
     private final ProdottoRepository prodottoRepository;
 
@@ -38,6 +43,10 @@ public class ProdottoService {
 
     }
 
+    @Cacheable(key = "#ean")
+    // Viene utilizzato per indicare che il metodo getProdottoByEan
+    // deve essere memorizzato nella cache e cacheNames viene utilizzato per specificare il nome della cache.
+    // Il parametro key indica l'identificatore univoco per la cache
     public Prodotto getProdottoById(String ean) {
         return prodottoRepository.findProdottoByEanProdotto(ean);
     }

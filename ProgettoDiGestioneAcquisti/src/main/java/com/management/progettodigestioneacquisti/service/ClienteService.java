@@ -5,6 +5,8 @@ import com.management.progettodigestioneacquisti.model.Acquisto;
 import com.management.progettodigestioneacquisti.model.Cliente;
 import com.management.progettodigestioneacquisti.repository.ClienteRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional
 @Service
+@CacheConfig(cacheNames = "clienti")
 public class ClienteService {
     private final ClienteRepository clienteRepository;
 
@@ -21,6 +24,7 @@ public class ClienteService {
         return clienteRepository.findAll();
     }
 
+    @Cacheable(key = "#id")
     public Cliente getClienteById(Long id) {
         return clienteRepository.findClienteById(id);
     }
@@ -30,10 +34,6 @@ public class ClienteService {
         cliente.setNumeroAcquisti(0);
         cliente.setImportoTotaleSpeso(BigDecimal.ZERO);
         return clienteRepository.save(cliente);
-    }
-
-    public void deleteById(Long id) {
-        clienteRepository.deleteById(id);
     }
 
     public void updateClientStatus(Cliente cliente, BigDecimal importoTotaleSpeso) {
@@ -76,6 +76,7 @@ public class ClienteService {
         clienteRepository.save(cliente);
     }
 
+    @Cacheable(key = "#id")
     public boolean existsClienteById(Long id) {
         return clienteRepository.existsById(id);
     }

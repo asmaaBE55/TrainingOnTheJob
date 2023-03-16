@@ -8,6 +8,8 @@ import com.management.progettodigestioneacquisti.repository.AcquistoRepository;
 import com.management.progettodigestioneacquisti.repository.ClienteRepository;
 import com.management.progettodigestioneacquisti.repository.ScontrinoRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional
 @Service
+@CacheConfig(cacheNames = "scontrini")
 public class ScontrinoService {
     private final ScontrinoRepository scontrinoRepository;
     private final ClienteRepository clienteRepository;
@@ -32,10 +35,10 @@ public class ScontrinoService {
 
         BigDecimal totale = BigDecimal.ZERO;
 
-        /**
-         * Si usa per manipolare in modo efficiente le stringhe, voglio che i prodotti nello scontrino siano più
-         * leggibili nome prodotto, il prezzo unitario del prodotto con il simbolo Euro e la qty acquistata di ogni prodotto.
-         **/
+        /*
+          Si usa per manipolare in modo efficiente le stringhe, voglio che i prodotti nello scontrino siano più
+          leggibili nome prodotto, il prezzo unitario del prodotto con il simbolo Euro e la qty acquistata di ogni prodotto.
+         */
 
         StringBuilder nomeProdotto = new StringBuilder();
 
@@ -64,6 +67,7 @@ public class ScontrinoService {
         return scontrinoRepository.save(scontrino);
     }
 
+    @Cacheable(key = "#id")
     public Scontrino getScontrinoById(Long id) {
         return scontrinoRepository.findScontrinoById(id);
     }

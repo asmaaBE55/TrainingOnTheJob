@@ -5,6 +5,8 @@ import com.management.progettodigestioneacquisti.model.FidelityCard;
 import com.management.progettodigestioneacquisti.repository.ClienteRepository;
 import com.management.progettodigestioneacquisti.repository.FidelityCardRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,10 +16,10 @@ import java.math.RoundingMode;
 @RequiredArgsConstructor
 @Transactional
 @Service
+@CacheConfig(cacheNames = "fidelity_card")
 public class FidelityCardService {
     private final FidelityCardRepository fidelityCardRepository;
     private final ClienteRepository clienteRepository;
-
 
     public FidelityCard creaFidelityCard(Long idCliente) {
         Cliente cliente = clienteRepository.findById(idCliente)
@@ -39,6 +41,7 @@ public class FidelityCardService {
         fidelityCardRepository.save(fidelityCard);
     }
 
+    @Cacheable(key = "#clienteId")
     public FidelityCard getFidelityCardByClienteId(Long clienteId) {
         return fidelityCardRepository.findByClienteId(clienteId);
     }

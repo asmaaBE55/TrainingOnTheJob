@@ -5,7 +5,6 @@ import com.management.progettodigestioneacquisti.exception.NotEnoughPointsExcept
 import com.management.progettodigestioneacquisti.exception.ProductNotFoundException;
 import com.management.progettodigestioneacquisti.model.*;
 import com.management.progettodigestioneacquisti.repository.AcquistoRepository;
-import com.management.progettodigestioneacquisti.repository.ClienteRepository;
 import com.management.progettodigestioneacquisti.repository.FidelityCardRepository;
 import com.management.progettodigestioneacquisti.repository.ProdottoRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +12,7 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
@@ -28,15 +28,14 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional
 @Service
+@CacheConfig(cacheNames = "acquisti")
 public class AcquistoService {
-
     private final AcquistoRepository acquistoRepository;
     private final StoricoAcquistiService storicoAcquistiService;
     private final ClienteService clienteService;
     private final FidelityCardService fidelityCardService;
     private final FidelityCardRepository fidelityCardRepository;
     private final ProdottoService prodottoService;
-    private final ClienteRepository clienteRepository;
     private final ProdottoRepository prodottoRepository;
 
     public Acquisto compraProdotto(Cliente cliente, Prodotto prodotto, int quantitaDesiderata, BindingResult result) throws ProductNotFoundException, InsufficientFundsException {
@@ -233,7 +232,6 @@ public class AcquistoService {
                         }
                     })
                     .sum();
-
 
 
             // Aggiungi il totale del profitto alla fine del foglio excel
