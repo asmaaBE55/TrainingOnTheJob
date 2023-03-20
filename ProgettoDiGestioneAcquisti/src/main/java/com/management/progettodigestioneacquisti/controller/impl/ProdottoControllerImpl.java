@@ -18,12 +18,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.ValidationException;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,7 +58,7 @@ public class ProdottoControllerImpl implements ProdottoController {
     @Override
     @GetMapping
     public List<ProdottoDto> list() throws IOException {
-       return prodottoMapper.asDTOlist(prodottoService.getAllProducts());
+        return prodottoMapper.asDTOlist(prodottoService.getAllProducts());
     }
 
     @Override
@@ -113,6 +112,7 @@ public class ProdottoControllerImpl implements ProdottoController {
     public void importaQuantitaFornita() {
         prodottoService.importaQuantitaFornitaDalCsv();
     }
+
     @Override
     @GetMapping("/prodotti/{ean}/immagine")
     public ResponseEntity<byte[]> getImmagineProdottoByEan(@PathVariable String ean) {
@@ -127,4 +127,22 @@ public class ProdottoControllerImpl implements ProdottoController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @Override
+    @GetMapping("/prodotti/{ean}/foto")
+    public void getImmagineProdottoByEan(@PathVariable String ean, HttpServletResponse response) throws IOException {
+        Optional<Prodotto> optionalProdotto = prodottoRepository.findByEanProdotto(ean);
+        if (optionalProdotto.isPresent()) {
+            Prodotto prodotto = optionalProdotto.get();
+            response.setContentType("image/jpeg");
+            response.setContentLength(prodotto.getImmagine().length);
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + ean + ".jpg\"");
+            response.getOutputStream().write(prodotto.getImmagine());
+            response.flushBuffer();
+        } else {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        }
+    }
+
+
 }

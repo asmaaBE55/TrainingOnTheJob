@@ -1,6 +1,5 @@
 package com.management.progettodigestioneacquisti.service;
 
-import com.management.progettodigestioneacquisti.dto.ProdottoDto;
 import com.management.progettodigestioneacquisti.exception.ProductNotFoundException;
 import com.management.progettodigestioneacquisti.model.Acquisto;
 import com.management.progettodigestioneacquisti.model.Prodotto;
@@ -17,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.persistence.EntityNotFoundException;
 import java.io.*;
 import java.math.BigDecimal;
-import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,19 +53,22 @@ public class ProdottoService {
         return prodottoRepository.findAll();
     }
 
-    /*
-     complessità totale= O(1), perché questo metodo
-     esegue semplicemente alcune operazioni aritmetiche e una chiamata
-     a prodottoRepository.save(), che di solito ha una complessità quasi costante
-    */
     public void updateQuantityDopoAcquisto(Prodotto prodotto, Acquisto acquisto) throws ProductNotFoundException {
         int quantitaAcquistata = acquisto.getQuantitaAcquistata();
-        int quantitaDisponibile = prodotto.getQuantitaFornitaDallAzienda() - prodotto.getQuantitaAcquistata();
-        if (quantitaAcquistata > quantitaDisponibile) {
+        int quantitaDisponibile = prodotto.getQuantitaDisponibile();
+        int quantitaFornita = prodotto.getQuantitaFornitaDallAzienda();
+
+        if (quantitaAcquistata > quantitaDisponibile + quantitaFornita) {
             throw new ProductNotFoundException("Quantità esaurita");
         }
-        prodotto.setQuantitaAcquistata(prodotto.getQuantitaAcquistata() + quantitaAcquistata);
-        prodotto.setQuantitaDisponibile(quantitaDisponibile - quantitaAcquistata);
+
+        int nuovaQuantitaAcquistata = prodotto.getQuantitaAcquistata() + quantitaAcquistata;
+        int nuovaQuantitaDisponibile = quantitaDisponibile - quantitaAcquistata;
+        int nuovaQuantitaFornita = quantitaFornita + Math.max(0, nuovaQuantitaDisponibile);
+
+        prodotto.setQuantitaAcquistata(nuovaQuantitaAcquistata);
+        prodotto.setQuantitaDisponibile(nuovaQuantitaDisponibile);
+        prodotto.setQuantitaFornitaDallAzienda(nuovaQuantitaFornita);
         prodottoRepository.save(prodotto);
     }
 

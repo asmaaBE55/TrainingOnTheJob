@@ -35,6 +35,7 @@ public class Prodotto implements Serializable {
     @Transient
     @Column(name = "quantita_disponibile")
     private int quantitaDisponibile;
+    @Transient
     @Column(name = "quantita_acquistata")
     private int quantitaAcquistata;
     @Column(name = "sconto")

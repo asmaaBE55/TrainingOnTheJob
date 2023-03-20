@@ -48,7 +48,7 @@ public class ScontrinoService {
             nomeProdotto.append(acquisto.getNomeProdottoAcquistato())
                     .append(" x")
                     .append(numeroAcquisti)
-                    .append(" Prezzo Unit: ")
+                    .append(" Prezzo: ")
                     .append(prezzoUnitario.doubleValue())
                     .append(numeroAcquisti)
                     .append("€ --- ");

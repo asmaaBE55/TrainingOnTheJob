@@ -8,12 +8,12 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
@@ -24,19 +24,19 @@ public interface ProdottoController {
     @ApiOperation("Crea un nuovo prodotto")
     ProdottoDto createProduct(@RequestBody @Valid ProdottoDto prodottoDto, @RequestParam("file") MultipartFile file, BindingResult result) throws IOException;
 
-    @ApiOperation("Get prodotto tramite ID")
+    @ApiOperation("Cerca un prodotto tramite Ean")
     ProdottoDto findById(@PathVariable String ean) throws ProductNotFoundException;
 
-    @ApiOperation("Get tutti i prodotti")
+    @ApiOperation("Vedi tutti i prodotti")
     List<ProdottoDto> list() throws IOException;
 
-    @ApiOperation("Rimuovi questo prodotto")
+    @ApiOperation("Rimuovi un prodotto")
     ResponseEntity<?> delete(@PathVariable("id") String ean);
 
     @ApiOperation("Aggiungi uno sconto ad un prodotto")
     ProdottoDto updateProdotto(@PathVariable String ean, @RequestParam Double sconto) throws ChangeSetPersister.NotFoundException, ScontoProdottoNonLogico;
 
-    @ApiOperation("Aggiorna la quantità stock del prodotto")
+    @ApiOperation("Aggiorna la quantità fornita di un prodotto preciso")
     ResponseEntity<String> aggiornaQuantitaDisponibile(@PathVariable("ean") String eanProdotto,
                                                        @RequestParam("quantity") int quantitaDaAggiungere);
 
@@ -46,6 +46,9 @@ public interface ProdottoController {
     @ApiOperation("Importa quantita fornita")
     void importaQuantitaFornita();
 
-    @ApiOperation("Vedi foto prodotto")
+    @ApiOperation("Vedi la foto prodotto")
     ResponseEntity<byte[]> getImmagineProdottoByEan(@PathVariable String ean);
+
+    @ApiOperation("Scarica la foto del prodotto")
+    void getImmagineProdottoByEan(@PathVariable String ean, HttpServletResponse response) throws IOException;
 }

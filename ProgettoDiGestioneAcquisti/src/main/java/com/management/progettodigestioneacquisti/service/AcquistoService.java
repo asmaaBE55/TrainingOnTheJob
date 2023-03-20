@@ -83,9 +83,6 @@ public class AcquistoService {
 
 
         prodottoService.updateQuantityDopoAcquisto(prodotto, acquisto);
-        if (prodotto.getQuantitaDisponibile() == 0) {
-            scheduledTasks.importaQuantitaFornitaDalCsv();
-        }
         clienteService.updateNumeroAcquisti(cliente, acquisto);
         clienteService.updateClientStatus(cliente, cliente.getImportoTotaleSpeso());
         clienteService.updateImportoTotaleSpeso(cliente, prezzoTotale);
@@ -209,9 +206,7 @@ public class AcquistoService {
             // Aggiungi i dati delle righe al foglio excel
             int rowNum = 1;
             for (Prodotto prodotto : prodotti) {
-                if (prodotto.getQuantitaDisponibile() == 0) {
-                    continue;
-                }
+
                 if (prodotto.isStatoSconto()) {
                     XSSFRow row = sheet.createRow(rowNum++);
                     row.createCell(0).setCellValue(prodotto.getEanProdotto());
