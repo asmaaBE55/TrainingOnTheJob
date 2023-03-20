@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -44,4 +45,7 @@ public interface ProdottoController {
 
     @ApiOperation("Importa quantita fornita")
     void importaQuantitaFornita();
+
+    @ApiOperation("Vedi foto prodotto")
+    ResponseEntity<byte[]> getImmagineProdottoByEan(@PathVariable String ean);
 }

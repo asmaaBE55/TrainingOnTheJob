@@ -13,14 +13,12 @@ public class ScheduledTasks {
     @Autowired
     private ProdottoService prodottoService;
 
-    @Scheduled(cron = "0 0 1 * * *")
     public void importaPrezziFornitoriDalCsv() {
         LOGGER.info("Start importazione prezzi fornitori dal csv");
         prodottoService.importaPrezziFornitoriDalCsv();
         LOGGER.info("Fine importazione prezzi fornitori dal csv");
     }
 
-    @Scheduled(cron = "0 0 2 * * *")
     public void importaQuantitaFornitaDalCsv() {
         LOGGER.info("Start importazione quantità fornita dal csv");
         prodottoService.importaQuantitaFornitaDalCsv();

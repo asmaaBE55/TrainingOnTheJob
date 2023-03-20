@@ -5,11 +5,14 @@ import com.management.progettodigestioneacquisti.dto.ProdottoDto;
 import com.management.progettodigestioneacquisti.exception.ScontoProdottoNonLogico;
 import com.management.progettodigestioneacquisti.mapper.ProdottoMapper;
 import com.management.progettodigestioneacquisti.model.Prodotto;
+import com.management.progettodigestioneacquisti.repository.ProdottoRepository;
 import com.management.progettodigestioneacquisti.service.ProdottoService;
 import com.management.progettodigestioneacquisti.validators.ProdottoValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +25,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/prodotti")
@@ -29,6 +33,7 @@ import java.util.List;
 public class ProdottoControllerImpl implements ProdottoController {
     private final ProdottoService prodottoService;
     private final ProdottoMapper prodottoMapper;
+    private final ProdottoRepository prodottoRepository;
 
 
     @Override
@@ -54,17 +59,7 @@ public class ProdottoControllerImpl implements ProdottoController {
     @Override
     @GetMapping
     public List<ProdottoDto> list() throws IOException {
-        List<Prodotto> prodotti = prodottoService.getAllProducts();
-        List<ProdottoDto> prodottoDtoList = new ArrayList<>();
-
-        for (Prodotto prodotto : prodotti) {
-            // Crea un nuovo DTO del prodotto e imposta l'immagine
-            ProdottoDto prodottoDto = prodottoService.asDtoConImmagine(prodotto);
-            prodottoDto.setImmagine(Base64.getEncoder().encode(prodotto.getImmagine()));
-
-            prodottoDtoList.add(prodottoDto);
-        }
-        return prodottoDtoList;
+       return prodottoMapper.asDTOlist(prodottoService.getAllProducts());
     }
 
     @Override
@@ -118,5 +113,18 @@ public class ProdottoControllerImpl implements ProdottoController {
     public void importaQuantitaFornita() {
         prodottoService.importaQuantitaFornitaDalCsv();
     }
+    @Override
+    @GetMapping("/prodotti/{ean}/immagine")
+    public ResponseEntity<byte[]> getImmagineProdottoByEan(@PathVariable String ean) {
+        Optional<Prodotto> optionalProdotto = prodottoRepository.findByEanProdotto(ean);
+        if (optionalProdotto.isPresent()) {
+            Prodotto prodotto = optionalProdotto.get();
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.IMAGE_JPEG);
+            headers.setContentLength(prodotto.getImmagine().length);
+            return new ResponseEntity<>(prodotto.getImmagine(), headers, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 }
-

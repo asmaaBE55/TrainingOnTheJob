@@ -1,4 +1,4 @@
-package com.management.progettodigestioneacquisti.input;
+package com.management.progettodigestioneacquisti.generator;
 
 import java.util.Random;
 
@@ -23,7 +23,7 @@ public class EanGenerator {
         int check = (10 - (sum % 10)) % 10;
         ean[12] = check;
 
-        // Converte l'array di cifre in una stringa
+        // Converte array di cifre in una stringa
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < 13; i++) {
             sb.append(ean[i]);

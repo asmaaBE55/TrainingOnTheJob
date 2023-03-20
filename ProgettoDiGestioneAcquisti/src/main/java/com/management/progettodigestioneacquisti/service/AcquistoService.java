@@ -1,5 +1,6 @@
 package com.management.progettodigestioneacquisti.service;
 
+import com.management.progettodigestioneacquisti.batchcsvtodatabase.ScheduledTasks;
 import com.management.progettodigestioneacquisti.exception.InsufficientFundsException;
 import com.management.progettodigestioneacquisti.exception.NotEnoughPointsException;
 import com.management.progettodigestioneacquisti.exception.ProductNotFoundException;
@@ -37,6 +38,7 @@ public class AcquistoService {
     private final FidelityCardRepository fidelityCardRepository;
     private final ProdottoService prodottoService;
     private final ProdottoRepository prodottoRepository;
+    private final ScheduledTasks scheduledTasks;
 
     public Acquisto compraProdotto(Cliente cliente, Prodotto prodotto, int quantitaDesiderata, BindingResult result) throws ProductNotFoundException, InsufficientFundsException {
         if (result.hasErrors()) {
@@ -81,6 +83,9 @@ public class AcquistoService {
 
 
         prodottoService.updateQuantityDopoAcquisto(prodotto, acquisto);
+        if (prodotto.getQuantitaDisponibile() == 0) {
+            scheduledTasks.importaQuantitaFornitaDalCsv();
+        }
         clienteService.updateNumeroAcquisti(cliente, acquisto);
         clienteService.updateClientStatus(cliente, cliente.getImportoTotaleSpeso());
         clienteService.updateImportoTotaleSpeso(cliente, prezzoTotale);
@@ -122,6 +127,9 @@ public class AcquistoService {
         acquisto.setScontrino(acquisto.getScontrino());
 
         prodottoService.updateQuantityDopoAcquisto(prodotto, acquisto);
+        if (prodotto.getQuantitaDisponibile() == 0) {
+            scheduledTasks.importaQuantitaFornitaDalCsv();
+        }
         clienteService.updateNumeroAcquisti(cliente, acquisto);
         clienteService.updateClientStatus(cliente, cliente.getImportoTotaleSpeso());
         clienteService.updateImportoTotaleSpeso(cliente, prezzoTotale);
@@ -209,14 +217,14 @@ public class AcquistoService {
                     row.createCell(0).setCellValue(prodotto.getEanProdotto());
                     row.createCell(1).setCellValue(prodotto.getPrezzoScontato().doubleValue());
                     row.createCell(2).setCellValue(prodotto.getPrezzoFornitore().doubleValue());
-                    double profitto = (prodotto.getPrezzoScontato().doubleValue() - prodotto.getPrezzoFornitore().doubleValue()) * (prodotto.getQuantitaFornitaDallAzienda() - prodotto.getQuantitaDisponibile());
+                    double profitto = (prodotto.getPrezzoScontato().doubleValue() - prodotto.getPrezzoFornitore().doubleValue()) * (prodotto.getQuantitaAcquistata());
                     row.createCell(3).setCellValue(profitto);
                 } else {
                     XSSFRow row = sheet.createRow(rowNum++);
                     row.createCell(0).setCellValue(prodotto.getEanProdotto());
                     row.createCell(1).setCellValue(prodotto.getPrezzoUnitario().doubleValue());
                     row.createCell(2).setCellValue(prodotto.getPrezzoFornitore().doubleValue());
-                    double profitto = (prodotto.getPrezzoUnitario().doubleValue() - prodotto.getPrezzoFornitore().doubleValue()) * (prodotto.getQuantitaFornitaDallAzienda() - prodotto.getQuantitaDisponibile());
+                    double profitto = (prodotto.getPrezzoUnitario().doubleValue() - prodotto.getPrezzoFornitore().doubleValue()) * (prodotto.getQuantitaAcquistata());
                     row.createCell(3).setCellValue(profitto);
                 }
             }
@@ -226,9 +234,9 @@ public class AcquistoService {
                     .filter(p -> p.getQuantitaDisponibile() != 0)
                     .mapToDouble(p -> {
                         if (p.isStatoSconto()) {
-                            return (p.getPrezzoScontato().doubleValue() - p.getPrezzoFornitore().doubleValue()) * (p.getQuantitaFornitaDallAzienda() - p.getQuantitaDisponibile());
+                            return (p.getPrezzoScontato().doubleValue() - p.getPrezzoFornitore().doubleValue()) * (p.getQuantitaAcquistata());
                         } else {
-                            return (p.getPrezzoUnitario().doubleValue() - p.getPrezzoFornitore().doubleValue()) * (p.getQuantitaFornitaDallAzienda() - p.getQuantitaDisponibile());
+                            return (p.getPrezzoUnitario().doubleValue() - p.getPrezzoFornitore().doubleValue()) * (p.getQuantitaAcquistata());
                         }
                     })
                     .sum();

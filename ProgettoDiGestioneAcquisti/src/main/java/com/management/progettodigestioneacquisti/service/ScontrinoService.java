@@ -27,7 +27,7 @@ public class ScontrinoService {
     private final ClienteRepository clienteRepository;
     private final AcquistoRepository acquistoRepository;
 
-    public Scontrino creaScontrino(Long idCliente) {
+    public Scontrino creaScontrino(Long idCliente) {//complessità totale del metodo O(n)
         Cliente cliente = clienteRepository.findById(idCliente)
                 .orElseThrow(() -> new UserNotFoundException("Cliente non trovato con id " + idCliente));
 
@@ -35,14 +35,14 @@ public class ScontrinoService {
 
         BigDecimal totale = BigDecimal.ZERO;
 
-        /*
-          Si usa per manipolare in modo efficiente le stringhe, voglio che i prodotti nello scontrino siano più
-          leggibili nome prodotto, il prezzo unitario del prodotto con il simbolo Euro e la qty acquistata di ogni prodotto.
-         */
+   /*
+    L'uso di StringBuilder è più efficiente in termini di prestazioni
+    e uso della memoria rispetto all'utilizzo di "toString()".
+   */
 
-        StringBuilder nomeProdotto = new StringBuilder();
+        StringBuilder nomeProdotto = new StringBuilder();//complessità O(1)
 
-        for (Acquisto acquisto : acquisti) {
+        for (Acquisto acquisto : acquisti) {//complessità O(n)
             BigDecimal prezzoUnitario = acquisto.getPrezzoDiAcquisto().divide(BigDecimal.valueOf(acquisto.getQuantitaAcquistata()), RoundingMode.HALF_UP);
             int numeroAcquisti = acquisto.getQuantitaAcquistata();
             nomeProdotto.append(acquisto.getNomeProdottoAcquistato())
@@ -56,7 +56,7 @@ public class ScontrinoService {
             BigDecimal prezzoDiAcquisto = acquisto.getPrezzoDiAcquisto();
             totale = totale.add(prezzoDiAcquisto);
         }
-        nomeProdotto.delete(nomeProdotto.length() - 4, nomeProdotto.length()); // rimuove l'ultimo "--- "
+        nomeProdotto.delete(nomeProdotto.length() - 4, nomeProdotto.length()); // rimuove l'ultimo "--- "//complessità O(1)
 
         Scontrino scontrino = new Scontrino();
         scontrino.setDataScontrino(LocalDateTime.now());

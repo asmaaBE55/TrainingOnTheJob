@@ -4,7 +4,7 @@ package com.management.progettodigestioneacquisti.model;
  * Ogni prodotto ha un ID univoco e può essere acquistato in una o più quantità.
  */
 
-import com.management.progettodigestioneacquisti.input.EanGenerator;
+import com.management.progettodigestioneacquisti.generator.EanGenerator;
 import lombok.*;
 
 import javax.persistence.*;
@@ -32,8 +32,11 @@ public class Prodotto implements Serializable {
     private BigDecimal prezzoScontato;
     @Column(name = "quantita_fornita")
     private int quantitaFornitaDallAzienda;
+    @Transient
     @Column(name = "quantita_disponibile")
     private int quantitaDisponibile;
+    @Column(name = "quantita_acquistata")
+    private int quantitaAcquistata;
     @Column(name = "sconto")
     private String scontato;
     @Column(name = "stato_sconto")

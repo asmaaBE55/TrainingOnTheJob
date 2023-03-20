@@ -55,33 +55,26 @@ public class ProdottoService {
         return prodottoRepository.findAll();
     }
 
+    /*
+     complessità totale= O(1), perché questo metodo
+     esegue semplicemente alcune operazioni aritmetiche e una chiamata
+     a prodottoRepository.save(), che di solito ha una complessità quasi costante
+    */
     public void updateQuantityDopoAcquisto(Prodotto prodotto, Acquisto acquisto) throws ProductNotFoundException {
-        prodotto.setQuantitaDisponibile(prodotto.getQuantitaFornitaDallAzienda() - acquisto.getQuantitaAcquistata());
-        if (prodotto.getQuantitaDisponibile() == 0) {
+        int quantitaAcquistata = acquisto.getQuantitaAcquistata();
+        int quantitaDisponibile = prodotto.getQuantitaFornitaDallAzienda() - prodotto.getQuantitaAcquistata();
+        if (quantitaAcquistata > quantitaDisponibile) {
             throw new ProductNotFoundException("Quantità esaurita");
         }
-        prodotto.setQuantitaDisponibile(Math.max(0, prodotto.getQuantitaDisponibile()));
+        prodotto.setQuantitaAcquistata(prodotto.getQuantitaAcquistata() + quantitaAcquistata);
+        prodotto.setQuantitaDisponibile(quantitaDisponibile - quantitaAcquistata);
         prodottoRepository.save(prodotto);
     }
+
 
     public Prodotto saveProdotto(Prodotto prodotto) {
         return prodottoRepository.save(prodotto);
     }
-
-    public ProdottoDto asDtoConImmagine(Prodotto prodotto) {
-        ProdottoDto prodottoDto = new ProdottoDto();
-        prodottoDto.setId(prodotto.getId());
-        prodottoDto.setNome(prodotto.getNome());
-        prodottoDto.setPrezzoUnitario(prodotto.getPrezzoUnitario());
-        prodottoDto.setQuantitaDisponibile(prodotto.getQuantitaDisponibile());
-
-        // Converti array di byte dell'immagine in una stringa Base64
-        String imageBase64 = Base64.getEncoder().encodeToString(prodotto.getImmagine());
-        prodottoDto.setImmagine(imageBase64.getBytes());
-
-        return prodottoDto;
-    }
-
 
     public void deleteProdotto(String ean) {
         Optional<Prodotto> prodottoOp = prodottoRepository.findById(ean);
@@ -116,6 +109,7 @@ public class ProdottoService {
         prodottoRepository.save(prodottoEsistente);
     }
 
+    //complessità totale= O(UNO), perché tutte le operazioni eseguite al suo interno hanno un costo costante.
     @Transactional
     public void aggiornaQuantitaDisponibile(String eanProdotto, int quantitaDaAggiungere) {
         Optional<Prodotto> optionalProduct = Optional.ofNullable(prodottoRepository.findProdottoByEanProdotto(eanProdotto));
@@ -123,6 +117,9 @@ public class ProdottoService {
             Prodotto product = optionalProduct.get();
             int quantitaDisponibile = product.getQuantitaFornitaDallAzienda();
             int nuovaQuantita = quantitaDisponibile + quantitaDaAggiungere;
+            if (nuovaQuantita < 0) {
+                throw new RuntimeException("Quantità disponibile non può essere negativa");
+            }
             product.setQuantitaFornitaDallAzienda(nuovaQuantita);
             prodottoRepository.save(product);
         } else {

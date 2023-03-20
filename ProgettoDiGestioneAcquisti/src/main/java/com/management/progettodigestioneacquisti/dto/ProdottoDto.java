@@ -22,5 +22,6 @@ public class ProdottoDto {
     private String scontato;
     private String eanProdotto;
     private int quantitaFornitaDallAzienda;
+    private int quantitaAcquistata;
     private BigDecimal prezzoFornitore;
 }
